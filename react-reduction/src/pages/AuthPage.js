@@ -1,17 +1,24 @@
-import AuthForm, { STATE_LOGIN } from 'components/AuthForm';
+//Librerías
 import logo200Image from 'assets/img/logo/logo_200.png';
-import React, {Fragment, useState} from 'react';
-import { Card, Col, Row, FormGroup, Spinner, Button} from 'reactstrap';
+import React, { useState} from 'react';
+import { Card, Col, Row, FormGroup, Spinner } from 'reactstrap';
 import superagent from 'superagent';
+import {AvForm, AvField} from 'availity-reactstrap-validation';
+import Cookies from 'js-cookie';
+import { Alert } from 'reactstrap';
+import { withRouter, Link } from "react-router-dom"
+
+// Redux
+import { connect } from "react-redux"
 
 //Endpoints
 import { API_LOGIN,
          OBTENER_DATOS_USUARIO_TOKEN
  } from '../api/apiTypes';
 
-import {AvForm, AvField} from 'availity-reactstrap-validation';
-import Cookies from 'js-cookie';
-import { Alert } from 'reactstrap';
+ //actions
+ import { setDatosUsuario, setTokenUsuario } from '../store/actions';
+
 
 
 const AuthPage = props =>{
@@ -19,12 +26,12 @@ const AuthPage = props =>{
   const [mensaje_error_autenticacion, setMensaje_error_autenticacion] = useState("");
   const [error_autenticacion, setError_autenticacion]=useState(false);
   const [cargando_autenticacion, setCargando_autenticacion]=useState(false);
-  const _autenticar=async(passwordIpx, usernameIpx)=>{
+  const _autenticar=async(passwordIpx, correoElectronicoIpx)=>{
     try{
-      console.log(passwordIpx, usernameIpx);
+      console.log(passwordIpx, correoElectronicoIpx);
       setCargando_autenticacion(true);
     
-      let values={correo_electronico:usernameIpx, contrasenia:passwordIpx};
+      let values={correo_electronico:correoElectronicoIpx, contrasenia:passwordIpx};
       let token = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LOGIN)
                                   .set('Content-Type', 'application/json')
                                   .send(values);
@@ -39,6 +46,7 @@ const AuthPage = props =>{
                                             .set('Accept', 'application/json')
                                             .set("Authorization", "Bearer " + token);
       datos_usuario = datos_usuario.body;
+      datos_usuario.correo_electronico_usuario=correoElectronicoIpx; // borrar Al modificar servicio.
       console.log("vine aqui");
       console.log("datos Usuario", datos_usuario);
 
@@ -46,10 +54,19 @@ const AuthPage = props =>{
                                                         {
                                                           "usuario_id":datos_usuario.id_usuario,
                                                           "usuario_nombreUsuario": datos_usuario.nombre_usuario,
+                                                          "usuario_correoElectronico": datos_usuario.correo_electronico_usuario
                                                           //falta rol
                                                         }
                                                       ));
+      // set de datos y token en store.
+      let datos={nombre_usuario: datos_usuario.nombre_usuario, correo_electronico_usuario: datos_usuario.correo_electronico_usuario};
+
+      await props.setDatosUsuario(datos);
+
+      await props.setTokenUsuario(token);
+    
     setCargando_autenticacion(false);
+    console.log(props.state);
     props.history.push("/");
     }catch(error)
     {
@@ -88,8 +105,8 @@ const AuthPage = props =>{
               className="form-horizontal"
               onValidSubmit={(e,v) =>{
                 console.log(v);
-                let {passwordIpx, usernameIpx} = v;
-                _autenticar(passwordIpx, usernameIpx)
+                let {passwordIpx, correoElectronicoIpx} = v;
+                _autenticar(passwordIpx, correoElectronicoIpx)
               }}
             >
               <div className="text-center pb-4">
@@ -106,8 +123,8 @@ const AuthPage = props =>{
               ):null}
               <FormGroup>
                 <AvField
-                  name="usernameIpx"
-                  label="Usuario"
+                  name="correoElectronicoIpx"
+                  label="Correo electrónico"
                   value=""
                   className="form-control"
                   placeholder="Ingrese su correo electrónico"
@@ -153,22 +170,18 @@ const AuthPage = props =>{
 
 }
 
-// class AuthPage extends React.Component {
-//   handleAuthState = authState => {
-//     if (authState === STATE_LOGIN) {
-//       this.props.history.push('/login');
-//     } else {
-//       this.props.history.push('/signup');
-//     }
-//   };
+const mapStateToProps = reducers => {
+  return{
+    state: reducers.datosUsuarioReducer
+  }
+}
 
-//   handleLogoClick = () => {
-//     this.props.history.push('/');
-//   };
-
-//   render() {
-   
-//   }
-// }
-
-export default AuthPage;
+const mapDispatchToProps = dispatch => {
+  return{
+    setDatosUsuario: (datos) => dispatch(setDatosUsuario(datos)),
+    setTokenUsuario: (token) => dispatch(setTokenUsuario(token)),
+  }
+}
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AuthPage)
+  );

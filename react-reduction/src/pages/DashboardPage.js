@@ -44,6 +44,9 @@ import {
 } from 'reactstrap';
 import { getColor } from 'utils/colors';
 
+//redux
+import { connect } from "react-redux"
+
 const today = new Date();
 const lastWeek = new Date(
   today.getFullYear(),
@@ -406,4 +409,10 @@ class DashboardPage extends React.Component {
     );
   }
 }
-export default DashboardPage;
+
+const mapStateToProps = reducers =>{
+  return{
+    state: reducers.datosUsuarioReducer,
+  }
+}
+export default connect(mapStateToProps)(DashboardPage);

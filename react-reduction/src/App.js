@@ -1,33 +1,23 @@
-import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
-import GAListener from 'components/GAListener';
-import { EmptyLayout, LayoutRoute, MainLayout } from 'components/Layout';
-import PageSpinner from 'components/PageSpinner';
-import AuthPage from 'pages/AuthPage';
+
+//Librerías
 import React, {Fragment, useEffect} from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import './styles/reduction.scss';
+import { Provider } from 'react-redux';
 
+//Rutas
 import { userRoutes, authRoutes } from './routes/allRoutes';
 import Authmiddleware from './routes/Authmiddleware/Authmiddleware';
 
+//Componentes
+import { EmptyLayout, MainLayout } from 'components/Layout';
 
-const AlertPage = React.lazy(() => import('pages/AlertPage'));
-const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
-const BadgePage = React.lazy(() => import('pages/BadgePage'));
-const ButtonGroupPage = React.lazy(() => import('pages/ButtonGroupPage'));
-const ButtonPage = React.lazy(() => import('pages/ButtonPage'));
-const CardPage = React.lazy(() => import('pages/CardPage'));
-const ChartPage = React.lazy(() => import('pages/ChartPage'));
-const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
-const DropdownPage = React.lazy(() => import('pages/DropdownPage'));
-const FormPage = React.lazy(() => import('pages/FormPage'));
-const InputGroupPage = React.lazy(() => import('pages/InputGroupPage'));
-const ModalPage = React.lazy(() => import('pages/ModalPage'));
-const ProgressPage = React.lazy(() => import('pages/ProgressPage'));
-const TablePage = React.lazy(() => import('pages/TablePage'));
-const TypographyPage = React.lazy(() => import('pages/TypographyPage'));
-const WidgetPage = React.lazy(() => import('pages/WidgetPage'));
+//Estilos
+import './styles/reduction.scss';
+
+//Store
+import store from './store/index';
+
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -37,32 +27,35 @@ const getBasename = () => {
 const App=props=>{
   
   return(
+
     <Fragment>
-      <Router>
-        <Switch>
-          {authRoutes.map((route, idx)=>(
-            <Authmiddleware
-                path={route.path}
-                layout={EmptyLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={false}
-            />
-          ))}
+     <Provider store={store}>
+        <Router>
+          <Switch>
+            {authRoutes.map((route, idx)=>(
+              <Authmiddleware
+                  path={route.path}
+                  layout={EmptyLayout}
+                  component={route.component}
+                  key={idx}
+                  isAuthProtected={false}
+              />
+            ))}
 
-          {userRoutes.map((route,idx)=>(
-            <Authmiddleware
-                path={route.path}
-                layout={MainLayout}
-                component={route.component}
-                isAuthProtected={true}
-                exact
+            {userRoutes.map((route,idx)=>(
+              <Authmiddleware
+                  path={route.path}
+                  layout={MainLayout}
+                  component={route.component}
+                  isAuthProtected={true}
+                  exact
 
-            />
-          ))}
+              />
+            ))}
 
-        </Switch>
-      </Router>
+          </Switch>
+        </Router>
+      </Provider>
     </Fragment>
   )
 }

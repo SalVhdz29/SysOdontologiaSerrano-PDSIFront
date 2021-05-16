@@ -44,30 +44,30 @@ const sidebarBackground = {
 };
 
 const navComponents = [
-  { to: '/buttons', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
+  { to: '/ButtonPage', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
   {
-    to: '/button-groups',
+    to: '/ButtonGroupPage',
     name: 'button groups',
     exact: false,
     Icon: MdGroupWork,
   },
-  { to: '/forms', name: 'forms', exact: false, Icon: MdChromeReaderMode },
-  { to: '/input-groups', name: 'input groups', exact: false, Icon: MdViewList },
+  { to: '/FormPage', name: 'forms', exact: false, Icon: MdChromeReaderMode },
+  { to: '/InputGroupPage', name: 'input groups', exact: false, Icon: MdViewList },
   {
-    to: '/dropdowns',
+    to: '/DropdownPage',
     name: 'dropdowns',
     exact: false,
     Icon: MdArrowDropDownCircle,
   },
-  { to: '/badges', name: 'badges', exact: false, Icon: MdStar },
-  { to: '/alerts', name: 'alerts', exact: false, Icon: MdNotificationsActive },
-  { to: '/progress', name: 'progress', exact: false, Icon: MdBrush },
-  { to: '/modals', name: 'modals', exact: false, Icon: MdViewDay },
+  { to: '/BadgePage', name: 'badges', exact: false, Icon: MdStar },
+  { to: '/AlertPage', name: 'alerts', exact: false, Icon: MdNotificationsActive },
+  { to: '/ProgressPage', name: 'progress', exact: false, Icon: MdBrush },
+  { to: '/ModalPage', name: 'modals', exact: false, Icon: MdViewDay },
 ];
 
 const navContents = [
-  { to: '/typography', name: 'typography', exact: false, Icon: MdTextFields },
-  { to: '/tables', name: 'tables', exact: false, Icon: MdBorderAll },
+  { to: '/TypographyPage', name: 'typography', exact: false, Icon: MdTextFields },
+  { to: '/TablePage', name: 'tables', exact: false, Icon: MdBorderAll },
 ];
 
 const pageContents = [
@@ -82,9 +82,9 @@ const pageContents = [
 
 const navItems = [
   { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
-  { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
-  { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
+  { to: '/CardPage', name: 'cards', exact: false, Icon: MdWeb },
+  { to: '/ChartPage', name: 'charts', exact: false, Icon: MdInsertChart },
+  { to: '/WidgetPage', name: 'widgets', exact: false, Icon: MdWidgets },
 ];
 
 const bem = bn.create('sidebar');
