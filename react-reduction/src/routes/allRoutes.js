@@ -19,6 +19,7 @@ import TablePage from 'pages/TablePage';
 import TypographyPage from 'pages/TypographyPage';
 import WidgetPage from 'pages/WidgetPage';
 import BasePage from '../components/BasePage/BasePage';
+import GestionRoles from '../components/GestionRoles/GestionRoles';
 
 const userRoutes =[
     {path:"/", component: DashboardPage},
@@ -38,6 +39,7 @@ const userRoutes =[
     {path:"/TypographyPage", component:TypographyPage},
     {path:"/WidgetPage", component: WidgetPage},
     {path:"/BasePage", component:BasePage },
+    {path:"/GestionRoles", component:GestionRoles },
 ];
 
 const authRoutes=[
