@@ -19,9 +19,14 @@ import TablePage from 'pages/TablePage';
 import TypographyPage from 'pages/TypographyPage';
 import WidgetPage from 'pages/WidgetPage';
 import BasePage from '../components/BasePage/BasePage';
+import TipoRecursos from '../components/TipoRecursos/TipoRecursos';
+
 
 const userRoutes =[
-    {path:"/", component: DashboardPage},
+    {path:"/", component: TipoRecursos},
+    
+    //{path:"/", component: BasePage},
+    //{path:"/", component: DashboardPage},
     {path:"/AlertPage", component: AlertPage},
     {path: "/AuthModalPage", component: AuthModalPage},
     {path: "/BadgePage", component: BadgePage},
@@ -38,6 +43,8 @@ const userRoutes =[
     {path:"/TypographyPage", component:TypographyPage},
     {path:"/WidgetPage", component: WidgetPage},
     {path:"/BasePage", component:BasePage },
+    {path:"/TipoRecursos", component: TipoRecursos},
+
 ];
 
 const authRoutes=[
