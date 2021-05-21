@@ -10,6 +10,7 @@ import{
     Col
 } from 'reactstrap';
 
+
 import{
     AvForm,
     AvField
@@ -33,6 +34,7 @@ const NuevoUsuario = props =>{
 
             <Modal
                 size="lg"
+
                 isOpen={modalOpen}
                 toggle={()=>{
                     setModalOpen()
