@@ -47,7 +47,8 @@ const App=props=>{
                   path={route.path}
                   layout={MainLayout}
                   component={route.component}
-                  isAuthProtected={true}
+                  //isAuthProtected={true}
+                  isAuthProtected={false}
                   exact
 
               />
