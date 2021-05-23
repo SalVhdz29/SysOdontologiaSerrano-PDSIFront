@@ -76,9 +76,17 @@ const GestionUsuarios = props =>{
                     console.log("volvio");
                     _obtenerListaUsuarios(nuevas_filas);
                 break;
+            case 'agregarUsuarioLista':
+                    let nueva_lista =_agregarUsuarioALista(valor);
+                    console.log("lo que devolvio: ", nueva_lista);
+                    _obtenerListaUsuarios(nueva_lista);
+                break;
+            default:
+                break;
         }
     }
 
+    //función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaUsuario=async()=>{
         console.log("detecto el cambio");
 
@@ -122,12 +130,12 @@ const GestionUsuarios = props =>{
             fila.operaciones="Coming soon";
             filas.push(fila);
         })
-        await props.setFilasListaUsuariosActivos(filas);
+         props.setFilasListaUsuariosActivos(filas);
 
 
     }
 
-    //funcion que simula los cambios de estado en los usuarios en el servidor.
+    //funcion que simula los cambios de estado en los usuarios en el servidor. -temporal.
     const _cambiarActivoJsonUsuarios=(id_usuario)=>{
         console.log("vino al cambio JSOn");
         let nueva_lista_usuarios=[];
@@ -158,6 +166,35 @@ const GestionUsuarios = props =>{
         /* comente las lineas donde clonaba el objeto porque no estoy modificando el store invalidamente, solo el JSOn de prueba. */
     }
 
+    //función que simula el añadir el usuario obtenido para anexarlo al JSON - temporal.
+    const _agregarUsuarioALista = (nuevo_usuario)=>{
+        console.log("el uevo ", nuevo_usuario);
+
+        let { listaUsuarios } = props.state;
+
+        let n_lista = [];
+
+        listaUsuarios.map(usuario_it =>{
+            let usuario = {...usuario_it};
+            n_lista.push(usuario);
+
+        });
+
+        let usuario ={};
+        usuario.id_usuario = listaUsuarios.length + 1;
+        usuario.id_f_empleado = listaUsuarios.length + 1;
+        usuario.nombre_empleado = "empleado x ";
+        usuario.nombre_usuario = nuevo_usuario.nombre_usuario;
+        usuario.correo_electronico = nuevo_usuario.correo_electronico;
+        usuario.fecha_creacion = "hoy";
+        usuario.usuario_activo = nuevo_usuario.usuario_activo;
+
+        n_lista.push(usuario);
+        console.log("la lista antes de ingresar ", n_lista);
+      return n_lista;
+
+    };
+
     return(
         <React.Fragment>
         <div className="page-content">
@@ -168,7 +205,7 @@ const GestionUsuarios = props =>{
 
                   <Row>
                     <Col md={4} xs={12}>
-                        <NuevoUsuario />
+                        <NuevoUsuario cambioDatos={_cambiosEnUsuarios} />
                     </Col>
                   </Row>
                   <Row>
