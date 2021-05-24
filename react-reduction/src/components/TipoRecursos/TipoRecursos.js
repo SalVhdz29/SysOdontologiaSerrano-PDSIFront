@@ -21,6 +21,13 @@ import Cookies from 'js-cookie';
 import DataTable from '../DataTable/DataTable';
 
 
+//columnas -tabla TipoRecursos
+import {columnasTabla} from './Json/columnasTablaTipoRecursos';
+
+//jsons de prueba
+import datosTabla from './Json/TipoRecursos.json';
+
+
 
 
 
@@ -44,43 +51,11 @@ const TipoRecursos = props =>{
         await setTokenU(token);
     }
     
-    const datosTabla=[
-        {
-            "id_tipo_recurso":1,
-            "nombre_tipo_recurso": "Modulo de Seguridad",
-            "descripcion_tipo_recurso": "Modulo encargado de la Seguridad",
-            "estado_tipo_recurso":1,
-        },
-        {
-          "id_tipo_recurso":2,
-          "nombre_tipo_recurso": "Modulo de Expediente",
-          "descripcion_tipo_recurso": "Modulo encargado de los Expedientes de Pacientes",
-          "estado_tipo_recurso":0,
-      }
-    ];
 
-    const columnasTabla=[
-        {
-          text: "id.",
-          dataField: "id_tipo_recurso",
-        },
-        {
-          text: "Tipo Recurso",
-          dataField: "nombre_tipo_recurso",
-        },
-        {
-          text: "Descripción",
-          dataField: "descripcion_tipo_recurso",
-        },
-        {
-          text: "Estado",
-          dataField: "estado_tipo_recurso",
-        },
-        {
-          text: "Operaciones",
-          dataField: "nombre_campo",
-        },
-      ];
+
+
+
+      
     return(
         <React.Fragment>
         <div className="page-content">
