@@ -1,7 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import {
    AvForm,
-   AvInput
+   AvInput,
+   AvCheckboxGroup,
+   AvCheckbox
 } from 'availity-reactstrap-validation';
 
 import{
@@ -14,9 +16,30 @@ import{
     Col
 } from 'reactstrap';
 
+//Jsons
+import listRolesJson from './Json/listRoles.json';
+
 const EscogerRoles = props =>{
 
     const [modalRolOpen, setModalRolOpen] = useState(false);
+    const [ listaRoles, setListaRoles ]= useState([]);
+
+    const checkBoxStyle={
+        margin:'0px,3px',
+    }
+
+    useEffect(()=>{
+        _obtenerRoles();
+    },[]);
+
+    const _obtenerRoles = async ()=> {
+        let rolesList = await listRolesJson;
+         setListaRoles(rolesList);
+    }
+
+    const _cambioCheckbox=(e,v)=>{
+        console.log(v);
+    }
 
     return(
         <Fragment>
@@ -33,7 +56,8 @@ const EscogerRoles = props =>{
             </FormGroup>
 
             <Modal
-                size="lg"
+                size="md"
+                className="modal-md primary"
 
                 isOpen={modalRolOpen}
                 toggle={()=>{
@@ -58,6 +82,42 @@ const EscogerRoles = props =>{
                 </div>
                 <div className="modal-body">
                         <Container fluid={true}>
+                            <Row>                                
+                                <Label for="checkboxExample">Listado de roles</Label>
+                            </Row>
+                            <Row>
+                                <Col md={12}>
+                                <AvCheckboxGroup  name="rolesEscogidosCbx" required>
+                                    <Row>
+                                    {
+                                        listaRoles.length != 0?
+                                        (   
+                                           
+                                                    listaRoles.map((rol,key) =>{
+                                                        return(
+                                                        <Col md={6} style={checkBoxStyle} key={key}>
+                                                        <AvCheckbox 
+                                                            label={rol.nombre_usuario} 
+                                                            value={rol.id_usuario} 
+                                                            
+                                                            key={key}
+                                                            onChange={_cambioCheckbox}
+                                                            className="checkbox_animated "
+                                                            // 
+                                                        />
+                                                        </Col>
+                                                        )
+                                                    })
+                                        )   
+                                        :
+                                        undefined
+                                }
+                                    
+                                </Row>
+                                </AvCheckboxGroup>
+                                </Col>
+             
+                            </Row>
                         </Container>
                 </div>
                 <div className="modal-footer">
