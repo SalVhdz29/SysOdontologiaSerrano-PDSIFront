@@ -27,26 +27,43 @@ import EscogerRoles from '../EscogerRoles/EscogerRoles';
 const NuevoUsuario = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
-    const [ roles, setRoles ] = useState([]);
+
+    const [ rolesAsignados, setRolesAsignados ] = useState([]);
+
+    const [ usuarioActivo, setUsuarioActivo ] = useState(false);
+
+
 
     const _registrarUsuario=async(valor_inputs)=>{
             console.log("el valor obtenido", valor_inputs);
+
+            if(rolesAsignados.length!=0)
+            {
+
+           
 
             let { nombreUsuarioIpx,
                   correoElectronicoIpx,
                   contraseniaIpx} = valor_inputs;
 
+            
+
             let valor = {};
             valor.nombre_usuario = nombreUsuarioIpx;
             valor.correo_electronico =correoElectronicoIpx;
             valor.contrasenia = contraseniaIpx;
-            valor.usuario_activo = 1;
+            valor.usuario_activo = usuarioActivo;
 
         let envio={valor};
         envio.tipo="agregarUsuarioLista";
 
         await props.cambioDatos(envio);
+        _limpiarFormulario();
         setModalOpen(false);
+        }
+        else{
+            document.getElementById("errorEscogerRoles").innerHTML="Debe escoger al menos un rol para este usuario.";
+        }
  
 
     }
@@ -60,6 +77,29 @@ const NuevoUsuario = props =>{
             return "no dice palabra";
         }
     }
+
+    const _asignarRoles = (roles) =>{
+
+        console.log("lo que recibe: ",roles);
+        
+        setRolesAsignados(roles);
+        if(roles.length!=0)
+        {
+            document.getElementById("errorEscogerRoles").innerHTML="";
+        }
+    }
+
+    const _cambiarEstadoActivo = ()=>
+    {
+        setUsuarioActivo(!usuarioActivo);
+    }
+
+    const _limpiarFormulario =()=>{
+        setRolesAsignados([]);
+    }
+
+
+
 
     return(
         <Fragment>
@@ -188,15 +228,15 @@ const NuevoUsuario = props =>{
                                             <input
                                             type="checkbox"
                                             className="custom-control-input"
-                                            id={props.id_usuario+"switchActiva"}
-                                            name={props.id_usuario+"switchActiva"}
-                                            checked={props.usuario_activo}
-                                            onClick={e=>{console.log("dsd")}}
+                                            id={"nuevoUsuarioSwitch"}
+                                            name={"nuevoUsuarioSwitch"}
+                                            checked={usuarioActivo}
+                                            onClick={_cambiarEstadoActivo}
 
                                             />
                                             <label
                                             className="custom-control-label"
-                                            htmlFor={props.id_usuario+"switchActiva"}
+                                            htmlFor={"nuevoUsuarioSwitch"}
                                             >
                                 
                                             </label>
@@ -205,15 +245,22 @@ const NuevoUsuario = props =>{
 
                                   {/* fin switch */}
                                     <br /><br />
-                                   <EscogerRoles />
+                                   <EscogerRoles 
+                                        submitRoles={_asignarRoles}
+                                        rolesAsignados={rolesAsignados}
+                                   />
+                                   <p id="errorEscogerRoles" style={{color:'red'}}></p>
                                     </Col>
                                 </Row>
 
                                 <Row>
                                     <Col md={12}>
+                                        { rolesAsignados.length!=0?
                                         <div id="divTablaRoles">
-                                            <DataTable datosTabla={roles} columnasTabla={columnasTabla} />
-                                        </div>
+                                            <DataTable datosTabla={rolesAsignados} columnasTabla={columnasTabla} />
+                                        </div>:
+                                        undefined
+                                        }
                                     </Col>
                                 </Row>
                            

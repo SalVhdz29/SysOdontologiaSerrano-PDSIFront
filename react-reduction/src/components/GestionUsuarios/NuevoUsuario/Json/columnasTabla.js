@@ -1,6 +1,11 @@
 export const columnasTabla = [
+   
     {
-        text:"Roles",
-        dataField:"rol"
+        text:"id",
+        dataField:"id_usuario"
+    },
+    {
+        text:"Rol",
+        dataField:"nombre_usuario"
     }
 ]
