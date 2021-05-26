@@ -19,11 +19,13 @@ import TablePage from 'pages/TablePage';
 import TypographyPage from 'pages/TypographyPage';
 import WidgetPage from 'pages/WidgetPage';
 import BasePage from '../components/BasePage/BasePage';
-import TipoRecursos from '../components/TipoRecursos/TipoRecursos';
+import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
+import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
+
 
 
 const userRoutes =[
-    {path:"/", component: TipoRecursos},
+    {path:"/", component: TipoRecurso},
     
     //{path:"/", component: BasePage},
     //{path:"/", component: DashboardPage},
@@ -43,7 +45,7 @@ const userRoutes =[
     {path:"/TypographyPage", component:TypographyPage},
     {path:"/WidgetPage", component: WidgetPage},
     {path:"/BasePage", component:BasePage },
-    {path:"/TipoRecursos", component: TipoRecursos},
+    {path:"/TipoRecurso", component: TipoRecurso},
 
 ];
 

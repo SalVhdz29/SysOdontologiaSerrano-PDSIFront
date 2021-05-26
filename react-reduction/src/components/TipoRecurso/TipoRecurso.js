@@ -22,16 +22,17 @@ import DataTable from '../DataTable/DataTable';
 
 
 //columnas -tabla TipoRecursos
-import {columnasTabla} from './Json/columnasTablaTipoRecursos';
+import {columnasTabla} from './Json/columnasTablaTipoRecurso';
 
 //jsons de prueba
-import datosTabla from './Json/TipoRecursos.json';
+import datosTabla from './Json/TipoRecurso.json';
+import NuevoTipoRecurso from "./NuevoTipoRecurso/NuevoTipoRecurso";
 
 
 
 
 
-const TipoRecursos = props =>{
+const TipoRecurso = props =>{
 
         const [tokenU, setTokenU] = useState(null);
     useEffect(()=>{
@@ -68,8 +69,8 @@ const TipoRecursos = props =>{
         <Row>
           <Col md="3" sm="3" xs="3">
 
-            <Button>Crear Nuevo Tipo Recurso</Button>
         
+            <NuevoTipoRecurso />
           </Col>
           </Row>
 
@@ -82,4 +83,4 @@ const TipoRecursos = props =>{
     )
 }
 
-export default TipoRecursos;
+export default TipoRecurso;

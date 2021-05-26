@@ -1,19 +1,19 @@
 export const columnasTabla=[
     {
       text: "id.",
-      dataField: "id_tipo_recurso",
+      dataField: "tipo_recurso_id",
     },
     {
       text: "Tipo Recurso",
-      dataField: "nombre_tipo_recurso",
+      dataField: "tipo_recurso_nombre",
     },
     {
       text: "Descripción",
-      dataField: "descripcion_tipo_recurso",
+      dataField: "tipo_recurso_descripcion",
     },
     {
       text: "Estado",
-      dataField: "estado_tipo_recurso",
+      dataField: "tipo_recurso_estado",
     },
     {
       text: "Operaciones",
