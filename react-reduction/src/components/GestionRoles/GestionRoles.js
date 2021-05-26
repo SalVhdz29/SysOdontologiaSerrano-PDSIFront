@@ -12,57 +12,54 @@ import {
 } from "reactstrap"
 
 import Cookies from 'js-cookie';
+
+//Componentes
 import DataTable from '../DataTable/DataTable';
+//import SwitchRolActivo from './SwitchRolActivo/SwitchRolActivo';
+
+//Json
+import ListRoles from './Json/ListRoles.json';
+
+//Columnas de tabla de roles
+import {ColumnasTablaRol} from './Json/ColumnasTablaRol';
 
 const GestionRoles = props =>{
-        const [tokenU, setTokenU] = useState(null);
+        const [listaRoles, setListaRoles] = useState();
+        const [filasListaRoles, setFilaListaRoles] = useState();
+/*
     useEffect(()=>{
-        //obteniendo el token almacenado en las cookies 
-       _obtener_token();
+       _obtener_listaRoles(ListRoles);
       
     },[])
 
     useEffect(()=>{
-        //effect que escucha los cambios del estado: tokenU
-        console.log(tokenU);
+        console.log("Aqui esta");
+        setListaRoles(props.state.listaRoles);
+       // let result = _crearFilasListaRol();
 
-    },[tokenU])
+    },[props.state.listaRoles])
 
-    const _obtener_token=async()=>{
-        let token = Cookies.get('token');
-        await setTokenU(token);
+    useEffect(()=>{
+      console.log("Valor de filas detectadas", props.state.filasListaRoles);
+      setListaRoles(props.state.listaRoles);
+      let result = _crearFilasListaRol();
+
+  },[props.state.listaRoles])
+
+    const _obtener_listaRoles=async(lista)=>{
+      //Simulando llamada a servicio
+      console.log("Valor del Json en el llamado: ", lista);
+        await props.setListaRoles(lista);
     }
-    
-    const datosTabla=[
-        {
-            "id_expediente":1,
-            "nombre_paciente": "Salvador",
-            "nombre_campo": "el tercer campo",
-        }
-    ];
-    const columnasTabla=[
-        {
-          text: "No.",
-          dataField: "id_expediente",
-        },
-        {
-          text: "Paciente",
-          dataField: "nombre_paciente",
-        },
-        {
-          text: "campo 3",
-          dataField: "nombre_campo",
-        },
-      
-      ];
+   */
     return(
         <React.Fragment>
         <div className="page-content">
         <Container fluid={true}>
         <Card>
                 <CardBody>
-                  <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i>  </i>  titulo Página </h4><br/>
-                  <DataTable datosTabla={datosTabla} columnasTabla={columnasTabla}/>
+                  <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i>  </i>  Gestion de Roles </h4><br/>
+                  <DataTable datosTabla={ListRoles} columnasTabla={ColumnasTablaRol}/>
                 </CardBody>
         </Card>
         </Container>
