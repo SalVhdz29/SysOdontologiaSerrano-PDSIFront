@@ -1,6 +1,6 @@
 export const columnasTabla = [
     {
-        text:"Roles",
-        dataField:"rol"
+        text:"Recursos Asociados",
+        dataField:"recurso"
     }
 ]

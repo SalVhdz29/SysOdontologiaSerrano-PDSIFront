@@ -22,12 +22,12 @@ import { columnasTabla } from './Json/columnasTabla';
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
-//import EscogerRoles from '../EscogerRoles/EscogerRoles';
+import EscogerRecurso from '../EscogerRecurso/EscogerRecurso';
 
 const NuevoTipoRecurso = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
-    const [ roles, setRoles ] = useState([]);
+    const [ Recurso, setRecurso ] = useState([]);
 
     const _registrarTipoRecurso=async(valor_inputs)=>{
             console.log("el valor obtenido", valor_inputs);
@@ -66,7 +66,7 @@ const NuevoTipoRecurso = props =>{
             {/* <FormGroup className="float-right"> */}
             <FormGroup>
                 <Button 
-                    className="btn btn-success"
+                    className="btn btn-dark"
                     onClick={()=>{setModalOpen(true)}}
 
                 >
@@ -85,7 +85,7 @@ const NuevoTipoRecurso = props =>{
             >
 
                 <div className="modal-header">
-                    <h4 className="modal-title mt-0">Crear nuevo Tipo Recurso</h4>
+                    <h4 className="modal-title mt-0"><b>Crear nuevo Tipo Recurso</b></h4>
                     <button
                         type="button"
                         onClick={() => {
@@ -128,6 +128,41 @@ const NuevoTipoRecurso = props =>{
      
                                     <Col md={6}>
                                     {/* Switch */}
+                                    <Label><b>Asignación de Recursos</b></Label>
+                                    <center>
+                                    <EscogerRecurso
+                                    
+                                   />
+                                    </center>
+
+                                  {/* fin switch */}
+                                    <br /><br />
+                                    
+                                    </Col>
+                                </Row>
+                                <Row>
+                                <Col md={6}>
+                                    <Label><b>Ingrese la Descripcion del Tipo Recurso</b></Label>
+                                    <br />
+                                    
+                                            <AvField
+                                                //id="correoElectronicoIpx"
+                                                id="descripcionTipoRecursoIpx"
+                                                name="descripcionTipoRecursoIpx"
+                                                // label="Ingrese Correo Electrónico"
+                                                value=""
+                                                className="form-control"
+                                                placeholder="ej: Conjunto de Roles para Modulo de Seguridad"
+                                                type="textarea"    
+                                                style={{ height: 120 }}                                      
+                                                validate={{
+                                                required: { value: true, errorMessage: "Obligatorio.Debe escribir una descripción del Tipo de Recurso"},
+
+                                                }}
+                                            />
+                                    </Col>
+                                    <Col md={6}>
+                                    {/* Switch */}
                                     <Label><b>Estado de Tipo Recurso</b></Label>
                                     <center>
                                         <div
@@ -157,34 +192,14 @@ const NuevoTipoRecurso = props =>{
                                     <br /><br />
                                     
                                     </Col>
-                                </Row>
-                                <Row>
-                                <Col md={6}>
-                                    <Label><b>Ingrese la Descripcion del Tipo Recurso</b></Label>
-                                    <br />
-                                    
-                                            <AvField
-                                                //id="correoElectronicoIpx"
-                                                id="descripcionTipoRecursoIpx"
-                                                name="descripcionTipoRecursoIpx"
-                                                // label="Ingrese Correo Electrónico"
-                                                value=""
-                                                className="form-control"
-                                                placeholder="ej: Conjunto de Roles para Modulo de Seguridad"
-                                                type="textarea"    
-                                                style={{ height: 120 }}                                      
-                                                validate={{
-                                                required: { value: true, errorMessage: "Obligatorio.Debe escribir una descripción del Tipo de Recurso"},
 
-                                                }}
-                                            />
-                                    </Col>
+
                                 </Row>
 
                                 <Row>
                                     <Col md={12}>
                                         <div id="divTablaRoles">
-                                            <DataTable datosTabla={roles} columnasTabla={columnasTabla} />
+                                            <DataTable datosTabla={Recurso} columnasTabla={columnasTabla} />
                                         </div>
                                     </Col>
                                 </Row>
@@ -205,6 +220,7 @@ const NuevoTipoRecurso = props =>{
                         </Col>
                         <Col>
                             <div className="mt-3">
+                                
                             <Button className="btn btn-danger btn-md w-md " onClick={()=>{setModalOpen(false)}}>Cerrar</Button>
                             </div>
                         </Col>

@@ -64,7 +64,7 @@ const TipoRecurso = props =>{
         <Card>
                 <CardBody>
                   <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i></i> 
-                    Gestión de Tipos de Recursos </h4>
+                  <b>Gestión de Tipos de Recursos </b></h4>
                     <br/>
         <Row>
           <Col md="3" sm="3" xs="3">
