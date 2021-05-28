@@ -29,6 +29,8 @@ const NuevoTipoRecurso = props =>{
     const [modalOpen, setModalOpen ]= useState(false);
     const [ Recurso, setRecurso ] = useState([]);
 
+    const [ recursoAsignados, setRecursoAsignados ] = useState([]);
+
     const _registrarTipoRecurso=async(valor_inputs)=>{
             console.log("el valor obtenido", valor_inputs);
 
@@ -59,6 +61,18 @@ const NuevoTipoRecurso = props =>{
         else{
             return "no dice palabra";
         }
+    }
+
+
+    const _asignarRecurso = (recurso) =>{
+
+        console.log("lo que recibe: ",recurso);
+        
+        setRecursoAsignados(recurso);
+       /* if(recurso.length!=0)
+        {
+            document.getElementById("errorEscogerRecurso").innerHTML="";
+        }*/
     }
 
     return(
@@ -131,7 +145,8 @@ const NuevoTipoRecurso = props =>{
                                     <Label><b>Asignación de Recursos</b></Label>
                                     <center>
                                     <EscogerRecurso
-                                    
+                                    submitRecurso={_asignarRecurso}
+                                    recursoAsignados={recursoAsignados}
                                    />
                                     </center>
 
@@ -198,7 +213,7 @@ const NuevoTipoRecurso = props =>{
 
                                 <Row>
                                     <Col md={12}>
-                                        <div id="divTablaRoles">
+                                        <div id="divTablaRecursos">
                                             <DataTable datosTabla={Recurso} columnasTabla={columnasTabla} />
                                         </div>
                                     </Col>

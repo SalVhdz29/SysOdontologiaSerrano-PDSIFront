@@ -24,6 +24,9 @@ const EscogerRecurso = props =>{
     const [modalRecursoOpen, setModalRecursoOpen] = useState(false);
     const [ listaRecurso, setListaRecurso ]= useState([]);
 
+    const [recurso, setRecurso] = useState([]);
+
+
     const checkBoxStyle={
         margin:'0px,3px',
     }
@@ -32,14 +35,100 @@ const EscogerRecurso = props =>{
         _obtenerRecurso();
     },[]);
 
+
+    useEffect(()=>{
+        if(listaRecurso.length != 0)
+        {
+            _setearRecurso();
+        }
+    },[props.recursoAsignados, listaRecurso])
+
     const _obtenerRecurso = async ()=> {
         let RecursoList = await listRecursoJson;
          setListaRecurso(RecursoList);
     }
 
-    const _cambioCheckbox=(e,v)=>{
-        console.log(v);
+    const _recursoSubmit=()=>{
+        // console.log(v);
+        let recurso_marcados=[];
+
+  
+
+        recurso_marcados = recurso.filter((recurso)=> recurso.marcado == true );
+
+        props.submitRecurso(recurso_marcados)
+        setModalRecursoOpen(false);
     }
+
+
+
+
+
+    const _setearRecurso = ()=>{
+        let recurso_n=[]
+        listaRecurso.map(recurso_it=>{
+            
+            let recurso={...recurso_it};
+            let marcado=false;
+            props.recursoAsignados.map(recurso_asig_it =>{
+                if(recurso_asig_it.id_recurso == recurso.id_recurso)
+                {
+                    marcado = true;
+                }
+            })
+
+            recurso.marcado = marcado;
+            console.log("recurso >> ",recurso)
+            recurso_n.push(recurso);
+        })
+
+        setRecurso(recurso_n);
+
+    }
+
+
+
+    const _cambioCheckbox=(event)=>{
+        console.log(event);
+        let {value}=event.target;
+        let recurso_nuevos=[];
+
+        console.log(value);
+        recurso.map(recurso_it=>{
+            let recurso={...recurso_it};
+            console.log("recursoit>> ", recurso);
+            if(recurso.id_recurso == value)
+            {   
+               let valor_actual= recurso_it.marcado;
+               console.log("el valor actual: ", valor_actual);
+               recurso.marcado=!valor_actual;
+               
+            }
+           
+            recurso_nuevos.push(recurso)
+        })
+        setRecurso(recurso_nuevos)
+
+
+    }
+
+
+    const _verificarCheckbox=(value, ctx, input, cb)=>{
+        console.log("value: ", value);
+
+        if(value.length!=0)
+        {
+            return true;
+        }
+        else
+        {
+            return "Debe escoger al menos un Recurso para el Nuevo Tipo Rol.";
+        }
+    }
+
+
+
+
 
     return(
         <Fragment>
@@ -87,7 +176,10 @@ const EscogerRecurso = props =>{
                             </Row>
                             <Row>
                                 <Col md={12}>
-                                <AvCheckboxGroup  name="RecursoEscogidosCbx" required>
+                                <AvCheckboxGroup  name="RecursoEscogidosCbx"         
+                                validate={{ required: { value: true, errorMessage: "Debe elegir al menos un Recurso."},
+                                            //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
+                                                              }}>
                                     <Row>
                                     {
                                         listaRecurso.length != 0?
@@ -102,18 +194,18 @@ const EscogerRecurso = props =>{
                                                             value={recurso.id_recurso}                                                             
                                                             key={key}
                                                             onChange={_cambioCheckbox}
-                                                            className="checkbox_animated "
+                                                            className="checkbox_animated"
+                                                    
                                                             // 
                                                         />
                                                         </Col>
-                                                        <Col>
+                                                        <Col>                                                        
                                                        <label>{recurso.descripcion_recurso} </label>
                                                         </Col>
                                                         <Col>
                                                        <label>{recurso.estado_recurso} </label>
                                                         </Col>
-                                                        </Row>
-                                                        
+                                                        </Row>                                                        
                                                         </Col>
                                                         
                                                         )
@@ -137,9 +229,10 @@ const EscogerRecurso = props =>{
                         { <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
-                              type="submit"
+                              onClick={_recursoSubmit}
+                              
                             >
-                             Guardar
+                             Asignar
                             </Button>
                           </div>  }
                         </Col>
