@@ -187,16 +187,16 @@ const NuevoTipoRecurso = props =>{
                                             <input
                                             type="checkbox"
                                             className="custom-control-input"
-                                            id={props.id_usuario+"switchActiva"}
-                                            name={props.id_usuario+"switchActiva"}
-                                            checked={props.usuario_activo}
+                                            id={props.id_TipoRecurso+"switchActiva"}
+                                            name={props.id_TipoRecurso+"switchActiva"}
+                                            checked={props.TipoRecurso_activo}
                                             onClick={e=>{console.log("dsd")}}
                                             style={{ height: 1.25 }}                                      
 
                                             />
                                             <label
                                             className="custom-control-label"
-                                            htmlFor={props.id_usuario+"switchActiva"}
+                                            htmlFor={props.id_TipoRecurso+"switchActiva"}
                                             >
                                 
                                             </label>
