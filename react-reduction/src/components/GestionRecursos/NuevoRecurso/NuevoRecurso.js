@@ -13,9 +13,9 @@ import {
 } from "reactstrap"
 
 import Cookies from 'js-cookie';
-import DataTable from '../DataTable/DataTable';
+import DataTable from '../../DataTable/DataTable';
 
-const infoRecursos = props =>{
+const NuevoRecurso = props =>{
         const [tokenU, setTokenU] = useState(null);
     useEffect(()=>{
         //obteniendo el token almacenado en las cookies 
@@ -33,7 +33,7 @@ const infoRecursos = props =>{
         let token = Cookies.get('token');
         await setTokenU(token);
     }
-    
+
     const datosTabla=[
         
         {
@@ -41,36 +41,14 @@ const infoRecursos = props =>{
             "nombre_recurso": "Salvador",
             "descripcion_recurso": "Recurso de Salvador",
         },
-        {
-          "id_recurso": 2,
-          "nombre_recurso": "Daniel",
-          "descripcion_recurso": "Recurso de Daniel",
-      },
+
     ];
-    
     const columnasTabla=[
         {
           text: "ID Rec.",
           dataField: "id_recurso",
         },
-        {
-          text: "Recurso",
-          dataField: "nombre_recurso",
-        },
-        {
-          text: "Descripcion",
-          dataField: "descripcion_recurso",
-        },
-        {
-          text: "Activo",
-          dataField: "",
-        },
-        {
-          text: "Operaciones",
-          dataField: "",
-        },
-      
-      ];
+    ];
     return(
         <React.Fragment>
         <div className="page-content">
@@ -91,4 +69,5 @@ const infoRecursos = props =>{
     )
 }
 
-export default infoRecursos;
+
+export default NuevoRecurso;
