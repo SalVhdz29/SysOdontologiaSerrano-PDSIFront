@@ -20,6 +20,10 @@ import {
 import Cookies from 'js-cookie';
 import DataTable from '../DataTable/DataTable';
 
+import datosTabla from './Json/listExpediente.json';
+import {columnasTabla} from './Json/columnasExpediente.js';
+import nuevoExpediente from './nuevoExpediente.js';
+
 
 
 
@@ -44,51 +48,6 @@ const Expediente = props =>{
         await setTokenU(token);
     }
 
-    const datosTabla=[
-        {
-            "id_expediente":1,
-            "nombre_paciente": "Wilbert Menjivar",
-            "sexo": "Masculino",
-            "saldo":1000.00,
-            "telefono":"7654-3211",
-            "ultima_fecha":"16-05-2021",
-        },
-        {
-            "id_expediente":2,
-            "nombre_paciente": "Ulises Sanchez",
-            "sexo": "Masculino",
-            "saldo":349.50,
-            "telefono":"7754-9941",
-            "ultima_fecha":"05-05-2021",
-        },
-    ];
-
-    const columnasTabla=[
-        {
-          text: "ID Expediente",
-          dataField: "id_expediente",
-        },
-        {
-          text: "Paciente",
-          dataField: "nombre_paciente",
-        },
-        {
-          text: "Sexo",
-          dataField: "sexo",
-        },
-        {
-          text: "Saldo",
-          dataField: "saldo",
-        },
-        {
-          text: "N° de contacto",
-          dataField: "telefono",
-        },
-        {
-          text: "Ultima Cita",
-          dataField: "ultima_fecha",
-        },
-      ];
     return(
         <React.Fragment>
         <div className="page-content">
@@ -101,7 +60,7 @@ const Expediente = props =>{
         <Row>
           <Col md="3" sm="3" xs="3">
 
-            <Button>Crear Nuevo Expediente</Button>
+            <a href = "/nuevoExpediente"><Button>Nuevo Expediente</Button></a>
 
           </Col>
           </Row>
