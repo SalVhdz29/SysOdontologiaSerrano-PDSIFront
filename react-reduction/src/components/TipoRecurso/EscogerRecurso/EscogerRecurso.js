@@ -205,7 +205,17 @@ const EscogerRecurso = props =>{
                                                         <Col>
                                                        <label>{recurso.estado_recurso} </label>
                                                         </Col>
-                                                        </Row>                                                        
+                                                        </Row>         
+
+                                                            <Row>
+                                                                <Col>
+                                                                
+                                                                
+
+                                                                </Col>
+                                                            </Row>
+
+
                                                         </Col>
                                                         
                                                         )

@@ -214,7 +214,7 @@ const NuevoTipoRecurso = props =>{
                                 <Row>
                                     <Col md={12}>
                                         <div id="divTablaRecursos">
-                                            <DataTable datosTabla={Recurso} columnasTabla={columnasTabla} />
+                                            <DataTable datosTabla={recursoAsignados} columnasTabla={columnasTabla} />
                                         </div>
                                     </Col>
                                 </Row>
