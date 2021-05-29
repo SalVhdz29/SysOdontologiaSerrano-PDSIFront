@@ -17,8 +17,11 @@ import{
     AvField
 } from 'availity-reactstrap-validation'
 
+import Select from 'react-select';
+
 //Jsons
 import { columnasTabla } from './Json/columnasTabla';
+
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
@@ -32,38 +35,130 @@ const NuevoUsuario = props =>{
 
     const [ usuarioActivo, setUsuarioActivo ] = useState(false);
 
+    const [optionsEmpleados, setOptionsEmpleados ] = useState([]);
 
+    const [ empleadoAsignado, setEmpleadoAsignado ]= useState({label:"Seleccione un empleado", value:0});
+
+    const [errorEmpleado, setErrorEmpleado ]= useState("");
+    const [errorRoles, setErrorRoles] = useState("");
+
+    const [ defaultValues, setDefaultValues ]= useState({});
+
+
+    useEffect(()=>{
+        
+        if(props.isReadOnly)
+        {
+            _setDefaultValue();
+        }
+    },[props.isReadOnly])
+
+    useEffect(()=>{
+        
+        if(props.isEditable)
+        {
+            _setDefaultValue();
+        }
+    },[props.isEditable])
+
+
+    useEffect(()=>{
+        if(props.listaEmpleados != undefined && props.listaEmpleados != null)
+        {
+            _formarOptionsEmpleados();
+        }
+        
+    },[props.listaEmpleados])
+
+
+    const _setDefaultValue=()=>{
+        let nombreUsuarioIpx="";
+        let correoElectronicoIpx = "";
+        let empleado_asignado={};
+        let {nombreUsuario, correoElectronico, usuarioActivo, empleado, roles} = props.defaultValue;
+        console.log("default Value", props.defaultValue)
+        if(nombreUsuario){
+            nombreUsuarioIpx = nombreUsuario;
+        }
+        if(correoElectronico)
+        {
+            correoElectronicoIpx = correoElectronico;
+        }
+        if(usuarioActivo)
+        {
+            setUsuarioActivo(usuarioActivo);
+        }
+        if(empleado)
+        {
+            empleadoAsignado.label = empleado.label;
+            empleadoAsignado.value= empleado.value;
+            setOptionsEmpleados([empleadoAsignado]);
+            setEmpleadoAsignado(empleadoAsignado);
+            
+        }
+
+        if(roles)
+        {
+            console.log("vine: ",roles);
+            roles.map(rol=>{
+                rol.marcado=true;
+
+            })
+            setRolesAsignados(roles);
+        }
+
+        setDefaultValues({nombreUsuarioIpx, correoElectronicoIpx});
+    }
 
     const _registrarUsuario=async(valor_inputs)=>{
             console.log("el valor obtenido", valor_inputs);
-
-            if(rolesAsignados.length!=0)
+            if(empleadoAsignado.value != 0 && empleadoAsignado.value!="0")
             {
-
-           
-
-            let { nombreUsuarioIpx,
-                  correoElectronicoIpx,
-                  contraseniaIpx} = valor_inputs;
+                if(rolesAsignados.length!=0)
+                {
 
             
 
-            let valor = {};
-            valor.nombre_usuario = nombreUsuarioIpx;
-            valor.correo_electronico =correoElectronicoIpx;
-            valor.contrasenia = contraseniaIpx;
-            valor.usuario_activo = usuarioActivo;
+                        let { nombreUsuarioIpx,
+                            correoElectronicoIpx,
+                            contraseniaIpx} = valor_inputs;
 
-        let envio={valor};
-        envio.tipo="agregarUsuarioLista";
+                        
+                        console.log("los roles", rolesAsignados);
+                        let valor = {};
+                        valor.nombre_usuario = nombreUsuarioIpx;
+                        valor.correo_electronico =correoElectronicoIpx;
+                        valor.contrasenia = contraseniaIpx;
+                        valor.usuario_activo = usuarioActivo;
+                        valor.roles=rolesAsignados;
+                        valor.id_f_empleado = empleadoAsignado.value;
+                        valor.nombre_empleado = empleadoAsignado.label;
+                        let tipo="";
+                        if(props.isEditable)
+                        {
+                            valor.id_usuario = props.defaultValue.idUsuario;
+                            tipo="editarUsuarioLista";
+                        }
+                        else
+                        {
+                            tipo="agregarUsuarioLista";
+                        }
 
-        await props.cambioDatos(envio);
-        _limpiarFormulario();
-        setModalOpen(false);
-        }
-        else{
-            document.getElementById("errorEscogerRoles").innerHTML="Debe escoger al menos un rol para este usuario.";
-        }
+                    let envio={tipo,valor};
+                   
+
+                    await props.cambioDatos(envio);
+                    _limpiarFormulario();
+                    setModalOpen(false);
+                }
+                else{
+                    setErrorRoles("Debe escoger al menos un rol para este usuario.");
+                }
+            }
+            else{
+                setErrorEmpleado("Seleccione un empleado para este usuario.");
+            }
+      
  
 
     }
@@ -85,13 +180,42 @@ const NuevoUsuario = props =>{
         setRolesAsignados(roles);
         if(roles.length!=0)
         {
-            document.getElementById("errorEscogerRoles").innerHTML="";
+            setErrorRoles("");
         }
     }
 
     const _cambiarEstadoActivo = ()=>
     {
         setUsuarioActivo(!usuarioActivo);
+    }
+
+    const _formarOptionsEmpleados = ()=>{
+
+        let options_empleados=[];
+        let default_option={};
+    
+        default_option={label:"Seleccione un empleado", value:0};
+        
+    
+        options_empleados.push(default_option);
+        props.listaEmpleados.map(empleado_it =>{
+            let option={
+                label: empleado_it.nombre_empleado,
+                value: empleado_it.id_empleado
+            };
+
+            options_empleados.push(option);
+        })
+       
+        setOptionsEmpleados(options_empleados);
+    }
+
+    const _cambioEmpleado = (value)=>{
+        setEmpleadoAsignado(value);
+        if(value.value != 0)
+        {
+            setErrorEmpleado("");
+        }
     }
 
     const _limpiarFormulario =()=>{
@@ -104,16 +228,21 @@ const NuevoUsuario = props =>{
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
-            <FormGroup>
+         
                 <Button 
-                    className="btn btn-success"
+                    className={props.classNames?(props.classNames):("btn btn-success ")}
                     onClick={()=>{setModalOpen(true)}}
 
                 >
-                    Nuevo Usuario
+                    {props.mensajeBoton!=undefined?(
+                        props.mensajeBoton
+                    ):(
+                        "Nuevo Usuario"
+                        )
+                    }
+                   
                 </Button>
-            </FormGroup>
-
+        
             <Modal
                 size="lg"
 
@@ -141,6 +270,7 @@ const NuevoUsuario = props =>{
                 </div>
                 <AvForm
                     onValidSubmit={(e,v)=>{_registrarUsuario(v)}}
+                    model={defaultValues}
                 >
                 <div className="modal-body">
                         <Container fluid={true}>
@@ -157,6 +287,7 @@ const NuevoUsuario = props =>{
                                                 className="form-control"
                                                 placeholder="ej: salher"
                                                 type="text"
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
@@ -175,6 +306,7 @@ const NuevoUsuario = props =>{
                                                 className="form-control"
                                                 placeholder="ej: pablo@correo.com"
                                                 type="text"
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   email: { value: true, errorMessage: "Debe escribir un correo válido"}
@@ -183,6 +315,7 @@ const NuevoUsuario = props =>{
                                     </Col>
                                 </Row>
                                 <Row>
+                                {props.isReadOnly!=true?(
                                     <Col md={6}>
                                     <Label><b>Ingrese la Contraseña</b></Label>
                     
@@ -194,6 +327,7 @@ const NuevoUsuario = props =>{
                                                 className="form-control"
                                                 //placeholder="ej: pablo@correo.com"
                                                 type="password"
+                                               
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   minLength: { value: 8, errorMessage: "La contraseña debe tener mínimo 8 caracteres."}
@@ -216,6 +350,7 @@ const NuevoUsuario = props =>{
                                             />
 
                                     </Col>
+                                    ):undefined}
 
                                     <Col md={6}>
                                     {/* Switch */}
@@ -232,6 +367,7 @@ const NuevoUsuario = props =>{
                                             name={"nuevoUsuarioSwitch"}
                                             checked={usuarioActivo}
                                             onClick={_cambiarEstadoActivo}
+                                            disabled={props.isReadOnly?true:false}
 
                                             />
                                             <label
@@ -245,14 +381,32 @@ const NuevoUsuario = props =>{
 
                                   {/* fin switch */}
                                     <br /><br />
+                                    {props.isReadOnly!=true?(
+                                    <>
                                    <EscogerRoles 
                                         submitRoles={_asignarRoles}
                                         rolesAsignados={rolesAsignados}
                                    />
-                                   <p id="errorEscogerRoles" style={{color:'red'}}></p>
+                                   <p id="errorEscogerRoles" style={{color:'red'}}>{errorRoles}</p>
+                                   </>
+                                   ):(undefined)}
+
                                     </Col>
                                 </Row>
-
+                                {props.isReadOnly!=true?(
+                                <Row>
+                                    <Col md={12}>
+                                        <Label>Empleado </Label>
+                                                <Select
+                                                    value={empleadoAsignado}
+                                                    onChange={_cambioEmpleado}
+                                                    options={optionsEmpleados}
+                                                />
+                                                <p style={{color:"red"}}>{errorEmpleado}</p>
+                                    </Col>
+                                </Row>
+                                ):(undefined)}
+                                
                                 <Row>
                                     <Col md={12}>
                                         { rolesAsignados.length!=0?
@@ -269,6 +423,7 @@ const NuevoUsuario = props =>{
                 <div className="modal-footer">
                     <Row>
                         <Col >
+                        {props.isReadOnly?(undefined):(
                         <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
@@ -276,7 +431,8 @@ const NuevoUsuario = props =>{
                             >
                              Guardar
                             </Button>
-                          </div> 
+                          </div>
+                          )} 
                         </Col>
                         <Col>
                             <div className="mt-3">

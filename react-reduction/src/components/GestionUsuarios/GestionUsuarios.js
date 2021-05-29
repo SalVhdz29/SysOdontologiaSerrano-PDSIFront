@@ -1,5 +1,5 @@
 //librerias
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 
 import { 
   TabContent,
@@ -9,8 +9,12 @@ import {
   CardTitle,
   Container,
   Row,
-  Col
+  Col,
+  FormGroup
 } from "reactstrap"
+
+import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
 //Componentes
@@ -20,7 +24,8 @@ import SwitchUsuarioActivo from './switchUsuarioActivo/SwitchUsuarioActivo';
 
 //jsons de prueba
 import listUsuarios from './Json/listUsuarios.json';
-
+import listEmpleados from './Json/listEmpleados.json';
+import listRoles from './Json/listRoles.json';
 
 // Redux
 import { connect } from "react-redux";
@@ -28,6 +33,8 @@ import { connect } from "react-redux";
 //actions
 import {
     setListaUsuarios,
+    setListaEmpleados,
+    setListaRoles,
     setFilasListaUsuariosActivos,
     setFilasListaUsuariosInactivos
 } from '../../store/actions'
@@ -38,13 +45,15 @@ import {columnasTablaUsuario} from './Json/columnasTablaUsuarios';
 
 
 
+
 const GestionUsuarios = props =>{
 
     const[listaUsuarios, setListaUsuarios] = useState([]);
     const[filasListaUsuario, setFilasListaUsuario] =useState([]);
+    const[listaEmpleados, setListaEmpleados] = useState([]);
 
     useEffect(()=>{
-        _obtenerListaUsuarios(listUsuarios);
+        _obtenerServicios(listUsuarios, listEmpleados, listRoles);
     },[])
 
     useEffect(()=>{
@@ -61,26 +70,42 @@ const GestionUsuarios = props =>{
         _setearFilas();
     },[props.state.filasListaUsuariosActivos])
 
-    const _obtenerListaUsuarios=async(lista)=>{
+    const _obtenerServicios=async(listaUsuarios, listaEmpleados,listaRoles)=>{
         /* simulando la llamada a un servicio */
-        console.log("valor del JSON en el llamado: ", lista);
-        await props.setListaUsuarios(lista);
+        console.log("valor del JSON en el llamado: ", listaUsuarios);
+       
+        await props.setListaEmpleados(listaEmpleados);
+        await props.setListaRoles(listaRoles);
+        await props.setListaUsuarios(listaUsuarios);
+        
        
     }
 
+    const _obtenerUsuarios = async(listaUsuarios) =>{
+        console.log("valor del JSON en el llamado: ", listaUsuarios);
+        await props.setListaUsuarios(listaUsuarios);
+    }
+
     const _cambiosEnUsuarios =({tipo, valor})=>{
-        console.log("vino al cambio usuarios");
+        console.log("vino al cambio usuarios con: ", tipo);
         switch(tipo){
             case 'actualizarListaUsuarios':
                    let nuevas_filas= _cambiarActivoJsonUsuarios(valor.id_usuario);
                     console.log("volvio");
-                    _obtenerListaUsuarios(nuevas_filas);
+                    _obtenerUsuarios(nuevas_filas);
                 break;
             case 'agregarUsuarioLista':
                     let nueva_lista =_agregarUsuarioALista(valor);
                     console.log("lo que devolvio: ", nueva_lista);
-                    _obtenerListaUsuarios(nueva_lista);
+                    _obtenerUsuarios(nueva_lista);
                 break;
+            case 'editarUsuarioLista':
+                console.log(valor, "deeee");
+                    let lista_actualizada =_actualizarUsuario(valor);
+                    console.log("lo devuelto: ", lista_actualizada);
+                    _obtenerUsuarios(lista_actualizada);
+                break;
+
             default:
                 break;
         }
@@ -100,7 +125,8 @@ const GestionUsuarios = props =>{
                 nombre_empleado, 
                 correo_electronico, 
                 fecha_creacion, 
-                usuario_activo } = usuario;
+                usuario_activo,
+                roles } = usuario;
 
                 if(usuario_activo == 1)
                 {
@@ -114,10 +140,24 @@ const GestionUsuarios = props =>{
             let fila ={};
             fila.id_usuario = id_usuario;
             fila.nombre_usuario=nombre_usuario;
-            fila.id_empleado = id_f_empleado;
+            //fila.id_empleado = id_f_empleado;
             fila.nombre_empleado= nombre_empleado;
             fila.correo_electronico = correo_electronico;
             fila.fecha_creacion = fecha_creacion;
+
+            // fila.
+            fila.roles=(
+                <ul>
+                    {roles.map(rol => {
+                        return(
+                      <li>{rol.nombre_usuario}</li>
+                      )
+                    })
+                    }
+
+                </ul>
+            )
+
             fila.usuario_activo = (
                 <div>
                     <SwitchUsuarioActivo
@@ -128,6 +168,33 @@ const GestionUsuarios = props =>{
                 </div>
             );
             fila.operaciones="Coming soon";
+                let defaultValues={
+                    idUsuario:id_usuario,
+                    nombreUsuario: nombre_usuario,
+                    empleado:{label:nombre_empleado, value:id_f_empleado},
+                    correoElectronico: correo_electronico,
+                    usuarioActivo: usuario_activo,
+                    roles:roles
+                }
+            fila.operaciones=(
+                < FormGroup>
+
+                <NuevoUsuario
+                    isReadOnly={true}
+                    defaultValue={defaultValues}
+                    classNames={"btn-success btn-sm "}
+                    mensajeBoton={<FaEye />}
+                />{' '}
+                <NuevoUsuario 
+                    defaultValue={defaultValues}
+                    classNames={"btn-danger btn-sm "}
+                    mensajeBoton={<FaPencilAlt />}
+                    isEditable={true}
+                    cambioDatos={_cambiosEnUsuarios}
+                />
+
+                </FormGroup>
+            )
             filas.push(fila);
         })
          props.setFilasListaUsuariosActivos(filas);
@@ -182,18 +249,61 @@ const GestionUsuarios = props =>{
 
         let usuario ={};
         usuario.id_usuario = listaUsuarios.length + 1;
-        usuario.id_f_empleado = listaUsuarios.length + 1;
-        usuario.nombre_empleado = "empleado x ";
+        usuario.id_f_empleado = nuevo_usuario.id_f_empleado
+        usuario.nombre_empleado = nuevo_usuario.nombre_empleado
         usuario.nombre_usuario = nuevo_usuario.nombre_usuario;
         usuario.correo_electronico = nuevo_usuario.correo_electronico;
         usuario.fecha_creacion = "hoy";
         usuario.usuario_activo = nuevo_usuario.usuario_activo;
+        // usuario.roles=nuevo_usuario.roles;
+
+        let n_roles = [];
+        nuevo_usuario.roles.map(rol_it=>{
+            let rol = {id_usuario:rol_it.id_usuario, nombre_usuario:rol_it.nombre_usuario};
+            n_roles.push(rol);
+        });
+
+        usuario.roles=n_roles;
 
         n_lista.push(usuario);
         console.log("la lista antes de ingresar ", n_lista);
       return n_lista;
 
     };
+
+    const _actualizarUsuario = (usuario_actualizar)=>{
+
+        let { listaUsuarios } = props.state;
+
+        let n_lista = [];
+
+        listaUsuarios.map(usuario_it =>{
+            let usuario = {...usuario_it};
+
+            if(usuario.id_usuario == usuario_actualizar.id_usuario)
+            {
+                console.log("coincidencia: ",usuario.id_usuario);
+                usuario.nombre_empleado = usuario_actualizar.nombre_empleado
+                usuario.nombre_usuario = usuario_actualizar.nombre_usuario;
+                usuario.correo_electronico = usuario_actualizar.correo_electronico;
+                usuario.fecha_creacion = "hoy";
+                usuario.usuario_activo = usuario_actualizar.usuario_activo;
+        
+                let n_roles = [];
+                usuario_actualizar.roles.map(rol_it=>{
+                    let rol = {id_usuario:rol_it.id_usuario, nombre_usuario:rol_it.nombre_usuario};
+                    n_roles.push(rol);
+                });
+        
+                usuario.roles=n_roles;
+            }
+            n_lista.push(usuario);
+
+        });
+
+       
+      return n_lista;
+    }
 
     return(
         <React.Fragment>
@@ -205,7 +315,10 @@ const GestionUsuarios = props =>{
 
                   <Row>
                     <Col md={4} xs={12}>
-                        <NuevoUsuario cambioDatos={_cambiosEnUsuarios} />
+                        <NuevoUsuario 
+                            cambioDatos={_cambiosEnUsuarios}
+                            listaEmpleados={props.state.listaEmpleados}
+                        />
                     </Col>
                   </Row>
                   <Row>
@@ -233,6 +346,8 @@ const mapStateToProps = reducers => {
 const mapDispatchToProps = dispatch =>{
     return{
         setListaUsuarios: (datos) =>dispatch(setListaUsuarios(datos)),
+        setListaEmpleados: (datos) =>dispatch(setListaEmpleados(datos)),
+        setListaRoles: (datos) =>dispatch(setListaRoles(datos)),
         setFilasListaUsuariosActivos: (datos) =>dispatch(setFilasListaUsuariosActivos(datos)),
         setFilasListaUsuariosInactivos: (datos) =>dispatch(setFilasListaUsuariosInactivos(datos))
     }

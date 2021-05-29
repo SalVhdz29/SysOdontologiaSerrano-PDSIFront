@@ -1,11 +1,15 @@
 import {
     SETLISTAUSUARIOS,
     SETFILASLISTAUSUARIOSACTIVOS,
-    SETFILASLISTAUSUARIOSINACTIVOS
+    SETFILASLISTAUSUARIOSINACTIVOS,
+    SETLISTAEMPLEADOS,
+    SETLISTAROLES
 } from './actionTypes'
 
 const INIT_STATE={
     listaUsuarios:[],
+    listaEmpleados:[],
+    listaRoles:[],
     filasListaUsuariosActivos: [],
     filasListaUsuariosInactivos: []
 }
@@ -18,6 +22,16 @@ const gestionUsuariosReducer =(state = INIT_STATE, {type, payload})=>{
             return{
                 ...state,
                 listaUsuarios: payload
+            }
+        case SETLISTAEMPLEADOS:
+            return{
+                ...state,
+                listaEmpleados: payload
+            }
+        case SETLISTAROLES:
+            return{
+                ...state,
+                listaRoles: payload
             }
         case SETFILASLISTAUSUARIOSACTIVOS:
             return{

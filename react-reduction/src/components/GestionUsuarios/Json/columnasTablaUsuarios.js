@@ -4,16 +4,16 @@ export const columnasTablaUsuario =[
         dataField: "nombre_usuario",
       },
       {
-        text: "ID Empleado",
-        dataField: "id_empleado",
-      },
-      {
         text: "Empleado",
         dataField: "nombre_empleado",
       },
       {
         text: "Correo Electronico",
         dataField: "correo_electronico",
+      },
+      {
+        text:"Roles",
+        dataField:"roles"
       },
       {
         text: "Activo",
