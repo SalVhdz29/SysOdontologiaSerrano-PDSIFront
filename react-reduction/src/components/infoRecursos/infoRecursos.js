@@ -15,7 +15,7 @@ import {
 import Cookies from 'js-cookie';
 import DataTable from '../DataTable/DataTable';
 
-const BasePage = props =>{
+const infoRecursos = props =>{
         const [tokenU, setTokenU] = useState(null);
     useEffect(()=>{
         //obteniendo el token almacenado en las cookies 
@@ -91,4 +91,4 @@ const BasePage = props =>{
     )
 }
 
-export default BasePage;
+export default infoRecursos;

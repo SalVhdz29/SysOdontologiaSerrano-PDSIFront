@@ -33,6 +33,41 @@ const NuevoRecurso = props =>{
         let token = Cookies.get('token');
         await setTokenU(token);
     }
+
+    const datosTabla=[
+        
+        {
+            "id_recurso": 1,
+            "nombre_recurso": "Salvador",
+            "descripcion_recurso": "Recurso de Salvador",
+        },
+
+    ];
+    const columnasTabla=[
+        {
+          text: "ID Rec.",
+          dataField: "id_recurso",
+        },
+    ];
+    return(
+        <React.Fragment>
+        <div className="page-content">
+        <Container fluid={true}>
+
+        <Card>
+                <CardBody>
+                  
+                  <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i>  </i>  Gestion de Recursos </h4><br/>
+                  <Button color="primary">Crear Nuevo Recurso</Button>
+                  <DataTable datosTabla={datosTabla} columnasTabla={columnasTabla}/>
+                  
+                </CardBody>
+        </Card>
+        </Container>
+        </div>
+        </React.Fragment>
+    )
 }
+
 
 export default NuevoRecurso;
