@@ -45,34 +45,37 @@ import {columnasTablaUsuario} from './Json/columnasTablaUsuarios';
 
 
 
-
+//Componentes
 const GestionUsuarios = props =>{
 
     const[listaUsuarios, setListaUsuarios] = useState([]);
     const[filasListaUsuario, setFilasListaUsuario] =useState([]);
     const[listaEmpleados, setListaEmpleados] = useState([]);
 
+    //Ciclo de vida
     useEffect(()=>{
         _obtenerServicios(listUsuarios, listEmpleados, listRoles);
     },[])
 
     useEffect(()=>{
-            console.log("vino aqui");
+            //console.log("vino aqui");
          setListaUsuarios(props.state.listaUsuarios);
       let result =  _crearFilasListaUsuario();
-    },[props.state.listaUsuarios])
+    },[props.state.listaUsuarios]) //detecta cambios en la lista de usuarios en el reducer y vuelve a formar las filas.
 
     useEffect(()=>{
-        console.log("valor de filas detectadas: ", props.state.filasListaUsuariosActivos)
+        //console.log("valor de filas detectadas: ", props.state.filasListaUsuariosActivos)
         const _setearFilas =async()=>{
             await setFilasListaUsuario(props.state.filasListaUsuariosActivos);
         }
         _setearFilas();
-    },[props.state.filasListaUsuariosActivos])
+    },[props.state.filasListaUsuariosActivos]) //detecta cambios en las filas en el reducer y las setea en el estado local - de momento, inutil.
+    //Fin ciclo de vida
 
+    //Función que simula la inicialización de servicios.
     const _obtenerServicios=async(listaUsuarios, listaEmpleados,listaRoles)=>{
         /* simulando la llamada a un servicio */
-        console.log("valor del JSON en el llamado: ", listaUsuarios);
+        //console.log("valor del JSON en el llamado: ", listaUsuarios);
        
         await props.setListaEmpleados(listaEmpleados);
         await props.setListaRoles(listaRoles);
@@ -80,29 +83,30 @@ const GestionUsuarios = props =>{
         
        
     }
-
+    //Función que llama a los usuarios en el servidor.
     const _obtenerUsuarios = async(listaUsuarios) =>{
-        console.log("valor del JSON en el llamado: ", listaUsuarios);
+        //console.log("valor del JSON en el llamado: ", listaUsuarios);
         await props.setListaUsuarios(listaUsuarios);
     }
 
+    //Función que sirve de puerto en cambios obtenidos por componentes hijos.
     const _cambiosEnUsuarios =({tipo, valor})=>{
-        console.log("vino al cambio usuarios con: ", tipo);
+        //console.log("vino al cambio usuarios con: ", tipo);
         switch(tipo){
             case 'actualizarListaUsuarios':
                    let nuevas_filas= _cambiarActivoJsonUsuarios(valor.id_usuario);
-                    console.log("volvio");
+                    //console.log("volvio");
                     _obtenerUsuarios(nuevas_filas);
                 break;
             case 'agregarUsuarioLista':
                     let nueva_lista =_agregarUsuarioALista(valor);
-                    console.log("lo que devolvio: ", nueva_lista);
+                    //console.log("lo que devolvio: ", nueva_lista);
                     _obtenerUsuarios(nueva_lista);
                 break;
             case 'editarUsuarioLista':
-                console.log(valor, "deeee");
+                //console.log(valor, "deeee");
                     let lista_actualizada =_actualizarUsuario(valor);
-                    console.log("lo devuelto: ", lista_actualizada);
+                    //console.log("lo devuelto: ", lista_actualizada);
                     _obtenerUsuarios(lista_actualizada);
                 break;
 
@@ -111,9 +115,9 @@ const GestionUsuarios = props =>{
         }
     }
 
-    //función que crea las filas a partir de la lista de usuarios optenida.
+    //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaUsuario=async()=>{
-        console.log("detecto el cambio");
+        //console.log("detecto el cambio");
 
         let filas=[];
 
@@ -202,9 +206,9 @@ const GestionUsuarios = props =>{
 
     }
 
-    //funcion que simula los cambios de estado en los usuarios en el servidor. -temporal.
+    //Función que simula los cambios de estado en los usuarios en el servidor. -temporal.
     const _cambiarActivoJsonUsuarios=(id_usuario)=>{
-        console.log("vino al cambio JSOn");
+        //console.log("vino al cambio JSOn");
         let nueva_lista_usuarios=[];
         props.state.listaUsuarios.map(usuario=>{
             let usuario_it = {...usuario};
@@ -227,13 +231,13 @@ const GestionUsuarios = props =>{
 
         });
         
-        console.log("nuevo valor del JSOn ", listUsuarios);
+        //console.log("nuevo valor del JSOn ", listUsuarios);
         return nueva_lista_usuarios
         //listUsuarios
         /* comente las lineas donde clonaba el objeto porque no estoy modificando el store invalidamente, solo el JSOn de prueba. */
     }
 
-    //función que simula el añadir el usuario obtenido para anexarlo al JSON - temporal.
+    //Función que simula el añadir el usuario obtenido para anexarlo al JSON - temporal.
     const _agregarUsuarioALista = (nuevo_usuario)=>{
         console.log("el uevo ", nuevo_usuario);
 
@@ -266,11 +270,12 @@ const GestionUsuarios = props =>{
         usuario.roles=n_roles;
 
         n_lista.push(usuario);
-        console.log("la lista antes de ingresar ", n_lista);
+        //console.log("la lista antes de ingresar ", n_lista);
       return n_lista;
 
     };
 
+    //Función que simula la actualización en la data de un usuario.
     const _actualizarUsuario = (usuario_actualizar)=>{
 
         let { listaUsuarios } = props.state;
@@ -282,7 +287,7 @@ const GestionUsuarios = props =>{
 
             if(usuario.id_usuario == usuario_actualizar.id_usuario)
             {
-                console.log("coincidencia: ",usuario.id_usuario);
+                //console.log("coincidencia: ",usuario.id_usuario);
                 usuario.nombre_empleado = usuario_actualizar.nombre_empleado
                 usuario.nombre_usuario = usuario_actualizar.nombre_usuario;
                 usuario.correo_electronico = usuario_actualizar.correo_electronico;

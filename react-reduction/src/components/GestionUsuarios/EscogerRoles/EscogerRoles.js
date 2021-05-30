@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+//librerias
 import {
    AvForm,
    AvInput,
@@ -19,6 +20,8 @@ import{
 //Jsons
 import listRolesJson from './Json/listRoles.json';
 
+
+//Componente
 const EscogerRoles = props =>{
 
     const [modalRolOpen, setModalRolOpen] = useState(false);
@@ -30,7 +33,7 @@ const EscogerRoles = props =>{
     const checkBoxStyle={
         margin:'0px,3px',
     }
-
+    //CICLO DE VIDA
     useEffect(()=>{
         _obtenerRoles();
     },[]);
@@ -41,13 +44,14 @@ const EscogerRoles = props =>{
             _setearRoles();
         }
     },[props.rolesAsignados, listaRoles])
+    //END CICLO DE VIDA
 
-   
+   //Funcion que simula una petición al servidor por la lista de roles activos.
     const _obtenerRoles = async ()=> {
         let rolesList = await listRolesJson;
          setListaRoles(rolesList);
     }
-
+    //Funcion que comunica por medio de props los roles seleccionados.
     const _rolesSubmit=()=>{
         // console.log(v);
         let roles_marcados=[];
@@ -62,8 +66,10 @@ const EscogerRoles = props =>{
         setModalRolOpen(false);
     }
 
+    //Funcion que recibe roles pre seleccionados por props y los selecciona de la lista de roles.
     const _setearRoles = ()=>{
         let roles_n=[]
+        //console.log("los roles que le llegaron: ", props.rolesAsignados);
         listaRoles.map(rol_it=>{
             
             let rol={...rol_it};
@@ -76,7 +82,7 @@ const EscogerRoles = props =>{
             })
 
             rol.marcado = marcado;
-            console.log("rol >> ",rol)
+            //console.log("rol >> ",rol)
             roles_n.push(rol);
         })
 
@@ -84,19 +90,20 @@ const EscogerRoles = props =>{
 
     }
 
+    //Funcion que detecta el cambio en un checkbox en especifico y cambia el valor de seleccionado para ese rol en el estado.
     const _cambioCheckbox=(event)=>{
-        console.log(event);
+        //console.log(event);
         let {value}=event.target;
         let roles_nuevos=[];
 
-        console.log(value);
+        //console.log(value);
         roles.map(rol_it=>{
             let rol={...rol_it};
-            console.log("rolit>> ", rol);
+           // console.log("rolit>> ", rol);
             if(rol.id_usuario == value)
             {   
                let valor_actual= rol_it.marcado;
-               console.log("el valor actual: ", valor_actual);
+               //console.log("el valor actual: ", valor_actual);
                rol.marcado=!valor_actual;
                
             }
@@ -108,8 +115,9 @@ const EscogerRoles = props =>{
 
     }
 
+    //Funcion para verificar si al menos un checkbox fue escogido- NO EN USO.
     const _verificarCheckbox=(value, ctx, input, cb)=>{
-        console.log("value: ", value);
+        //console.log("value: ", value);
 
         if(value.length!=0)
         {

@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+//Librerias
 import request from 'superagent';
 
 import{
@@ -8,7 +9,8 @@ import{
     Container,
     Label,
     Row,
-    Col
+    Col,
+    Input
 } from 'reactstrap';
 
 
@@ -27,6 +29,7 @@ import { columnasTabla } from './Json/columnasTabla';
 import DataTable from '../../DataTable/DataTable';
 import EscogerRoles from '../EscogerRoles/EscogerRoles';
 
+//Componente
 const NuevoUsuario = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
@@ -39,27 +42,25 @@ const NuevoUsuario = props =>{
 
     const [ empleadoAsignado, setEmpleadoAsignado ]= useState({label:"Seleccione un empleado", value:0});
 
+    const [ nuevaContrasenia, setNuevaContrasenia ] = useState(false);
+
     const [errorEmpleado, setErrorEmpleado ]= useState("");
     const [errorRoles, setErrorRoles] = useState("");
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
 
-    useEffect(()=>{
-        
-        if(props.isReadOnly)
-        {
-            _setDefaultValue();
-        }
-    },[props.isReadOnly])
 
+    //CICLO DE VIDA
     useEffect(()=>{
-        
-        if(props.isEditable)
+
+        if(props.isReadOnly == true || props.isEditable == true)
         {
+            //console.log("El default Value: ", props.defaultValue);
             _setDefaultValue();
         }
-    },[props.isEditable])
+
+    },[props.defaultValue])
 
 
     useEffect(()=>{
@@ -69,14 +70,15 @@ const NuevoUsuario = props =>{
         }
         
     },[props.listaEmpleados])
+    //FIN CICLO DE VIDA
 
-
+    //Función que da valores por defecto a los campos en el formulario.
     const _setDefaultValue=()=>{
         let nombreUsuarioIpx="";
         let correoElectronicoIpx = "";
         let empleado_asignado={};
         let {nombreUsuario, correoElectronico, usuarioActivo, empleado, roles} = props.defaultValue;
-        console.log("default Value", props.defaultValue)
+        // console.log("default Value", props.defaultValue)
         if(nombreUsuario){
             nombreUsuarioIpx = nombreUsuario;
         }
@@ -99,36 +101,48 @@ const NuevoUsuario = props =>{
 
         if(roles)
         {
-            console.log("vine: ",roles);
+            //console.log("vine: ",roles);
+            let roles_asig = [];
             roles.map(rol=>{
-                rol.marcado=true;
+                let rol_pivote={...rol};
+                rol_pivote.marcado=true;
+                roles_asig.push(rol_pivote);
 
             })
-            setRolesAsignados(roles);
+            setRolesAsignados(roles_asig);
         }
 
         setDefaultValues({nombreUsuarioIpx, correoElectronicoIpx});
     }
 
     const _registrarUsuario=async(valor_inputs)=>{
-            console.log("el valor obtenido", valor_inputs);
+            //console.log("el valor obtenido", valor_inputs);
             if(empleadoAsignado.value != 0 && empleadoAsignado.value!="0")
             {
                 if(rolesAsignados.length!=0)
                 {
+                    let contrasenia="";
 
-            
+                    let { nombreUsuarioIpx,
+                        correoElectronicoIpx} = valor_inputs;
 
-                        let { nombreUsuarioIpx,
-                            correoElectronicoIpx,
-                            contraseniaIpx} = valor_inputs;
-
+                    if(props.isEditable == true && nuevaContrasenia == true)
+                    {
+                        let { nuevaContraseniaIpx } = valor_inputs;
+                        contrasenia = nuevaContraseniaIpx
+                    }
+                    else
+                    {
+                        let {contraseniaIpx} = valor_inputs;
+                        contrasenia = contraseniaIpx
+                    }
                         
-                        console.log("los roles", rolesAsignados);
+                        //console.log("los roles", rolesAsignados);
                         let valor = {};
                         valor.nombre_usuario = nombreUsuarioIpx;
                         valor.correo_electronico =correoElectronicoIpx;
-                        valor.contrasenia = contraseniaIpx;
+                        valor.editarContrasenia=nuevaContrasenia;
+                        valor.contrasenia = contrasenia;
                         valor.usuario_activo = usuarioActivo;
                         valor.roles=rolesAsignados;
                         valor.id_f_empleado = empleadoAsignado.value;
@@ -175,7 +189,7 @@ const NuevoUsuario = props =>{
 
     const _asignarRoles = (roles) =>{
 
-        console.log("lo que recibe: ",roles);
+        //console.log("lo que recibe: ",roles);
         
         setRolesAsignados(roles);
         if(roles.length!=0)
@@ -220,6 +234,10 @@ const NuevoUsuario = props =>{
 
     const _limpiarFormulario =()=>{
         setRolesAsignados([]);
+    }
+
+    const _cambiarNuevaContrasenia =()=>{
+        setNuevaContrasenia(!nuevaContrasenia);
     }
 
 
@@ -315,7 +333,7 @@ const NuevoUsuario = props =>{
                                     </Col>
                                 </Row>
                                 <Row>
-                                {props.isReadOnly!=true?(
+                                {props.isReadOnly!=true && props.isEditable != true?(
                                     <Col md={6}>
                                     <Label><b>Ingrese la Contraseña</b></Label>
                     
@@ -350,7 +368,61 @@ const NuevoUsuario = props =>{
                                             />
 
                                     </Col>
-                                    ):undefined}
+                                    ):(
+                                       props.isEditable?(
+                                        <Col md={6}>
+                                            <Label check >
+                                                <Input type="checkbox" onChange={_cambiarNuevaContrasenia} />
+                                                {' '} Nueva Constraseña
+                                            </Label>
+
+                                            <br /> <br />
+                                            {
+                                                nuevaContrasenia?(
+                                                    <Fragment>
+                                                        <Label><b>Ingrese la Nueva Contraseña</b></Label>
+                        
+                                                        <AvField
+                                                            id="nuevaContraseniaIpx"
+                                                            name="nuevaContraseniaIpx"
+                                                            // label="Ingrese Correo Electrónico"
+                                                            value=""
+                                                            className="form-control"
+                                                            //placeholder="ej: pablo@correo.com"
+                                                            type="password"
+                                                        
+                                                            validate={{
+                                                            required: { value: true, errorMessage: "Obligatorio."},
+                                                            minLength: { value: 8, errorMessage: "La contraseña debe tener mínimo 8 caracteres."}
+                                                            }}
+                                                        />
+                                                        <Label><b>Vuelva a ingresar la contraseña</b></Label>
+
+                                                                <AvField
+                                                                    id="confirmNuevaContraseniaIpx"
+                                                                    name="confirmNuevaContraseniaIpx"
+                                                                    // label="Ingrese Correo Electrónico"
+                                                                    value=""
+                                                                    className="form-control"
+                                                                    //placeholder="ej: pablo@correo.com"
+                                                                    type="password"
+                                                                    validate={{
+                                                                    required: { value: true, errorMessage: "Obligatorio."},
+                                                                    match: { value:'nuevaContraseniaIpx', errorMessage: "Las contraseñas no coinciden."}
+                                                                    }}
+                                                                />
+                                                    </Fragment>
+                                                ):(
+                                                    undefined
+                                                )
+                                            }
+                                   
+    
+                                        </Col>
+                                       ):(
+                                           undefined
+                                       )
+                                    )}
 
                                     <Col md={6}>
                                     {/* Switch */}
@@ -401,6 +473,7 @@ const NuevoUsuario = props =>{
                                                     value={empleadoAsignado}
                                                     onChange={_cambioEmpleado}
                                                     options={optionsEmpleados}
+                                                    isDisabled={props.isEditable?true:false}
                                                 />
                                                 <p style={{color:"red"}}>{errorEmpleado}</p>
                                     </Col>
