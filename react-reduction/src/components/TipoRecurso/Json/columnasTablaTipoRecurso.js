@@ -17,6 +17,6 @@ export const columnasTabla=[
     },
     {
       text: "Operaciones",
-      dataField: "nombre_campo",
+      dataField: "operaciones",
     },
   ];

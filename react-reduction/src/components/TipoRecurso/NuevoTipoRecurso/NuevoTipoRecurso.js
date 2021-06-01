@@ -101,7 +101,7 @@ const NuevoTipoRecurso = props =>{
 
 
     const _registrarTipoRecurso=async(valor_inputs)=>{
-            console.log("el valor obtenido", valor_inputs);
+            //console.log("el valor obtenido", valor_inputs);
 
             let { nombreTipoRecursoIpx,
                     descripcionTipoRecursoIpx,
@@ -169,15 +169,22 @@ const NuevoTipoRecurso = props =>{
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
-            <FormGroup>
+     
                 <Button 
-                    className="btn btn-dark"
+                    className="btn btn-dark btn-sm"
+                   
                     onClick={()=>{setModalOpen(true)}}
 
                 >
-                    Nuevo Tipo Recurso
+                    {props.mensajeBoton!=undefined?(
+                        props.mensajeBoton
+                    ):(
+                        "Nuevo Tipo Recurso"
+                        )
+                    }
+
                 </Button>
-            </FormGroup>
+        
 
             <Modal
                 size="lg"
@@ -190,7 +197,18 @@ const NuevoTipoRecurso = props =>{
             >
 
                 <div className="modal-header">
-                    <h4 className="modal-title mt-0"><b>Crear nuevo Tipo Recurso</b></h4>
+                {props.isEditable?(
+                    <h4 className="modal-title mt-0"><b>Editar nuevo Tipo Recurso</b></h4>
+                    ):(
+                        props.isReadOnly?(
+                            <h4 className="modal-title mt-0"><b>Ver nuevo Tipo Recurso</b></h4>
+                            ):(
+                                <h4 className="modal-title mt-0"><b>Crear nuevo Tipo Recurso</b></h4>
+                                )
+                        )
+                    }
+
+
                     <button
                         type="button"
                         onClick={() => {
@@ -224,6 +242,7 @@ const NuevoTipoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="Ej.: Modulo de ..."
                                                 type="text"
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
@@ -231,26 +250,30 @@ const NuevoTipoRecurso = props =>{
                                             />
                                         </FormGroup>
                                     </Col>
-     
-                                    <Col md={6}>
-                                    {/* Switch */}
-                                    <Label><b>Asignación de Recursos</b></Label>
-                                    <center>
+                                   { props.isReadOnly?(
+                            <h4 className="modal-title mt-0"><b> </b></h4>
+                            ):(
+                                <Col md={6}>
+                                {/* Switch */}
+                                <Label><b>Asignación de Recursos</b></Label>
+                                <center>
 
-                                    <EscogerRecurso
-                                    recursoAsignados={recursoAsignados}
-                                    submitRecurso={_asignarRecurso}
-                                   />
-                                    </center>
+                                <EscogerRecurso
+                                recursoAsignados={recursoAsignados}
+                                submitRecurso={_asignarRecurso}
+                               />
+                                </center>
 
-                                  {/* fin switch */}
-                                    <br /><br />
+                              {/* fin switch */}
+                                <br /><br />
+                                
+                                </Col>
+                                )}
                                     
-                                    </Col>
                                 </Row>
                                 <Row>
                                 <Col md={6}>
-                                    <Label><b>Ingrese la Descripcion del Tipo Recurso</b></Label>
+                                    <Label><b>Descripcion del Tipo Recurso</b></Label>
                                     <br />
                                     
                                             <AvField
@@ -262,7 +285,8 @@ const NuevoTipoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="ej: Conjunto de Roles para Modulo de Seguridad"
                                                 type="textarea"    
-                                                style={{ height: 120 }}                                      
+                                                style={{ height: 120 }}      
+                                                disabled={props.isReadOnly?true:false}                                
                                                 validate={{
                                                 required: { value: true, errorMessage: "Obligatorio.Debe escribir una descripción del Tipo de Recurso"},
 
@@ -282,9 +306,9 @@ const NuevoTipoRecurso = props =>{
                                             className="custom-control-input"
                                             id={props.id_TipoRecurso+"switchActiva"}
                                             name={props.id_TipoRecurso+"switchActiva"}
-                                            checked={props.TipoRecurso_activo}
-                                            onClick={e=>{console.log("dsd")}}
-                                            style={{ height: 1.25 }}                                      
+                                            checked={props.TipoRecurso_activo?true:false}
+                                            disabled={props.isReadOnly?true:false}
+                                            onClick={e=>{console.log("dsd")}}                                                                      
 
                                             />
                                             <label

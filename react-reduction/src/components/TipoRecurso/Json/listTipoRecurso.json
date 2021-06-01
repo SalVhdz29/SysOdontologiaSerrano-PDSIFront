@@ -5,7 +5,7 @@
         "tipo_recurso_descripcion": "Modulo encargado de la Seguridad",
         "tipo_recurso_estado":1,
         "recurso":[
-          {"id_usuario":1,
+          {"id_recurso":1,
             "nombre_recurso":"Gestión de Usuarios"},
           {"id_recurso":2,
             "nombre_recurso":"Gestión de Expedientes"}
@@ -17,7 +17,7 @@
       "tipo_recurso_descripcion": "Modulo encargado de los Expedientes de Pacientes",
       "tipo_recurso_estado":0,
       "recurso":[
-        {"id_usuario":1,
+        {"id_recurso":1,
           "nombre_recurso":"Gestión de Usuarios"},
         {"id_recurso":3,
           "nombre_recurso":"Nombre Recurso 3"}

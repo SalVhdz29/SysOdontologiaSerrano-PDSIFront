@@ -197,21 +197,19 @@ const TipoRecurso = props =>{
               }
           fila.operaciones=(
               < FormGroup>
-
               <NuevoTipoRecurso
                   isReadOnly={true}
                   defaultValue={defaultValues}
-                  classNames={"btn-success btn-sm "}
+                  classNames={"btn btn-success btn-sm "}
                   mensajeBoton={<FaEye />}
               />{' '}
               <NuevoTipoRecurso 
                   defaultValue={defaultValues}
-                  classNames={"btn-danger btn-sm "}
+                  classNames={"btn btn-danger btn-sm "}
                   mensajeBoton={<FaPencilAlt />}
                   isEditable={true}
                   cambioDatos={_cambiosEnTipoRecurso}
               />
-
               </FormGroup>
           )
           filas.push(fila);
@@ -324,12 +322,6 @@ const _cambiarActivoJsonTipoRecurso=(tipo_recurso_id)=>{
     return n_lista;
   }
 
-
-
-
-
-
-
     return(
         <React.Fragment>
         <div className="page-content">
@@ -350,7 +342,7 @@ const _cambiarActivoJsonTipoRecurso=(tipo_recurso_id)=>{
 
                   <Row>
                       <Col md={12} xs={12}>
-                             <DataTable datosTabla={props.state.filasListaTipoRecursoActivos} columnasTabla={columnasTabla}
+                            <DataTable datosTabla={props.state.filasListaTipoRecursoActivos} columnasTabla={columnasTabla}
                                 /> 
                       </Col>
                   </Row>
