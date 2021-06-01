@@ -18,6 +18,11 @@ import{
 
 //Jsons
 import listRecursoJson from './Json/listRecurso.json';
+//import { columnasTabla } from './Json/columnasTabla';
+
+
+//componente
+//import DataTable from '../../DataTable/DataTable';
 
 const EscogerRecurso = props =>{
 
@@ -31,38 +36,39 @@ const EscogerRecurso = props =>{
         margin:'0px,3px',
     }
 
+
+//ciclo de vida
+
     useEffect(()=>{
         _obtenerRecurso();
     },[]);
 
-
     useEffect(()=>{
+        //console.log("longitud >> ",listaRecurso.length)
         if(listaRecurso.length != 0)
         {
             _setearRecurso();
         }
     },[props.recursoAsignados, listaRecurso])
 
+// fin de ciclo de vida
+
+   //Funcion que simula una petición al servidor por la lista de recursos activos.
     const _obtenerRecurso = async ()=> {
         let RecursoList = await listRecursoJson;
          setListaRecurso(RecursoList);
     }
 
+ //Funcion que comunica por medio de props los recursos seleccionados.
     const _recursoSubmit=()=>{
         // console.log(v);
-        let recurso_marcados=[];
-
-  
-
+        let recurso_marcados=[]; 
         recurso_marcados = recurso.filter((recurso)=> recurso.marcado == true );
-
         props.submitRecurso(recurso_marcados)
         setModalRecursoOpen(false);
     }
 
-
-
-
+    //Funcion que recibe recursos pre seleccionados por props y los selecciona de la lista de recursos.
 
     const _setearRecurso = ()=>{
         let recurso_n=[]
@@ -70,23 +76,21 @@ const EscogerRecurso = props =>{
             
             let recurso={...recurso_it};
             let marcado=false;
-            props.recursoAsignados.map(recurso_asig_it =>{
+            props.recursoAsignados.map(recurso_asig_it =>{          
                 if(recurso_asig_it.id_recurso == recurso.id_recurso)
                 {
                     marcado = true;
                 }
             })
-
             recurso.marcado = marcado;
             console.log("recurso >> ",recurso)
             recurso_n.push(recurso);
         })
-
         setRecurso(recurso_n);
-
     }
 
 
+    //Funcion que detecta el cambio en un checkbox en especifico y cambia el valor de seleccionado para ese recurso en el estado.
 
     const _cambioCheckbox=(event)=>{
         console.log(event);
@@ -108,11 +112,9 @@ const EscogerRecurso = props =>{
             recurso_nuevos.push(recurso)
         })
         setRecurso(recurso_nuevos)
-
-
     }
 
-
+    //Funcion para verificar si al menos un checkbox fue escogido- NO EN USO.
     const _verificarCheckbox=(value, ctx, input, cb)=>{
         console.log("value: ", value);
 
@@ -181,43 +183,37 @@ const EscogerRecurso = props =>{
                                             //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
                                                               }}>
                                     <Row>
+                                    <table className="table table-striped">
                                     {
                                         listaRecurso.length != 0?
                                         (                                              
                                                     listaRecurso.map((recurso,key) =>{
                                                         return(
-                                                        <Col md={12} style={checkBoxStyle} key={key}>
-                                                        <Row>                                           
-                                                            <Col>
+                                                        //<Col md={20} style={checkBoxStyle} key={key}>
+                                                                  <tr>
+                                                                    <td>
+   
                                                         <AvCheckbox 
                                                             label={recurso.nombre_recurso} 
-                                                            value={recurso.id_recurso}                                                             
+                                                            value={recurso.id_recurso}       
+                                                            checked={recurso.marcado}                                                      
                                                             key={key}
                                                             onChange={_cambioCheckbox}
                                                             className="checkbox_animated"
                                                     
                                                             // 
                                                         />
-                                                        </Col>
-                                                        <Col>                                                        
-                                                       <label>{recurso.descripcion_recurso} </label>
-                                                        </Col>
-                                                        <Col>
-                                                       <label>{recurso.estado_recurso} </label>
-                                                        </Col>
-                                                        </Row>         
-
-                                                            <Row>
-                                                                <Col>
-                                                                
-                                                                
-
-                                                                </Col>
-                                                            </Row>
-
-
-                                                        </Col>
+                                                                  </td> <td>
+                                                            <label>{recurso.descripcion_recurso} </label>
+                                                            </td>                                <td>
+                                                            <label>{recurso.estado_recurso} </label>
+                                                            </td>                                
+                                                         
                                                         
+                                                                </tr>
+
+                                                       // </Col>
+                                                
                                                         )
 
                                                     })
@@ -225,7 +221,7 @@ const EscogerRecurso = props =>{
                                         :
                                         undefined
                                 }
-                                    
+                                                     </table>
                                 </Row>
                                 </AvCheckboxGroup>
                                 </Col>

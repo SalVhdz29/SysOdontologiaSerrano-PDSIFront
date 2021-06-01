@@ -11,9 +11,5 @@ export const columnasTabla=[
       text: "Descripción",
       dataField: "descripcion_recurso",
     },
-    {
-      text: "Marcado",
-      dataField: "marcado",
-    },
 
   ];

@@ -24,32 +24,111 @@ import { columnasTabla } from './Json/columnasTabla';
 import DataTable from '../../DataTable/DataTable';
 import EscogerRecurso from '../EscogerRecurso/EscogerRecurso';
 
+
+//Componente
+
 const NuevoTipoRecurso = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
+
     const [ Recurso, setRecurso ] = useState([]);
 
     const [ recursoAsignados, setRecursoAsignados ] = useState([]);
+
+    const [ estadoTipoRecurso, setTipoRecursoActivo] = useState(false);
+
+    const [errorRecurso, setErrorRecurso] = useState("");
+
+    const [ defaultValues, setDefaultValues ]= useState({});
+
+
+
+    //CICLO DE VIDA
+    useEffect(()=>{
+
+        if(props.isReadOnly == true || props.isEditable == true)
+        {
+            //console.log("El default Value: ", props.defaultValue);
+            _setDefaultValue();
+        }
+
+    },[props.defaultValue])
+
+
+    
+
+
+    //FIN CICLO DE VIDA
+
+
+
+    //Función que da valores por defecto a los campos en el formulario.
+    const _setDefaultValue=()=>{
+        let nombreTipoRecursoIpx="";
+        let descripcionTipoRecursoIpx = "";    
+        let estadoTipoRecursoIpx=false;   
+        let recurso_asignado={};
+        let {nombreTipoRecurso, descripcionTipoRecurso, estadoTipoRecurso, recurso} = props.defaultValue;
+        // console.log("default Value", props.defaultValue)
+        if(nombreTipoRecurso){
+            nombreTipoRecursoIpx = nombreTipoRecurso;
+        }
+        if(descripcionTipoRecurso)
+        {
+            descripcionTipoRecursoIpx = descripcionTipoRecurso;
+        }
+        if(estadoTipoRecurso)
+        {
+            setTipoRecursoActivo(estadoTipoRecurso);
+        }
+
+
+        if(recurso)
+        {
+            console.log("vine: ",recurso);
+            let recurso_asig = [];
+            recurso.map(rol=>{
+                let recurso_pivote={...recurso};
+                recurso_pivote.marcado=true;
+                recurso_asig.push(recurso_pivote);
+
+            })
+            setRecursoAsignados(recurso_asig);
+        }
+
+        setDefaultValues({nombreTipoRecursoIpx, descripcionTipoRecursoIpx, estadoTipoRecursoIpx});
+    }
+
 
     const _registrarTipoRecurso=async(valor_inputs)=>{
             console.log("el valor obtenido", valor_inputs);
 
             let { nombreTipoRecursoIpx,
-                  descripcionTipoRecursoIpx,
-                  estadoTipoRecursoIpx} = valor_inputs;
+                    descripcionTipoRecursoIpx,
+                    estadoTipoRecursoIpx,
+                    } = valor_inputs;
 
             let valor = {};
             valor.tipo_recurso_nombre = nombreTipoRecursoIpx;
             valor.tipo_recurso_descripcion =descripcionTipoRecursoIpx;
-          //  valor.tipo_recurso_estado = contraseniaIpx;
-            
+            valor.tipo_recurso_estado = estadoTipoRecursoIpx;
+            valor.recurso=recursoAsignados;
 
-        let envio={valor};
-        envio.tipo="agregarTipoRecursoLista";
+            let tipo="";
+            if(props.isEditable)
+                        {
+                            valor.id_TipoRecurso = props.defaultValue.idTipoRecurso;
+                            tipo="editarTipoRecursoLista";
+                        }
+                        else
+                        {
+                            tipo="agregarTipoRecursoLista";
+                        }
 
-        await props.cambioDatos(envio);
-        setModalOpen(false);
- 
+            let envio={tipo,valor};
+            await props.cambioDatos(envio);
+            _limpiarFormulario();
+            setModalOpen(false);
 
     }
 
@@ -69,11 +148,23 @@ const NuevoTipoRecurso = props =>{
         console.log("lo que recibe: ",recurso);
         
         setRecursoAsignados(recurso);
-       /* if(recurso.length!=0)
+        if(recurso.length!=0)
         {
-            document.getElementById("errorEscogerRecurso").innerHTML="";
-        }*/
+            setErrorRecurso("");
+        }
     }
+
+
+    const _cambiarEstadoActivo = ()=>
+    {
+        setTipoRecursoActivo(!estadoTipoRecurso);
+    }
+
+
+    const _limpiarFormulario =()=>{
+        setRecursoAsignados([]);
+    }
+
 
     return(
         <Fragment>
@@ -115,6 +206,7 @@ const NuevoTipoRecurso = props =>{
                 </div>
                 <AvForm
                     onValidSubmit={(e,v)=>{_registrarTipoRecurso(v)}}
+                    model={defaultValues}
                 >
                 <div className="modal-body">
                         <Container fluid={true}>
@@ -144,9 +236,10 @@ const NuevoTipoRecurso = props =>{
                                     {/* Switch */}
                                     <Label><b>Asignación de Recursos</b></Label>
                                     <center>
+
                                     <EscogerRecurso
-                                    submitRecurso={_asignarRecurso}
                                     recursoAsignados={recursoAsignados}
+                                    submitRecurso={_asignarRecurso}
                                    />
                                     </center>
 
@@ -207,15 +300,21 @@ const NuevoTipoRecurso = props =>{
                                     <br /><br />
                                     
                                     </Col>
-
-
                                 </Row>
 
                                 <Row>
-                                    <Col md={12}>
+                                    <Col md={12}>     
+                                    <label><b>Recursos Elegidos para el Nuevo Tipo Recurso:</b></label>
+
+                                    { recursoAsignados.length!=0?
                                         <div id="divTablaRecursos">
                                             <DataTable datosTabla={recursoAsignados} columnasTabla={columnasTabla} />
-                                        </div>
+                                        </div>:
+                                        <p><label>   Sin Recursos Asignados</label></p>
+
+                                        }
+                                                                                                            
+    
                                     </Col>
                                 </Row>
                            
