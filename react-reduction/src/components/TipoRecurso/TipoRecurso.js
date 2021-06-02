@@ -93,7 +93,7 @@ const TipoRecurso = props =>{
     //Función que simula la inicialización de servicios.
     const _obtenerServicios=async(listaTipoRecurso, listaRecurso)=>{
       /* simulando la llamada a un servicio */
-      //console.log("valor del JSON en el llamado: ", listaUsuarios);
+      //console.log("valor del JSON en el llamado: ", listaRecurso);
 
       await props.setListaTipoRecurso(listaTipoRecurso);
       await props.setListaRecurso(listaRecurso);
@@ -199,6 +199,7 @@ const TipoRecurso = props =>{
               < FormGroup>
               <NuevoTipoRecurso
                   isReadOnly={true}
+                  activo={tipo_recurso_estado}
                   defaultValue={defaultValues}
                   classNames={"btn btn-success btn-sm "}
                   mensajeBoton={<FaEye />}
@@ -208,6 +209,7 @@ const TipoRecurso = props =>{
                   classNames={"btn btn-danger btn-sm "}
                   mensajeBoton={<FaPencilAlt />}
                   isEditable={true}
+                  activo={tipo_recurso_estado}
                   cambioDatos={_cambiosEnTipoRecurso}
               />
               </FormGroup>

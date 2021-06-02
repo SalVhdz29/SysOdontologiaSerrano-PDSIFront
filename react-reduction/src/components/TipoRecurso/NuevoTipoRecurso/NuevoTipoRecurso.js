@@ -31,7 +31,9 @@ const NuevoTipoRecurso = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
 
-    const [ Recurso, setRecurso ] = useState([]);
+  //  const [ Recurso, setRecurso ] = useState([]);
+
+  const [ activo, setActivo ] = useState(false);
 
     const [ recursoAsignados, setRecursoAsignados ] = useState([]);
 
@@ -69,7 +71,6 @@ const NuevoTipoRecurso = props =>{
         let estadoTipoRecursoIpx=false;   
         let recurso_asignado={};
         let {nombreTipoRecurso, descripcionTipoRecurso, estadoTipoRecurso, recurso} = props.defaultValue;
-        // console.log("default Value", props.defaultValue)
         if(nombreTipoRecurso){
             nombreTipoRecursoIpx = nombreTipoRecurso;
         }
@@ -81,13 +82,14 @@ const NuevoTipoRecurso = props =>{
         {
             setTipoRecursoActivo(estadoTipoRecurso);
         }
+        console.log("default Value", props.defaultValue)
 
 
         if(recurso)
         {
             console.log("vine: ",recurso);
             let recurso_asig = [];
-            recurso.map(rol=>{
+            recurso.map(recurso=>{
                 let recurso_pivote={...recurso};
                 recurso_pivote.marcado=true;
                 recurso_asig.push(recurso_pivote);
@@ -96,7 +98,7 @@ const NuevoTipoRecurso = props =>{
             setRecursoAsignados(recurso_asig);
         }
 
-        setDefaultValues({nombreTipoRecursoIpx, descripcionTipoRecursoIpx, estadoTipoRecursoIpx});
+        setDefaultValues({nombreTipoRecursoIpx, descripcionTipoRecursoIpx});
     }
 
 
@@ -145,7 +147,7 @@ const NuevoTipoRecurso = props =>{
 
     const _asignarRecurso = (recurso) =>{
 
-        console.log("lo que recibe: ",recurso);
+       // console.log("lo que recibe: ",recurso);
         
         setRecursoAsignados(recurso);
         if(recurso.length!=0)
@@ -232,12 +234,12 @@ const NuevoTipoRecurso = props =>{
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label><b>Ingrese el nombre de Tipo Recurso</b></Label>
+                                            <Label><b>nombre de Tipo Recurso</b></Label>
                                             <AvField
                                                 //id="nombreUsuarioIpx"
                                                 id="nombreTipoRecursoIpx"
                                                 name="nombreTipoRecursoIpx"
-                                                // label="Ingrese Nombre de Usuario"
+                                             
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Ej.: Modulo de ..."
@@ -259,8 +261,8 @@ const NuevoTipoRecurso = props =>{
                                 <center>
 
                                 <EscogerRecurso
-                                recursoAsignados={recursoAsignados}
-                                submitRecurso={_asignarRecurso}
+                                    submitRecurso={_asignarRecurso}
+                                    recursoAsignados={recursoAsignados}
                                />
                                 </center>
 
@@ -296,39 +298,67 @@ const NuevoTipoRecurso = props =>{
                                     <Col md={6}>
                                     {/* Switch */}
                                     <Label><b>Estado de Tipo Recurso</b></Label>
+                                    
+                                    {/* Verificando Estado Activo */}
                                     <center>
+                                    {props.activo?
+                                   ( 
+                                    <div
+                                    className="custom-control custom-switch custom-switch-md mb-3"
+                                    dir="ltr">
+                                    <input
+                                    type="checkbox"
+                                    className="custom-control-input"
+                                    id={props.id_TipoRecurso+"switchActiva"}
+                                    name={props.id_TipoRecurso+"switchActiva"}
+                                    checked                                                                     
+                                    disabled={props.isReadOnly?true:false}
+                                    onClick={_cambiarEstadoActivo}
+                                                                        />
+                                    <label
+                                    className="custom-control-label"
+                                    htmlFor={props.id_TipoRecurso+"switchActiva"}
+                                    >                                
+                                    </label>
+                                   
+                                </div>
+
+
+                                   )
+                                    :(
                                         <div
                                             className="custom-control custom-switch custom-switch-md mb-3"
-                                            dir="ltr"
-                                        >
+                                            dir="ltr">
                                             <input
                                             type="checkbox"
                                             className="custom-control-input"
                                             id={props.id_TipoRecurso+"switchActiva"}
-                                            name={props.id_TipoRecurso+"switchActiva"}
-                                            checked={props.TipoRecurso_activo?true:false}
+                                            name={props.id_TipoRecurso+"switchActiva"}                                                                                                                      
                                             disabled={props.isReadOnly?true:false}
-                                            onClick={e=>{console.log("dsd")}}                                                                      
-
-                                            />
+                                            onClick={_cambiarEstadoActivo}            
+                                                                            />
                                             <label
                                             className="custom-control-label"
                                             htmlFor={props.id_TipoRecurso+"switchActiva"}
-                                            >
-                                
+                                            >                                
                                             </label>
-                                        </div>
-                                    </center>
+                    
 
+                                        </div>
+
+
+                                    )}
+
+                                        
+                                    </center>
                                   {/* fin switch */}
-                                    <br /><br />
-                                    
+                                    <br /><br />                                    
                                     </Col>
                                 </Row>
 
                                 <Row>
                                     <Col md={12}>     
-                                    <label><b>Recursos Elegidos para el Nuevo Tipo Recurso:</b></label>
+                                    <label><b>Recursos para el Nuevo Tipo Recurso:</b></label>
 
                                     { recursoAsignados.length!=0?
                                         <div id="divTablaRecursos">
@@ -347,6 +377,7 @@ const NuevoTipoRecurso = props =>{
                 <div className="modal-footer">
                     <Row>
                         <Col >
+                        {props.isReadOnly?(undefined):(
                         <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
@@ -355,6 +386,7 @@ const NuevoTipoRecurso = props =>{
                              Guardar
                             </Button>
                           </div> 
+                               )} 
                         </Col>
                         <Col>
                             <div className="mt-3">

@@ -6,9 +6,11 @@
         "tipo_recurso_estado":1,
         "recurso":[
           {"id_recurso":1,
-            "nombre_recurso":"Gestión de Usuarios"},
+            "nombre_recurso":"Gestión de Usuarios",
+            "descripcion_recurso":"Descripcion Recurso 1"},
           {"id_recurso":2,
-            "nombre_recurso":"Gestión de Expedientes"}
+            "nombre_recurso":"Gestión de Expedientes",
+            "descripcion_recurso":"Descripcion Recurso 2"}
       ]
     },
     {
@@ -18,9 +20,15 @@
       "tipo_recurso_estado":0,
       "recurso":[
         {"id_recurso":1,
-          "nombre_recurso":"Gestión de Usuarios"},
+          "nombre_recurso":"Gestión de Usuarios",
+          "descripcion_recurso":"Descripcion Recurso 1"},
         {"id_recurso":3,
-          "nombre_recurso":"Nombre Recurso 3"}
+          "nombre_recurso":"Nombre Recurso 3",
+          "descripcion_recurso":"Descripcion Recurso 3"},
+          {"id_recurso":7,
+          "nombre_recurso":"Recurso 7",
+          "descripcion_recurso":"Descripcion Recurso 7"}
+          
     ]
   }
 ]
