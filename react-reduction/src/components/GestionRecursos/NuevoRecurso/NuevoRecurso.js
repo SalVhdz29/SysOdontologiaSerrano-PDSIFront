@@ -10,7 +10,6 @@ import{
     Col
 } from 'reactstrap';
 
-
 import{
     AvForm,
     AvField
@@ -21,7 +20,6 @@ import { columnasTabla } from './Json/columnasTabla';
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
-import Cookies from 'js-cookie';
 
 const NuevoRecurso = props =>{
 
@@ -67,9 +65,7 @@ const NuevoRecurso = props =>{
         setRecursoActivo(!recursoActivo);
     }
 
-    //const _limpiarFormulario =()=>{
-      //  setRolesAsignados([]);
-    }
+
 
     return(
         <Fragment>
@@ -232,4 +228,5 @@ const NuevoRecurso = props =>{
             </Modal>
         </Fragment>
     )
+}
 export default NuevoRecurso;
