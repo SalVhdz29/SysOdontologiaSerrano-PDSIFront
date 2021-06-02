@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 
-import { 
-  Button,
-  TabContent,
-  TabPane,
-  Card,
-  CardBody,
-  CardTitle,
-  Container,
-  Row,
-  Col
-} from "reactstrap"
+import{
+    FormGroup,
+    Button,
+    Modal, 
+    Container,
+    Label,
+    Row,
+    Col
+} from 'reactstrap';
+
 
 import{
     AvForm,
@@ -49,7 +48,7 @@ const NuevoRecurso = props =>{
         envio.tipo="agregarRecursoLista";
 
         await props.cambioDatos(envio);
-        _limpiarFormulario();
+        //_limpiarFormulario();
         setModalOpen(false);
     }
 
@@ -136,53 +135,37 @@ const NuevoRecurso = props =>{
                                         </FormGroup>
                                     </Col>
                                     <Col md={6}>
-                                    <Label><b>Ingrese el Correo Electrónico</b></Label>
+                                    <Label><b>Descripcion del Recurso</b></Label>
                                     <br />
                                             <AvField
-                                                id="correoElectronicoIpx"
-                                                name="correoElectronicoIpx"
-                                                // label="Ingrese Correo Electrónico"
+                                                id="descripcionRecursoIpx"
+                                                name="descripcionRecursoIpx"
+                                                // label="Descripcion del Recurso"
                                                 value=""
                                                 className="form-control"
-                                                placeholder="ej: pablo@correo.com"
+                                                placeholder="Ingrese la descripcion del recurso"
                                                 type="text"
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
-                                                  email: { value: true, errorMessage: "Debe escribir un correo válido"}
                                                 }}
                                             />
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col md={6}>
-                                    <Label><b>Ingrese la Contraseña</b></Label>
+                                    <Label><b>Ruta Recurso</b></Label>
                     
                                             <AvField
-                                                id="contraseniaIpx"
-                                                name="contraseniaIpx"
-                                                // label="Ingrese Correo Electrónico"
+                                                id="rutaRecursoIpx"
+                                                name="rutaRecursoIpx"
+                                                // label="Ruta Recurso"
                                                 value=""
                                                 className="form-control"
-                                                //placeholder="ej: pablo@correo.com"
-                                                type="password"
+                                                placeholder="ej: /ruta_ejemplo_recurso"
+                                                type="text"
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
-                                                  minLength: { value: 8, errorMessage: "La contraseña debe tener mínimo 8 caracteres."}
-                                                }}
-                                            />
-                                    <Label><b>Vuelva a ingresar la contraseña</b></Label>
-
-                                            <AvField
-                                                id="confirmContraseniaIpx"
-                                                name="confirmContraseniaIpx"
-                                                // label="Ingrese Correo Electrónico"
-                                                value=""
-                                                className="form-control"
-                                                //placeholder="ej: pablo@correo.com"
-                                                type="password"
-                                                validate={{
-                                                  required: { value: true, errorMessage: "Obligatorio."},
-                                                  match: { value:'contraseniaIpx', errorMessage: "Las contraseñas no coinciden."}
+                                                  
                                                 }}
                                             />
 
@@ -190,7 +173,7 @@ const NuevoRecurso = props =>{
 
                                     <Col md={6}>
                                     {/* Switch */}
-                                    <Label><b>Estado de usuario</b></Label>
+                                    <Label><b>Activo</b></Label>
                                     <center>
                                         <div
                                             className="custom-control custom-switch custom-switch-md mb-3"
@@ -199,15 +182,15 @@ const NuevoRecurso = props =>{
                                             <input
                                             type="checkbox"
                                             className="custom-control-input"
-                                            id={"nuevoUsuarioSwitch"}
-                                            name={"nuevoUsuarioSwitch"}
-                                            checked={usuarioActivo}
+                                            id={"nuevoRecursoSwitch"}
+                                            name={"nuevoRecursoSwitch"}
+                                            checked={recursoActivo}
                                             onClick={_cambiarEstadoActivo}
 
                                             />
                                             <label
                                             className="custom-control-label"
-                                            htmlFor={"nuevoUsuarioSwitch"}
+                                            htmlFor={"nuevoRecursoSwitch"}
                                             >
                                 
                                             </label>
@@ -216,24 +199,11 @@ const NuevoRecurso = props =>{
 
                                   {/* fin switch */}
                                     <br /><br />
-                                   <EscogerRoles 
-                                        submitRoles={_asignarRoles}
-                                        rolesAsignados={rolesAsignados}
-                                   />
-                                   <p id="errorEscogerRoles" style={{color:'red'}}></p>
+                                   
                                     </Col>
                                 </Row>
 
-                                <Row>
-                                    <Col md={12}>
-                                        { rolesAsignados.length!=0?
-                                        <div id="divTablaRoles">
-                                            <DataTable datosTabla={rolesAsignados} columnasTabla={columnasTabla} />
-                                        </div>:
-                                        undefined
-                                        }
-                                    </Col>
-                                </Row>
+                                
                            
                         </Container>
                 </div>
@@ -245,13 +215,13 @@ const NuevoRecurso = props =>{
                               className="btn btn-primary btn-md w-md"
                               type="submit"
                             >
-                             Guardar
+                             Crear Recurso
                             </Button>
                           </div> 
                         </Col>
                         <Col>
                             <div className="mt-3">
-                            <Button className="btn btn-danger btn-md w-md " onClick={()=>{setModalOpen(false)}}>Cerrar</Button>
+                            <Button className="btn btn-danger btn-md w-md " onClick={()=>{setModalOpen(false)}}>Cancelar</Button>
                             </div>
                         </Col>
                     </Row>
