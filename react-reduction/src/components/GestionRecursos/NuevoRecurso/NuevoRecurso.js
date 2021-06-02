@@ -38,8 +38,8 @@ const NuevoRecurso = props =>{
 
         let valor = {};
         valor.nombre_recurso = nombreRecursoIpx;
-        valor.descripcionRecurso =descripcionRecursoIpx;
-        valor.rutaRecurso = rutaRecursoIpx;
+        valor.descripcion_Recurso =descripcionRecursoIpx;
+        valor.ruta_Recurso = rutaRecursoIpx;
         valor.recurso_activo = recursoActivo;
 
         let envio={valor};
@@ -140,7 +140,7 @@ const NuevoRecurso = props =>{
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Ingrese la descripcion del recurso"
-                                                type="text"
+                                                type="textarea"
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                 }}
