@@ -15,12 +15,12 @@ import {
 import Cookies from 'js-cookie';
 
 //Componentes
-import NuevoRecurso from './NuevoRecurso/NuevoRecurso';
+import NuevoRecurso from '../NuevoRecurso/NuevoRecurso';
 import DataTable from '../../DataTable/DataTable';
-import SwitchRecursoActivo from './switchRecursoActivo/SwitchRecursoActivo';
+import SwitchRecursoActivo from '../SwitchRecursoActivo/SwitchRecursoActivo';
 
 //jsons de prueba
-import listRecursos from './Json/listRecursos.json';
+import listRecursos from '../Json/listRecursos.json';
 
 // Redux
 import { connect } from "react-redux";
@@ -30,10 +30,10 @@ import {
   setListaRecursos,
   setFilasListaRecursosActivos,
   setFilasListaRecursosInactivos
-} from '../../store/actions'
+} from '../../../store/actions'
 
 //columnas -tabla recursos
-import {columnasTablaRecurso} from './Json/columnasTablaRecursos';
+import {columnasTablaRecurso} from '../Json/columnasTablaRecursos';
 
 const GestionRecursos = props =>{
 
@@ -116,7 +116,7 @@ const GestionRecursos = props =>{
                 <SwitchRecursoActivo
                     id_recurso={id_recurso}
                     recurso_activo={recurso_activo}
-                    _cambiosEnRecursos={_cambiosEnRecursos}
+                    cambioEnRecursos={_cambiosEnRecursos}
                 />
             </div>
         );
