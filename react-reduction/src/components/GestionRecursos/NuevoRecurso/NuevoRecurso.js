@@ -27,6 +27,46 @@ const NuevoRecurso = props =>{
 
     const [ recursoActivo, setRecursoActivo ] = useState(false);
 
+    const [ defaultValues, setDefaultValues ]= useState({});
+
+        //CICLO DE VIDA
+        useEffect(()=>{
+
+            if(props.isReadOnly == true || props.isEditable == true)
+            {
+                //console.log("El default Value: ", props.defaultValue);
+                _setDefaultValue();
+            }
+    
+        },[props.defaultValue])
+    
+        //FIN CICLO DE VIDA
+
+        //Función que da valores por defecto a los campos en el formulario.
+        const _setDefaultValue=()=>{
+            let nombreRecursoIpx="";
+            let descripcionRecursoIpx = "";
+            let {nombreRecurso, descripcionRecurso, recursoActivo} = props.defaultValue;
+            // console.log("default Value", props.defaultValue)
+            if(nombreRecurso){
+                nombreRecursoIpx = nombreRecurso;
+            }
+            if(descripcionRecurso)
+            {
+                descripcionRecursoIpx = descripcionRecurso;
+            }
+            if(recursoActivo)
+            {
+                setRecursoActivo(recursoActivo);
+            }
+
+            setDefaultValues({nombreRecursoIpx, descripcionRecursoIpx});
+        }
+
+
+
+
+
     const _registrarRecurso=async(valor_inputs)=>{
         console.log("el valor obtenido", valor_inputs);
 
@@ -41,14 +81,29 @@ const NuevoRecurso = props =>{
         valor.descripcion_Recurso =descripcionRecursoIpx;
         valor.ruta_Recurso = rutaRecursoIpx;
         valor.recurso_activo = recursoActivo;
+        let tipo="";
+                        if(props.isEditable)
+                        {
+                            valor.id_recurso = props.defaultValue.idRecurso;
+                            tipo="editarRecursoLista";
+                        }
+                        else
+                        {
+                            tipo="agregarRecursoLista";
+                        }
+                    //let envio={tipo, valor};
 
-        let envio={valor};
+        let envio={tipo, valor};
         envio.tipo="agregarRecursoLista";
 
         await props.cambioDatos(envio);
         //_limpiarFormulario();
         setModalOpen(false);
     }
+
+
+
+    //
 
     const _validacionEjemplo=(value, ctx, input, cb) =>{
         if("palabra" == value)
@@ -71,12 +126,18 @@ const NuevoRecurso = props =>{
         <Fragment>
             {/* <FormGroup className="float-right"> */}
             <FormGroup>
-                <Button 
-                    className="btn btn-success"
+            <Button 
+                    className={props.classNames?(props.classNames):("btn btn-success ")}
                     onClick={()=>{setModalOpen(true)}}
 
                 >
-                    Nuevo Recurso
+                    {props.mensajeBoton!=undefined?(
+                        props.mensajeBoton
+                    ):(
+                        "Nuevo Recurso"
+                        )
+                    }
+                   
                 </Button>
             </FormGroup>
 
@@ -107,6 +168,7 @@ const NuevoRecurso = props =>{
                 </div>
                 <AvForm
                     onValidSubmit={(e,v)=>{_registrarRecurso(v)}}
+                    model={defaultValues}
                 >
                 <div className="modal-body">
                         <Container fluid={true}>
@@ -123,6 +185,7 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="ej: salher"
                                                 type="text"
+                                                disable={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
@@ -141,6 +204,7 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="Ingrese la descripcion del recurso"
                                                 type="textarea"
+                                                disable={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                 }}
@@ -159,6 +223,7 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="ej: /ruta_ejemplo_recurso"
                                                 type="text"
+                                                disable={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   
@@ -182,6 +247,7 @@ const NuevoRecurso = props =>{
                                             name={"nuevoRecursoSwitch"}
                                             checked={recursoActivo}
                                             onClick={_cambiarEstadoActivo}
+                                            disabled={props.isReadOnly?true:false}
 
                                             />
                                             <label
@@ -195,6 +261,7 @@ const NuevoRecurso = props =>{
 
                                   {/* fin switch */}
                                     <br /><br />
+
                                    
                                     </Col>
                                 </Row>
