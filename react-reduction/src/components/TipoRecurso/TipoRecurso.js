@@ -53,7 +53,7 @@ const TipoRecurso = props =>{
   },[])
 
   useEffect(()=>{
-         console.log("vino aqui");
+       //  console.log("vino aqui");
     setListaTipoRecurso(props.state.listaTipoRecurso);
     let result =  _crearFilasListaTipoRecurso();
   },[props.state.listaTipoRecurso]) //detecta cambios en la lista de tiporecurso en el reducer y vuelve a formar las filas.
@@ -277,7 +277,7 @@ const _cambiarActivoJsonTipoRecurso=(tipo_recurso_id)=>{
 
     let n_recurso = [];
     nuevo_tipo_recurso.recurso.map(recurso_it=>{
-        let recurso = {tipo_recurso_id:recurso_it.tipo_recurso_id, tipo_recurso_nombre:recurso_it.tipo_recurso_nombre};
+        let recurso = {id_recurso:recurso_it.id_recurso, nombre_recurso:recurso_it.nombre_recurso,descripcion_recurso:recurso_it.descripcion_recurso};
         n_recurso.push(recurso);
     });
 
@@ -309,10 +309,13 @@ const _cambiarActivoJsonTipoRecurso=(tipo_recurso_id)=>{
               TipoRecurso.tipo_recurso_estado = tipo_recurso_actualizar.tipo_recurso_estado;
       
               let n_recurso = [];
+              console.log("ACTUALIZAR: ",tipo_recurso_actualizar);
+              
               tipo_recurso_actualizar.recurso.map(recurso_it=>{
-                  let recurso = {tipo_recurso_id:recurso_it.tipo_recurso_id, tipo_recurso_nombre:recurso_it.tipo_recurso_nombre};
-                  n_recurso.push(recurso);
+                let recurso = {id_recurso:recurso_it.id_recurso, nombre_recurso:recurso_it.nombre_recurso,descripcion_recurso:recurso_it.descripcion_recurso};
+                n_recurso.push(recurso);
               });
+              console.log("N_RECURSO: ",n_recurso);
       
               TipoRecurso.recurso=n_recurso;
           }
@@ -370,7 +373,7 @@ const mapStateToProps = reducers => {
 
 const mapDispatchToProps = dispatch =>{
     return{
-        //setTipoRecurso: (datos) =>dispatch(setListaTipoRecurso(datos)),
+        setTipoRecurso: (datos) =>dispatch(setListaTipoRecurso(datos)),
         setListaTipoRecurso: (datos) =>dispatch(setListaTipoRecurso(datos)),
         setListaRecurso: (datos) =>dispatch(setListaRecurso(datos)),
         setFilasListaTipoRecursoActivos: (datos) =>dispatch(setFilasListaTipoRecursoActivos(datos)),

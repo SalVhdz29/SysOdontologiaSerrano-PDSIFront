@@ -33,6 +33,9 @@ const NuevoTipoRecurso = props =>{
 
   //  const [ Recurso, setRecurso ] = useState([]);
 
+//const [ TipoRecursoActivo, setTipoRecursoActivo ] = useState(false);
+  
+
   const [ activo, setActivo ] = useState(false);
 
     const [ recursoAsignados, setRecursoAsignados ] = useState([]);
@@ -106,20 +109,20 @@ const NuevoTipoRecurso = props =>{
             //console.log("el valor obtenido", valor_inputs);
 
             let { nombreTipoRecursoIpx,
-                    descripcionTipoRecursoIpx,
-                    estadoTipoRecursoIpx,
+                    descripcionTipoRecursoIpx
                     } = valor_inputs;
 
             let valor = {};
             valor.tipo_recurso_nombre = nombreTipoRecursoIpx;
             valor.tipo_recurso_descripcion =descripcionTipoRecursoIpx;
-            valor.tipo_recurso_estado = estadoTipoRecursoIpx;
+            valor.tipo_recurso_estado = estadoTipoRecurso;
             valor.recurso=recursoAsignados;
+           // console.log("valor.recurso =", valor.recurso)
 
             let tipo="";
             if(props.isEditable)
                         {
-                            valor.id_TipoRecurso = props.defaultValue.idTipoRecurso;
+                            valor.tipo_recurso_id = props.defaultValue.idTipoRecurso;
                             tipo="editarTipoRecursoLista";
                         }
                         else
@@ -159,6 +162,7 @@ const NuevoTipoRecurso = props =>{
 
     const _cambiarEstadoActivo = ()=>
     {
+      // console.log("estadotipo-Z: ",estadoTipoRecurso);
         setTipoRecursoActivo(!estadoTipoRecurso);
     }
 
@@ -301,53 +305,29 @@ const NuevoTipoRecurso = props =>{
                                     
                                     {/* Verificando Estado Activo */}
                                     <center>
-                                    {props.activo?
-                                   ( 
+
                                     <div
-                                    className="custom-control custom-switch custom-switch-md mb-3"
-                                    dir="ltr">
-                                    <input
-                                    type="checkbox"
-                                    className="custom-control-input"
-                                    id={props.id_TipoRecurso+"switchActiva"}
-                                    name={props.id_TipoRecurso+"switchActiva"}
-                                    checked                                                                     
-                                    disabled={props.isReadOnly?true:false}
-                                    onClick={_cambiarEstadoActivo}
-                                                                        />
-                                    <label
-                                    className="custom-control-label"
-                                    htmlFor={props.id_TipoRecurso+"switchActiva"}
-                                    >                                
-                                    </label>
-                                   
-                                </div>
-
-
-                                   )
-                                    :(
-                                        <div
                                             className="custom-control custom-switch custom-switch-md mb-3"
-                                            dir="ltr">
+                                            dir="ltr"
+                                        >
                                             <input
                                             type="checkbox"
                                             className="custom-control-input"
-                                            id={props.id_TipoRecurso+"switchActiva"}
-                                            name={props.id_TipoRecurso+"switchActiva"}                                                                                                                      
+                                            id={"nuevoTipoRecursoSwitch"}
+                                            name={"nuevoTipoRecursoSwitch"}
+                                            checked={estadoTipoRecurso}
+                                            onChange={_cambiarEstadoActivo}
                                             disabled={props.isReadOnly?true:false}
-                                            onClick={_cambiarEstadoActivo}            
-                                                                            />
+
+                                            />
                                             <label
                                             className="custom-control-label"
-                                            htmlFor={props.id_TipoRecurso+"switchActiva"}
-                                            >                                
+                                            htmlFor={"nuevoTipoRecursoSwitch"}
+                                            >
+                                
                                             </label>
-                    
-
                                         </div>
 
-
-                                    )}
 
                                         
                                     </center>

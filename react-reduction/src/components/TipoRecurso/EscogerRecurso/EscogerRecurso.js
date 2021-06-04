@@ -18,12 +18,21 @@ import{
 
 //Jsons
 import listRecursoJson from './Json/listRecurso.json';
-//import { columnasTabla } from './Json/columnasTabla';
+import { columnasTabla } from './Json/columnasTabla';
 
 
 //componente
-//import DataTable from '../../DataTable/DataTable';
+import DataTable from '../../DataTable/DataTable2';
 
+const selectRow = {
+    mode: 'checkbox',
+    className: 'Avcheckbox',
+    onSelect: (row, isSelect, rowIndex, e) => {
+      // ...
+    }
+  };
+
+  
 const EscogerRecurso = props =>{
 
     const [modalRecursoOpen, setModalRecursoOpen] = useState(false);
@@ -46,7 +55,8 @@ const EscogerRecurso = props =>{
     useEffect(()=>{
         //console.log("longitud >> ",listaRecurso.length)
         if(listaRecurso.length != 0)
-        {
+        {  
+           
             _setearRecurso();
         }
     },[props.recursoAsignados, listaRecurso])
@@ -65,6 +75,7 @@ const EscogerRecurso = props =>{
         let recurso_marcados=[]; 
         recurso_marcados = recurso.filter((recurso)=> recurso.marcado == true );
         props.submitRecurso(recurso_marcados)
+        
         setModalRecursoOpen(false);
     }
 
@@ -130,17 +141,18 @@ const EscogerRecurso = props =>{
 
 
 
-
-
     return(
         <Fragment>
+            
             {/* <FormGroup className="float-right"> */}
             <FormGroup>
                 <Button 
                     id="gestionRecursobtn"
                     name="gestionRecursobtn"
                     className="btn btn-dark btn-md btn-block"
-                    onClick={()=>{setModalRecursoOpen(true)}}
+                    onClick={()=>{
+                        setModalRecursoOpen(true)                      
+                    }}
                 >
                     Elegir Recurso
                 </Button>
@@ -156,6 +168,7 @@ const EscogerRecurso = props =>{
                 }}
                 centered={true}
             >
+                
                 <div className="modal-header">
                     <h4 className="modal-title mt-0"><b>Escoger Recursos Para el Nuevo Tipo Recurso</b></h4>
                     <button
@@ -174,27 +187,34 @@ const EscogerRecurso = props =>{
                 <div className="modal-body">
                         <Container fluid={true}>
                             <Row>                                
-                                <Label for="checkboxExample"><b>Nota:</b> los recursos que escoja Cambiarán su modulo por el nuevo</Label>
+                                <Label for="checkboxExample"><b>Nota:</b> Los recursos Activos que seleccione Cambiarán su modulo por el nuevo.</Label>
                             </Row>
                             <Row>
+                                
                                 <Col md={12}>
                                 <AvCheckboxGroup  name="RecursoEscogidosCbx"         
-                                validate={{ required: { value: true, errorMessage: "Debe elegir al menos un Recurso."},
+                                //validate={{ required: { value: true, errorMessage: "Debe elegir al menos un Recurso."},
                                             //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
-                                                              }}>
+                                                   //           }}
+                                                              >
                                     <Row>
-                                    <table className="table table-striped">
+                                   
+                                    <table id ="table" className="table table-striped">
                                     {
                                         listaRecurso.length != 0?
                                         (                                              
-                                                    listaRecurso.map((recurso,key) =>{
+                                                    recurso.map((recurso,key) =>{
                                                         return(
                                                         //<Col md={20} style={checkBoxStyle} key={key}>
-                                                                  <tr>
-                                                                    <td>
-   
-                                                        <AvCheckbox 
-                                                            label={recurso.nombre_recurso} 
+                                                          
+                                                         
+                                                        recurso.estado_recurso?
+                                                        (
+
+                                                            <tr>
+                                                            <td style={checkBoxStyle} key={key}>
+                                                            <AvCheckbox 
+                                                            label={recurso.nombre_recurso}                                                            
                                                             value={recurso.id_recurso}       
                                                             checked={recurso.marcado}                                                      
                                                             key={key}
@@ -205,12 +225,14 @@ const EscogerRecurso = props =>{
                                                         />
                                                                   </td> <td>
                                                             <label>{recurso.descripcion_recurso} </label>
-                                                            </td>                                <td>
-                                                            <label>{recurso.estado_recurso} </label>
-                                                            </td>                                
+                                                            </td>                         
                                                          
                                                         
                                                                 </tr>
+
+                                                        )
+                                                        :undefined
+                                                       
 
                                                        // </Col>
                                                 
@@ -225,6 +247,8 @@ const EscogerRecurso = props =>{
                                 </Row>
                                 </AvCheckboxGroup>
                                 </Col>
+
+
              
                             </Row>
                         </Container>
