@@ -1,11 +1,11 @@
 export const ColumnasTablaRol =[
-    {
-        text: "Rol",
-        dataField: "nombre_rol",
+      {
+        text: "Id",
+        dataField: "id_rol",
       },
       {
-        text: "Id Rol",
-        dataField: "id_rol",
+        text: "Rol",
+        dataField: "nombre_rol",
       },
       {
         text: "Descripcion",
@@ -17,7 +17,11 @@ export const ColumnasTablaRol =[
       },
       {
         text: "Activo",
-        dataField: "estado_rol",
+        dataField: "rol_activo",
+      },
+      {
+        text: "Permisos",
+        dataField: "permisos",
       },
       {
         text: "Operaciones",

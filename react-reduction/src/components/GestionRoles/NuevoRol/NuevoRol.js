@@ -1,5 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react'; 
 
+//Librerias
+import request from 'superagent';
+
 import{ 
     FormGroup, 
     Button, 
@@ -16,27 +19,174 @@ import{
 } from 'availity-reactstrap-validation' 
 
 //Componentes
-import SwitchRol from '../SwitchRol/SwitchRol';
-import BotonGuardar from './BotonGuardar';
-import BotonCerrar from './BotonCerrar';
+import DataTable from '../../DataTable/DataTable';
+import EscogerPermisos from '../EscogerPermisos/EscogerPermisos';
+
+//Json
+import {columnasTabla} from './Json/ColumnasTabla';
 
 
 const NuevoRol = props =>{ 
  
     const [modalOpen, setModalOpen ]= useState(false); 
+
+    const [ permisosAsignados, setPermisosAsignados ] = useState([]);
+
+    const [optionsRoles, setOptionsRoles ] = useState([]);
+
+    const [ rolActivo, setRolActivo ] = useState(false);
+
+    const [errorPermisos, setErrorPermisos] = useState("");
+
+    const [ defaultValues, setDefaultValues ]= useState({});
+
+    //CICLO DE VIDA
+    useEffect(()=>{
+
+        if(props.isReadOnly == true || props.isEditable == true)
+        {
+            //console.log("El default Value: ", props.defaultValue);
+            _setDefaultValue();
+        }
+
+    },[props.defaultValue])
+
+
+    useEffect(()=>{
+        if(props.listaRoles != undefined && props.listaRoles != null)
+        {
+            _formarOptionsRoles();
+        }
+        
+    },[props.listaRoles])
+    //FIN CICLO DE VIDA
  
+    //Función que da valores por defecto a los campos en el formulario.
+    const _setDefaultValue=()=>{
+        let nombreRolIpx="";
+        let descripcionRolIpx = "";
+        let {nombreRol, descripcionRol, rolActivo, permisos} = props.defaultValue;
+        // console.log("default Value", props.defaultValue)
+        if(nombreRol){
+            nombreRolIpx = nombreRol;
+        }
+        if(descripcionRol)
+        {
+            descripcionRolIpx = descripcionRol;
+        }
+        if(rolActivo)
+        {
+            setRolActivo(rolActivo);
+        }
+        if(permisos)
+        {
+            //console.log("vine: ",permisos);
+            let permisos_asig = [];
+            permisos.map(permiso=>{
+                let permiso_pivote={...permiso};
+                permiso_pivote.marcado=true;
+                permisos_asig.push(permiso_pivote);
+
+            })
+            setPermisosAsignados(permisos_asig);
+        }
+
+        setDefaultValues({nombreRolIpx, descripcionRolIpx});
+    }
+
+    const _registrarRol=async(valor_inputs)=>{
+        //console.log("el valor obtenido", valor_inputs);
+            if(permisosAsignados.length!=0)
+            {
+
+                let { nombreRolIpx,
+                    descripcionRolIpx} = valor_inputs;
+                    
+                    //console.log("los permisos", permisosAsignados);
+                    let valor = {};
+                    valor.nombre_rol = nombreRolIpx;
+                    valor.descripcion_rol =descripcionRolIpx;
+                    valor.rol_activo = rolActivo;
+                    valor.permisos=permisosAsignados;
+                    let tipo="";
+                    if(props.isEditable)
+                    {
+                        valor.id_rol = props.defaultValue.idRol;
+                        tipo="editarRolLista";
+                    }
+                    else
+                    {
+                        tipo="agregarRolLista";
+                    }
+
+                let envio={tipo,valor};
+               
+
+                await props.cambioDatos(envio);
+                _limpiarFormulario();
+                setModalOpen(false);
+            }
+            else{
+                setErrorPermisos("Debe escoger al menos un permiso para este rol.");
+            }
+    }
+
+    const _asignarPermisos = (permisos) =>{
+
+        //console.log("lo que recibe: ",permisos);
+        
+        setPermisosAsignados(permisos);
+        if(permisos.length!=0)
+        {
+            setErrorPermisos("");
+        }
+    }
+
+    const _cambiarEstadoActivo = ()=>
+    {
+        setRolActivo(!rolActivo);
+    }
+
+    const _formarOptionsRoles = ()=>{
+
+        let options_roles=[];
+        let default_option={};
+    
+        default_option={label:"Seleccione un rol", value:0};
+        
+    
+        options_roles.push(default_option);
+        props.listaRoles.map(rol_it =>{
+            let option={
+                label: rol_it.nombre_rol,
+                value: rol_it.id_rol
+            };
+
+            options_roles.push(option);
+        })
+       
+        setOptionsRoles(options_roles);
+    }
+
+    const _limpiarFormulario =()=>{
+        setPermisosAsignados([]);
+    }
+
     return( 
         <Fragment> 
             {/* <FormGroup className="float-right"> */} 
-            <FormGroup> 
                 <Button  
                     className="btn btn-success" 
                     onClick={()=>{setModalOpen(true)}} 
  
                 > 
-                    Nuevo Rol 
+                    {props.mensajeBoton!=undefined?(
+                        props.mensajeBoton
+                    ):(
+                        "Nuevo Rol"
+                        )
+                    }
                 </Button> 
-            </FormGroup> 
  
             <Modal 
                 size="lg" 
@@ -61,9 +211,14 @@ const NuevoRol = props =>{
                     </button> 
  
                 </div> 
+
+                <AvForm 
+                            onValidSubmit={(e,v)=>{_registrarRol(v)}}
+                            model={defaultValues}
+                            > 
                 <div className="modal-body"> 
                         <Container fluid={true}> 
-                            <AvForm> 
+                            
                                 <Row> 
                                     <Col md={6}> 
                                         <FormGroup> 
@@ -71,20 +226,42 @@ const NuevoRol = props =>{
                                             <AvField 
                                                 id="nombreRolIpx" 
                                                 name="nombreRolIpx" 
-                                                label="Ingrese Nombre de Rol" 
                                                 value="" 
                                                 className="form-control" 
                                                 placeholder="Ingrese rol" 
                                                 type="text" 
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{ 
-                                                  required: { valued: true, errorMessage: "Obligatorio."} 
+                                                  required: { value: true, errorMessage: "Obligatorio."} 
                                                 }} 
                                             />         
                                         </FormGroup> 
-                                    </Col>
-                                    <Col className="text-center text-md-right">
-                                        <label>Rol Activo:</label>
-                                        <SwitchRol/> 
+                                    </Col>  
+                                    <Col md = {6}>
+                                        {/*switch*/}
+                                        <center><Label><b>Rol Activo:</b></Label></center>
+                                        <center>
+                                        <div
+                                            className="custom-control custom-switch custom-switch-md mb-3"
+                                            dir="ltr"
+                                        >
+                                            <input
+                                            type="checkbox"
+                                            className="custom-control-input"
+                                            id={"nuevoRolSwitch"}
+                                            name={"nuevoRolSwitch"}
+                                            checked={rolActivo}
+                                            onClick={_cambiarEstadoActivo}
+                                            disabled={props.isReadOnly?true:false}
+                                            />
+                                            <label
+                                            className="custom-control-label"
+                                            htmlFor={"nuevoRolSwitch"}
+                                            >
+                                
+                                            </label>
+                                        </div>
+                                        </center>
                                     </Col>  
                                 </Row>
                                 <Row>
@@ -94,37 +271,65 @@ const NuevoRol = props =>{
                                             <AvField 
                                                 id="descripcionRolIpx" 
                                                 name="descripcionRolIpx" 
-                                                label="Ingrese Descripcion del Rol" 
                                                 value="" 
                                                 className="form-control" 
                                                 placeholder="Ingrese descripcion" 
                                                 type="text" 
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{ 
-                                                  required: { valued: true, errorMessage: "Obligatorio."} 
+                                                  required: { value: true, errorMessage: "Obligatorio."} 
                                                 }} 
                                             /> 
                                         </FormGroup> 
-                                    </Col> 
+                                    </Col>
+                                    <Col>
+                                    <br /><br />
+                                    {props.isReadOnly!=true?(
+                                    <>
+                                   <EscogerPermisos 
+                                        submitPermisos={_asignarPermisos} 
+                                        permisosAsignados={permisosAsignados}
+                                   />
+                                   <p id="errorEscogerPermisos" style={{color:'red'}}>{errorPermisos}</p>
+                                   </>
+                                   ):(undefined)}
+                                    </Col>
                                 </Row>
-                                <div>
                                 <Row>
-                                <Col className="text-center text-md-right">
-                                    <BotonGuardar/>
-                                </Col> 
-                                <Col className="text-center text-md-right">
-                                    <BotonCerrar
-                                    type = "button" 
-                                    onClick={() => {setModalOpen(false)}} 
-                                    className="close" 
-                                    data-dismiss="modal" 
-                                    aria-label="Close"  />
-                                </Col> 
+                                    <Col md={12}>
+                                        { permisosAsignados.length!=0?
+                                        <div id="divTablaPermisos">
+                                            <DataTable datosTabla={permisosAsignados} columnasTabla={columnasTabla} />
+                                        </div>:
+                                        undefined
+                                        }
+                                    </Col>
+                                </Row>                              
+                                </Container>
+                                </div>
+                                <div className="modal-footer">
+                                <Row>
+                                <Col >
+                                    {props.isReadOnly?(undefined):(
+                                    <div className="mt-3">
+                                    <Button
+                                        className="btn btn-secondary btn-md w-md"
+                                        type="submit"
+                                        color = "success"
+                                    >
+                                    Guardar
+                                    </Button>
+                                </div>
+                                    )} 
+                                </Col>
+                                <Col>
+                                    <div className="mt-3">
+                                    <Button className="btn btn-danger btn-md w-md " color="danger" onClick={()=>{setModalOpen(false)}}>Cerrar</Button>
+                                    </div>
+                                </Col>
                                 </Row>
-                                </div> 
-                            </AvForm> 
-                        </Container> 
-                </div> 
- 
+                                </div>            
+                </AvForm> 
  
             </Modal> 
         </Fragment> 

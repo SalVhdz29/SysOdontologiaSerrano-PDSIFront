@@ -1,0 +1,26 @@
+[
+    {
+        "id_rol":1,
+        "nombre_rol":"Gestion de usuarios"
+    },
+    {
+        "id_rol":2,
+        "nombre_rol":"Gestion de roles"
+    },
+    {
+        "id_rol":3,
+        "nombre_rol":"Gestion de expedientes"
+    },
+    {
+        "id_rol":4,
+        "nombre_rol":"Gestion de fichas clinicas"
+    },
+    {
+        "id_rol":5,
+        "nombre_rol":"Gestion de transacciones"
+    },
+    {
+        "id_rol":6,
+        "nombre_rol":"Gestion de insumos"
+    }
+ ]

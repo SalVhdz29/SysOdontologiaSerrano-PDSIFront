@@ -1,0 +1,30 @@
+[
+    {
+        "id_usuario":1,
+        "nombre_usuario":"Permiso 1"
+    },
+    {
+        "id_usuario":2,
+        "nombre_usuario":"Permiso 2"
+    },
+    {
+        "id_usuario":3,
+        "nombre_usuario":"Permiso 3"
+    },
+    {
+     "id_usuario":4,
+     "nombre_usuario":"Permiso 4"
+     },
+     {
+         "id_usuario":5,
+         "nombre_usuario":"Permiso 5"
+     },
+     {
+         "id_usuario":6,
+         "nombre_usuario":"Permiso 6"
+     },
+     {
+         "id_usuario":7,
+         "nombre_usuario":"Permiso 7"
+     }
+ ]
