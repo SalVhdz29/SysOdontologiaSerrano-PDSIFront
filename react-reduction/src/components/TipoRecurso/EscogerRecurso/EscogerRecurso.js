@@ -22,7 +22,7 @@ import { columnasTabla } from './Json/columnasTabla';
 
 
 //componente
-import DataTable from '../../DataTable/DataTable2';
+import DataTable from '../../DataTable/DataTable';
 
 const selectRow = {
     mode: 'checkbox',
