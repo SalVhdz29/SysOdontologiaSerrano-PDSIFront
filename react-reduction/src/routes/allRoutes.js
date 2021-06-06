@@ -20,7 +20,8 @@ import TypographyPage from 'pages/TypographyPage';
 import WidgetPage from 'pages/WidgetPage';
 import BasePage from '../components/BasePage/BasePage';
 import Expediente from '../components/Expediente/';
-import nuevoExpediente from '../components/Expediente/nuevoExpediente';
+import NuevoExpediente from '../components/Expediente/NuevoExpediente';
+
 
 const userRoutes =[
     {path:"/", component: DashboardPage},
@@ -41,7 +42,8 @@ const userRoutes =[
     {path:"/WidgetPage", component: WidgetPage},
     {path:"/BasePage", component:BasePage },
     {path:"/Expediente", component:Expediente },
-    {path:"/nuevoExpediente", component:nuevoExpediente },
+    {path:"/NuevoExpediente", component:NuevoExpediente },
+    
 ];
 
 const authRoutes=[

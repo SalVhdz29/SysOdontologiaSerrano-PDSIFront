@@ -22,5 +22,9 @@ export const columnasTabla = [
   {
     text: "Ultima Cita",
     dataField: "ultima_fecha",
+  },
+  {
+    text: "Operaciones",
+    dataField: "operaciones",
   }
 ];
