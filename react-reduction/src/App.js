@@ -47,7 +47,8 @@ const App=props=>{
                   path={route.path}
                   layout={MainLayout}
                   component={route.component}
-                  isAuthProtected={false}
+                  key={idx}
+                  isAuthProtected={true}
                   exact
 
               />

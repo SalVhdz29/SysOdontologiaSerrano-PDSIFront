@@ -17,6 +17,9 @@ import { FaEye, FaPencilAlt } from 'react-icons/fa';
 import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
 //Componentes
 import NuevoUsuario from './NuevoUsuario/NuevoUsuario';
 import DataTable from '../DataTable/DataTable';
@@ -26,6 +29,13 @@ import SwitchUsuarioActivo from './switchUsuarioActivo/SwitchUsuarioActivo';
 import listUsuarios from './Json/listUsuarios.json';
 import listEmpleados from './Json/listEmpleados.json';
 import listRoles from './Json/listRoles.json';
+
+//apiTypes
+import {
+    API_LISTA_USUARIO_REGISTRADOS,
+    API_LISTA_USUARIO_ROLES,
+    API_LISTA_EMPLEADOS_ACTIVOS
+} from '../../api/apiTypes';
 
 // Redux
 import { connect } from "react-redux";
@@ -73,20 +83,68 @@ const GestionUsuarios = props =>{
     //Fin ciclo de vida
 
     //Función que simula la inicialización de servicios.
-    const _obtenerServicios=async(listaUsuarios, listaEmpleados,listaRoles)=>{
+    const _obtenerServicios=async(listUsuarios, listaEmpleados,listaRoles)=>{
         /* simulando la llamada a un servicio */
         //console.log("valor del JSON en el llamado: ", listaUsuarios);
-       
-        await props.setListaEmpleados(listaEmpleados);
-        await props.setListaRoles(listaRoles);
-        await props.setListaUsuarios(listaUsuarios);
+        let token= Cookies.get('token');
+
+        
+        let respuesta_empleados = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_EMPLEADOS_ACTIVOS)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+    
+        console.log("la respuesta: ", respuesta_empleados.body);
+
+        await props.setListaEmpleados(respuesta_empleados.body);
+
+        
+        let respuesta_roles = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_USUARIO_ROLES)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+    
+        console.log("la respuesta: ", respuesta_roles.body);
+
+
+        await props.setListaRoles(respuesta_roles.body);
+
+        let respuesta_usuarios = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_USUARIO_REGISTRADOS)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+        //let {lista_usuarios} = respuesta_usuarios.body;
+        console.log("la respuesta: ", respuesta_usuarios.body);
+ 
+        //await props.setListaUsuarios(listaUsuarios);
+        await props.setListaUsuarios(respuesta_usuarios.body);
         
        
     }
     //Función que llama a los usuarios en el servidor.
-    const _obtenerUsuarios = async(listaUsuarios) =>{
+    const _obtenerUsuarios = async() =>{
         //console.log("valor del JSON en el llamado: ", listaUsuarios);
-        await props.setListaUsuarios(listaUsuarios);
+        let token= Cookies.get('token');
+
+        let respuesta_usuarios = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_USUARIO_REGISTRADOS)
+                .set('Accept', 'application/json')
+                .set("Authorization", "Bearer " + token);
+        //let {lista_usuarios} = respuesta_usuarios.body;
+        console.log("la respuesta: ", respuesta_usuarios.body);
+
+        //await props.setListaUsuarios(listaUsuarios);
+        await props.setListaUsuarios(respuesta_usuarios.body);
+ 
+    }
+
+    //Funcion que llama a los empleados activos sin usuario en el servidor.
+    const _obtenerEmpleados = async() =>{
+        let token= Cookies.get('token');
+
+        let respuesta_empleados = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_EMPLEADOS_ACTIVOS)
+        .set('Accept', 'application/json')
+        .set("Authorization", "Bearer " + token);
+
+        console.log("la respuesta: ", respuesta_empleados.body);
+
+        await props.setListaEmpleados(respuesta_empleados.body);
     }
 
     //Función que sirve de puerto en cambios obtenidos por componentes hijos.
@@ -94,9 +152,12 @@ const GestionUsuarios = props =>{
         //console.log("vino al cambio usuarios con: ", tipo);
         switch(tipo){
             case 'actualizarListaUsuarios':
-                   let nuevas_filas= _cambiarActivoJsonUsuarios(valor.id_usuario);
+                   //let nuevas_filas= _cambiarActivoJsonUsuarios(valor.id_usuario);
                     //console.log("volvio");
-                    _obtenerUsuarios(nuevas_filas);
+                    _obtenerUsuarios();
+                break;
+            case 'actualizarListaEmpleados':
+                _obtenerEmpleados();
                 break;
             case 'agregarUsuarioLista':
                     let nueva_lista =_agregarUsuarioALista(valor);
@@ -120,87 +181,92 @@ const GestionUsuarios = props =>{
         //console.log("detecto el cambio");
 
         let filas=[];
+        if(props.state.listaUsuarios.length != 0)
+        {
 
-        props.state.listaUsuarios.map(usuario=>{
+       
+            props.state.listaUsuarios.map(usuario=>{
 
-            let {id_usuario,
-                nombre_usuario, 
-                id_f_empleado, 
-                nombre_empleado, 
-                correo_electronico, 
-                fecha_creacion, 
-                usuario_activo,
-                roles } = usuario;
+                let {id_usuario,
+                    nombre_usuario, 
+                    id_f_empleado, 
+                    nombre_empleado, 
+                    correo_electronico, 
+                    fecha_creacion, 
+                    usuario_activo,
+                    roles } = usuario;
 
-                if(usuario_activo == 1)
-                {
-                    usuario_activo=true;
-                }
-                else{
-                    usuario_activo=false;
-                }
-
-
-            let fila ={};
-            fila.id_usuario = id_usuario;
-            fila.nombre_usuario=nombre_usuario;
-            //fila.id_empleado = id_f_empleado;
-            fila.nombre_empleado= nombre_empleado;
-            fila.correo_electronico = correo_electronico;
-            fila.fecha_creacion = fecha_creacion;
-
-            // fila.
-            fila.roles=(
-                <ul>
-                    {roles.map(rol => {
-                        return(
-                      <li>{rol.nombre_usuario}</li>
-                      )
-                    })
+                    if(usuario_activo == 1)
+                    {
+                        usuario_activo=true;
+                    }
+                    else{
+                        usuario_activo=false;
                     }
 
-                </ul>
-            )
 
-            fila.usuario_activo = (
-                <div>
-                    <SwitchUsuarioActivo
-                        id_usuario={id_usuario}
-                        usuario_activo={usuario_activo}
-                        cambioEnUsuarios={_cambiosEnUsuarios}
+                let fila ={};
+                fila.id_usuario = id_usuario;
+                fila.nombre_usuario=nombre_usuario;
+                //fila.id_empleado = id_f_empleado;
+                fila.nombre_empleado= nombre_empleado;
+                fila.correo_electronico = correo_electronico;
+                fila.fecha_creacion = fecha_creacion;
+
+                // fila.
+                fila.roles=(
+                    <ul>
+                        {roles.map(rol => {
+                            return(
+                        <li>{rol.nombre_usuario}</li>
+                        )
+                        })
+                        }
+
+                    </ul>
+                )
+
+                fila.usuario_activo = (
+                    <div>
+                        <SwitchUsuarioActivo
+                            id_usuario={id_usuario}
+                            usuario_activo={usuario_activo}
+                            cambioEnUsuarios={_cambiosEnUsuarios}
+                        />
+                    </div>
+                );
+                fila.operaciones="Coming soon";
+                    let defaultValues={
+                        idUsuario:id_usuario,
+                        nombreUsuario: nombre_usuario,
+                        empleado:{label:nombre_empleado, value:id_f_empleado},
+                        correoElectronico: correo_electronico,
+                        usuarioActivo: usuario_activo,
+                        roles:roles
+                    }
+                fila.operaciones=(
+                    < FormGroup>
+
+                    <NuevoUsuario
+                        isReadOnly={true}
+                        defaultValue={defaultValues}
+                        classNames={"btn-success btn-sm "}
+                        mensajeBoton={<FaEye />}
+                    />{' '}
+                    <NuevoUsuario 
+                        defaultValue={defaultValues}
+                        classNames={"btn-danger btn-sm "}
+                        mensajeBoton={<FaPencilAlt />}
+                        isEditable={true}
+                        cambioDatos={_cambiosEnUsuarios}
                     />
-                </div>
-            );
-            fila.operaciones="Coming soon";
-                let defaultValues={
-                    idUsuario:id_usuario,
-                    nombreUsuario: nombre_usuario,
-                    empleado:{label:nombre_empleado, value:id_f_empleado},
-                    correoElectronico: correo_electronico,
-                    usuarioActivo: usuario_activo,
-                    roles:roles
-                }
-            fila.operaciones=(
-                < FormGroup>
 
-                <NuevoUsuario
-                    isReadOnly={true}
-                    defaultValue={defaultValues}
-                    classNames={"btn-success btn-sm "}
-                    mensajeBoton={<FaEye />}
-                />{' '}
-                <NuevoUsuario 
-                    defaultValue={defaultValues}
-                    classNames={"btn-danger btn-sm "}
-                    mensajeBoton={<FaPencilAlt />}
-                    isEditable={true}
-                    cambioDatos={_cambiosEnUsuarios}
-                />
+                    </FormGroup>
+                )
+                filas.push(fila);
+            })
 
-                </FormGroup>
-            )
-            filas.push(fila);
-        })
+        }
          props.setFilasListaUsuariosActivos(filas);
 
 

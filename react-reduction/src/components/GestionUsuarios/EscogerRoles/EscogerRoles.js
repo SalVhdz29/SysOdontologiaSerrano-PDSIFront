@@ -17,8 +17,17 @@ import{
     Col
 } from 'reactstrap';
 
+import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
 //Jsons
 import listRolesJson from './Json/listRoles.json';
+
+//apiTypes
+import{
+    API_LISTA_USUARIO_ROLES
+} from '../../../api/apiTypes';
 
 
 //Componente
@@ -49,7 +58,18 @@ const EscogerRoles = props =>{
    //Funcion que simula una petición al servidor por la lista de roles activos.
     const _obtenerRoles = async ()=> {
         let rolesList = await listRolesJson;
-         setListaRoles(rolesList);
+
+        let token= Cookies.get('token');
+       
+
+        
+        let respuesta_roles = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_USUARIO_ROLES)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+    
+        console.log("la respuesta: ", respuesta_roles.body);
+
+         setListaRoles( respuesta_roles.body);
     }
     //Funcion que comunica por medio de props los roles seleccionados.
     const _rolesSubmit=()=>{

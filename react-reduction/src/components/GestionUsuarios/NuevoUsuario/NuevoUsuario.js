@@ -21,6 +21,15 @@ import{
 
 import Select from 'react-select';
 
+import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
+import{
+    API_CREAR_USUARIO,
+    API_ACTUALIZAR_USUARIO
+} from '../../../api/apiTypes';
+
 //Jsons
 import { columnasTabla } from './Json/columnasTabla';
 
@@ -28,6 +37,7 @@ import { columnasTabla } from './Json/columnasTabla';
 //Componentes
 import DataTable from '../../DataTable/DataTable';
 import EscogerRoles from '../EscogerRoles/EscogerRoles';
+import swal from 'sweetalert';
 
 //Componente
 const NuevoUsuario = props =>{
@@ -70,6 +80,10 @@ const NuevoUsuario = props =>{
         }
         
     },[props.listaEmpleados])
+
+    useEffect(()=>{
+        setNuevaContrasenia(false);
+    },[modalOpen])
     //FIN CICLO DE VIDA
 
     //Función que da valores por defecto a los campos en el formulario.
@@ -119,6 +133,8 @@ const NuevoUsuario = props =>{
             //console.log("el valor obtenido", valor_inputs);
             if(empleadoAsignado.value != 0 && empleadoAsignado.value!="0")
             {
+                let token= Cookies.get('token');
+
                 if(rolesAsignados.length!=0)
                 {
                     let contrasenia="";
@@ -141,7 +157,7 @@ const NuevoUsuario = props =>{
                         let valor = {};
                         valor.nombre_usuario = nombreUsuarioIpx;
                         valor.correo_electronico =correoElectronicoIpx;
-                        valor.editarContrasenia=nuevaContrasenia;
+                        valor.editar_contrasenia=nuevaContrasenia;
                         valor.contrasenia = contrasenia;
                         valor.usuario_activo = usuarioActivo;
                         valor.roles=rolesAsignados;
@@ -151,16 +167,85 @@ const NuevoUsuario = props =>{
                         if(props.isEditable)
                         {
                             valor.id_usuario = props.defaultValue.idUsuario;
-                            tipo="editarUsuarioLista";
+
+                            try{
+                                let respuesta_usuario_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_USUARIO)
+                                .set('Accept', 'application/json')
+                                .set("Authorization", "Bearer " + token)
+                                .send(valor)
+
+                                if(respuesta_usuario_creado.body.message == "OK")
+                                {
+                                    swal({
+                                        title:"Usuario Actualizado",
+                                        text:"usuario actualizado con éxito",
+                                        icon:"success",
+                                        button:"Aceptar"
+                                    });
+                                }
+                                else{
+                                    swal({
+                                        title:"Error al actualizar el usuario ",
+                                        text:respuesta_usuario_creado.body.message,
+                                        icon:"error",
+                                        button:"Aceptar"
+                                    });
+                                }
+
+                            }catch(e){
+                                console.log(e);
+                                swal({
+                                    title:"Error al Editar datos de usuario",
+                                    text: e.errorMessage,
+                                    icon: "error",
+                                    button:"Aceptar"
+                                });
+                            }
                         }
                         else
                         {
-                            tipo="agregarUsuarioLista";
+                            try{
+
+                                let respuesta_usuario_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_USUARIO)
+                                .set('Accept', 'application/json')
+                                .set("Authorization", "Bearer " + token)
+                                .send(valor)
+
+                                if(respuesta_usuario_creado.body.message == "OK")
+                                {
+                                    swal({
+                                        title:"Usuario Creado",
+                                        text:"usuario creado con éxito",
+                                        icon:"success",
+                                        button:"Aceptar"
+                                    });
+                                }
+                                else{
+                                    swal({
+                                        title:"Error al crear el usuario ",
+                                        text:respuesta_usuario_creado.body.message,
+                                        icon:"error",
+                                        button:"Aceptar"
+                                    });
+                                }
+
+                            }catch(e)
+                            {
+                                console.log(e);
+                                swal({
+                                    title:"Error al crear datos de usuario",
+                                    text: e.errorMessage,
+                                    icon: "error",
+                                    button:"Aceptar"
+                                });
+                            }
+                           
                         }
-
-                    let envio={tipo,valor};
-                   
-
+                    tipo="actualizarListaEmpleados";
+                    let envio={tipo};
+                    await props.cambioDatos(envio);
+                    tipo="actualizarListaUsuarios";
+                    envio={tipo};
                     await props.cambioDatos(envio);
                     _limpiarFormulario();
                     setModalOpen(false);
@@ -234,6 +319,8 @@ const NuevoUsuario = props =>{
 
     const _limpiarFormulario =()=>{
         setRolesAsignados([]);
+        setEmpleadoAsignado({label:"Seleccione un empleado", value:0});
+        setNuevaContrasenia(false);
     }
 
     const _cambiarNuevaContrasenia =()=>{
@@ -372,7 +459,7 @@ const NuevoUsuario = props =>{
                                        props.isEditable?(
                                         <Col md={6}>
                                             <Label check >
-                                                <Input type="checkbox" onChange={_cambiarNuevaContrasenia} />
+                                                <Input type="checkbox" onChange={_cambiarNuevaContrasenia} value={nuevaContrasenia}/>
                                                 {' '} Nueva Constraseña
                                             </Label>
 
