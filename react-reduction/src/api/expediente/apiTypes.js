@@ -1,0 +1,1 @@
+export const API_NUEVO_EXPEDIENTE = "/api/expediente";

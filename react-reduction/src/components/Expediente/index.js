@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react"
 
+import superagent from 'superagent';
+import {
+  API_NUEVO_EXPEDIENTE
+} from  '../../api/apiTypes';
+
+
 import { 
   TabContent,
   TabPane,
@@ -90,9 +96,7 @@ const Expediente = props =>{
     const _obtenerServicios=async(listaExpediente)=>{
       /* simulando la llamada a un servicio */
 
-      await props.setListaExpediente(listaExpediente);
-          
-
+      await props.setListaExpediente(listaExpediente);       
   }
 
 
@@ -100,6 +104,7 @@ const Expediente = props =>{
     const _obtenerExpediente = async(listaExpediente) =>{
       //console.log("valor del JSON en el llamado: ", listaUsuarios);
       await props.setListaExpediente(listaExpediente);
+      
   }
 
 
@@ -135,32 +140,44 @@ const Expediente = props =>{
       props.state.listaExpediente.map(Expediente=>{
 
           let {id_expediente,
-              nombre_paciente, 
-              sexo, 
-              saldo,
+              nombre_paciente,
+              apellido_paciente,
+              dui,
+              sexo,
+              correo,
               telefono,
-              ultima_fecha
+              ultima_fecha,
+              fecha_nacimiento,
+              direccion
                } = Expediente;
 
 
           let fila ={};
           fila.id_expediente = id_expediente;
           fila.nombre_paciente = nombre_paciente;
+          fila.apellido_paciente = apellido_paciente;
+          fila.dui = dui;
           fila.sexo = sexo;
-          fila.saldo = saldo;
+          fila.correo = correo;
           fila.telefono = telefono;
           fila.ultima_fecha = ultima_fecha;
+          fila.fecha_nacimiento = fecha_nacimiento;
+          fila.direccion = direccion;
 
           // fila.
           
           fila.operaciones="Coming soon";
               let defaultValues={
                   id_expediente:id_expediente,
-                  nombre_paciente: nombre_paciente,                
+                  nombre_paciente: nombre_paciente,
+                  apellido_paciente: apellido_paciente,
+                  dui: dui,
                   sexo: sexo,
-                  saldo: saldo,
+                  correo: correo,
                   telefono: telefono,
-                  ultima_fecha: ultima_fecha
+                  ultima_fecha: ultima_fecha,
+                  fecha_nacimiento: fecha_nacimiento,
+                  direccion: direccion
               }
           fila.operaciones=(
               < FormGroup>
@@ -202,10 +219,15 @@ const Expediente = props =>{
     let Expediente ={};
     Expediente.id_expediente = listaExpediente.length + 1;
     Expediente.nombre_paciente = nuevo_expediente.nombre_paciente;
+    Expediente.apellido_paciente = nuevo_expediente.apellido_paciente;
+    Expediente.dui = nuevo_expediente.dui;
     Expediente.sexo = nuevo_expediente.sexo;
-    Expediente.saldo = nuevo_expediente.saldo;
+    Expediente.correo = nuevo_expediente.correo;
     Expediente.telefono = nuevo_expediente.telefono;
     Expediente.ultima_fecha = nuevo_expediente.ultima_fecha;
+    Expediente.fecha_nacimiento = nuevo_expediente.fecha_nacimiento;
+    Expediente.direccion = nuevo_expediente.direccion;
+
 
     n_lista.push(Expediente);
     //console.log("la lista antes de ingresar ", n_lista);
@@ -230,10 +252,14 @@ const Expediente = props =>{
             console.log("entro al if ENTRO A ACTUALIZAR");
               //console.log("coincidencia: ",Expediente.id_expediente);
               Expediente.nombre_paciente = expediente_actualizar.nombre_paciente;
+              Expediente.apellido_paciente = expediente_actualizar.apellido_paciente;
               Expediente.sexo = expediente_actualizar.sexo;
-              Expediente.saldo = expediente_actualizar.saldo;
+              Expediente.dui = expediente_actualizar.dui;
+              Expediente.correo = expediente_actualizar.correo;
               Expediente.telefono = expediente_actualizar.telefono;
               Expediente.ultima_fecha = expediente_actualizar.ultima_fecha;
+              Expediente.fecha_nacimiento = expediente_actualizar.fecha_nacimiento;
+              Expediente.direccion = expediente_actualizar.direccion;
     }
           n_lista.push(Expediente);
 

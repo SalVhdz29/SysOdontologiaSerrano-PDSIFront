@@ -12,10 +12,6 @@ export const columnasTabla = [
     dataField: "sexo",
   },
   {
-    text: "Saldo",
-    dataField: "saldo",
-  },
-  {
     text: "N° de contacto",
     dataField: "telefono",
   },

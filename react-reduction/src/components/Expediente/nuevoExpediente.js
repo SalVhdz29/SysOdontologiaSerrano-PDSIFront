@@ -1,5 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import request from 'superagent';
+
+import superagent from 'superagent'; 
+import {
+  API_NUEVO_EXPEDIENTE
+} from  '../../api/apiTypes';
+import Cookies from 'js-cookie';
+
 
 import{
     FormGroup,
@@ -64,27 +70,41 @@ const nuevoExpediente = props =>{
     //Función que da valores por defecto a los campos en el formulario.
     const _setDefaultValue=()=>{
         let nombre_paciente_front="";
-        let sexo_front = "";
-        let saldo_front = "";
+        let apellido_paciente_front="";
+        let dui_front = "";
+        let sexo_front = 0;
+        let correo_front = "";
         let telefono_front = "";
         let ultima_fecha_front = "";
+        let fecha_nacimiento_front="";
+        let direccion_front = "";
 
         let {
             nombre_paciente,
+            apellido_paciente,
+            dui,
             sexo,
-            saldo,
+            correo,
             telefono,
-            ultima_fecha
+            ultima_fecha,
+            fecha_nacimiento,
+            direccion
         } = props.defaultValue;
 
         if(nombre_paciente){
             nombre_paciente_front = nombre_paciente;
         }
+        if(apellido_paciente){
+            apellido_paciente_front = apellido_paciente;
+        }
         if(sexo){
             sexo_front = sexo;
         }
-        if(saldo){
-            saldo_front = saldo;
+        if(dui){
+            dui_front = dui;
+        }
+        if(correo){
+            correo_front = correo;
         }
         if(telefono){
             telefono_front = telefono;
@@ -92,10 +112,16 @@ const nuevoExpediente = props =>{
         if(ultima_fecha){
             ultima_fecha_front = ultima_fecha;
         }
+        if(fecha_nacimiento){
+            fecha_nacimiento_front = fecha_nacimiento;
+        }
+        if(direccion){
+            direccion_front = direccion;
+        }
         console.log("default Value", props.defaultValue)
 
 
-        setDefaultValues({nombre_paciente_front, sexo_front, saldo_front, telefono_front, ultima_fecha_front});
+        setDefaultValues({nombre_paciente_front,apellido_paciente_front,dui_front, sexo_front,correo_front, telefono_front, ultima_fecha_front,fecha_nacimiento_front,direccion_front});
     }
 
     const _registrarExpediente=async(valor_inputs)=>{
@@ -104,17 +130,25 @@ const nuevoExpediente = props =>{
             let mes = fecha_actual.getMonth()+1;
             let { 
                     nombre_paciente_front,
+                    apellido_paciente_front,
+                    dui_front,
                     sexo_front,
-                    saldo_front,
-                    telefono_front
+                    correo_front,
+                    telefono_front,
+                    fecha_nacimiento_front,
+                    direccion_front
                 } = valor_inputs;
 
             let valor = {};
             valor.nombre_paciente = nombre_paciente_front;
+            valor.apellido_paciente = apellido_paciente_front;
+            valor.dui = dui_front;
             valor.sexo =sexo_front;
-            valor.saldo = saldo_front;
+            valor.correo = correo_front;
             valor.telefono = telefono_front;
             valor.ultima_fecha = fecha_actual.getDate()+"-"+mes+"-"+fecha_actual.getFullYear();
+            valor.fecha_nacimiento = fecha_nacimiento_front;
+            valor.direccion = direccion_front;
            // console.log("valor.recurso =", valor.recurso)
 
             let tipo="";
@@ -131,7 +165,6 @@ const nuevoExpediente = props =>{
             let envio={tipo,valor};
             await props.cambioDatos(envio);
             setModalOpen(false);
-
     }
 
     const _validacionEjemplo=(value, ctx, input, cb) =>{
@@ -210,7 +243,7 @@ const nuevoExpediente = props =>{
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label><b>nombre de Paciente</b></Label>
+                                            <Label><b>Nombre</b></Label>
                                             <AvField
                                                 //id="nombreUsuarioIpx"
                                                 id="nombre_paciente_front"
@@ -218,7 +251,28 @@ const nuevoExpediente = props =>{
                                              
                                                 value=""
                                                 className="form-control"
-                                                placeholder="Escriba el nombre del paciente"
+                                                placeholder="Escriba el nombre"
+                                                type="text"
+                                                disabled={props.isReadOnly?true:false}
+                                                validate={{
+                                                  required: { value: true, errorMessage: "Obligatorio."},
+                                                  //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
+                                                }}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                 
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label><b>Apellido</b></Label>
+                                            <AvField
+                                                //id="nombreUsuarioIpx"
+                                                id="Apellido_paciente_front"
+                                                name="Apellido_paciente_front"
+                                             
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Escriba el Apellido"
                                                 type="text"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
@@ -242,6 +296,27 @@ const nuevoExpediente = props =>{
                                 </Row>
                                 <Row>
                                     <Col md={6}>
+                                        <FormGroup>
+                                            <Label><b>DUI</b></Label>
+                                            <AvField
+                                                //id="nombreUsuarioIpx"
+                                                id="dui_front"
+                                                name="dui_front"
+                                             
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Escriba el DUI del paciente"
+                                                type="phone"
+                                                disabled={props.isReadOnly?true:false}
+                                                validate={{
+                                                  required: { value: true, errorMessage: "Obligatorio."},
+                                                  //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
+                                                }}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                
+                                    <Col md={4}>
                                         <FormGroup>
                                             <Label><b>Sexo</b></Label>
                                             <AvField
@@ -275,18 +350,41 @@ const nuevoExpediente = props =>{
                                 )}
                                     
                                 </Row>
+                               
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label><b>Saldo</b></Label>
+                                            <Label><b>Correo electronico</b></Label>
                                             <AvField
                                                 //id="nombreUsuarioIpx"
-                                                id="saldo_front"
-                                                name="saldo_front"
+                                                id="correo_front"
+                                                name="correo_front"
+                                             
                                                 value=""
                                                 className="form-control"
-                                                placeholder="Escriba el Saldo del paciente"
-                                                type="number"
+                                                placeholder="Escriba el correo del paciente"
+                                                type="text"
+                                                disabled={props.isReadOnly?true:false}
+                                                validate={{
+                                                  required: { value: true, errorMessage: "Obligatorio."},
+                                                  //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
+                                                }}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                   
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label><b>Telefono</b></Label>
+                                            <AvField
+                                                //id="nombreUsuarioIpx"
+                                                id="telefono_front"
+                                                name="telefono_front"
+                                             
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Escriba el telefono del paciente"
+                                                type="text"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
@@ -307,18 +405,53 @@ const nuevoExpediente = props =>{
                                 )}
                                     
                                 </Row>
-                                <Row>
+                               
+                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label><b>Telefono</b></Label>
+                                            <Label><b>Fecha de nacimiento</b></Label>
                                             <AvField
                                                 //id="nombreUsuarioIpx"
-                                                id="telefono_front"
-                                                name="telefono_front"
+                                                id="fecha_nacimiento_front"
+                                                name="fecha_nacimiento_front"
                                              
                                                 value=""
                                                 className="form-control"
-                                                placeholder="Escriba el contacto del paciente"
+                                                placeholder="DD-MM-YY"
+                                                type="text"
+                                                disabled={props.isReadOnly?true:false}
+                                                validate={{
+                                                  required: { value: true, errorMessage: "Obligatorio."},
+                                                  //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
+                                                }}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                   { props.isReadOnly?(
+                            <h4 className="modal-title mt-0"><b> </b></h4>
+                            ):(
+                                <Col md={6}>
+
+                              {/* fin switch */}
+                                <br /><br />
+                                
+                                </Col>
+                                )}
+                                    
+                                </Row>
+
+                                 <Row>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label><b>Direccion</b></Label>
+                                            <AvField
+                                                //id="nombreUsuarioIpx"
+                                                id="direccion_front"
+                                                name="direccion_front"
+                                             
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Escriba la direccion del paciente"
                                                 type="phone"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
