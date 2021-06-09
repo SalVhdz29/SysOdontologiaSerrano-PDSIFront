@@ -13,6 +13,17 @@ import {
 } from "reactstrap"
 
 import Cookies from 'js-cookie';
+import superagent from 'superagent';
+
+//ApiTypes
+import {
+  API_LISTA_ROL_REGISTRADOS,
+  API_CAMBIAR_ESTADO_ROL,
+  API_LISTA_ROLES_PERMISO,
+  API_CREAR_ROL,
+  API_ACTUALIZAR_ROL
+} from '../../api/apiTypes';
+
 
 //Iconos
 import { FaEye, FaPencilAlt } from 'react-icons/fa';
@@ -71,15 +82,44 @@ const GestionRoles = props =>{
       /* simulando la llamada a un servicio */
       //console.log("valor del JSON en el llamado: ", listaRoles);
      
-      await props.setListaPermisos(listaPermisos);
-      await props.setListaRoles(listaRoles);
+      let token = Cookies.get('token');
+
+      let respuesta_permisos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_ROLES_PERMISO) 
+      .set('Accept', 'application/json') 
+      .set("Authorization", "Bearer " + token); 
+
+      console.log("la respuesta: ", respuesta_permisos.body); 
+
+      await props.setListaPermisos(respuesta_permisos.body); 
+
+      
+      let respuesta_roles = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_ROL_REGISTRADOS)
+              .set('accept', 'application/json')
+              .set("authorization", "Bearer " + token);
+
+      console.log("La respuesta: ", respuesta_roles.body);
+
+      await props.setListaRoles(respuesta_roles.body);
+
+     // await props.setListaPermisos(listaPermisos);
+     // await props.setListaRoles(listaRoles);
          
   }
 
     //Función que llama a los roles en el servidor.
     const _obtenerRoles = async(listaRoles) =>{
       //console.log("valor del JSON en el llamado: ", listaRoles);
-      await props.setListaRoles(listaRoles);
+
+      let token = Cookies.get('token');
+
+      let respuesta_roles = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_ROL_REGISTRADOS)
+              .set('accept', 'application/json')
+              .set("authorization", "Bearer " + token);
+
+      console.log("La respuesta: ", respuesta_roles.body);
+
+      await props.setListaRoles(respuesta_roles.body);
+      //await props.setListaRoles(listaRoles);
   }
 
     //Función que sirve de puerto en cambios obtenidos por componentes hijos.

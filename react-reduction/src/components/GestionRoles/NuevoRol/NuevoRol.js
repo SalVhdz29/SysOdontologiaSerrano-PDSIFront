@@ -2,6 +2,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 
 //Librerias
 import request from 'superagent';
+import Cookies from 'js-cookie';
+import superagent from 'superagent';
+
+//ApiTypes
+import {
+    API_CREAR_ROL,
+    API_ACTUALIZAR_ROL
+  } from '../../../api/apiTypes';
 
 import{ 
     FormGroup, 
@@ -21,6 +29,7 @@ import{
 //Componentes
 import DataTable from '../../DataTable/DataTable';
 import EscogerPermisos from '../EscogerPermisos/EscogerPermisos';
+import swal from 'sweetalert'; 
 
 //Json
 import {columnasTabla} from './Json/ColumnasTabla';
@@ -96,6 +105,8 @@ const NuevoRol = props =>{
 
     const _registrarRol=async(valor_inputs)=>{
         //console.log("el valor obtenido", valor_inputs);
+        let token= Cookies.get('token'); 
+
             if(permisosAsignados.length!=0)
             {
 
@@ -109,18 +120,91 @@ const NuevoRol = props =>{
                     valor.rol_activo = rolActivo;
                     valor.permisos=permisosAsignados;
                     let tipo="";
+
                     if(props.isEditable)
                     {
                         valor.id_rol = props.defaultValue.idRol;
-                        tipo="editarRolLista";
+
+                        try{ 
+                            let respuesta_rol_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_ROL) 
+                            .set('Accept', 'application/json') 
+                            .set("Authorization", "Bearer " + token) 
+                            .send(valor) 
+
+                            if(respuesta_rol_creado.body.message == "OK") 
+                            { 
+                                swal({ 
+                                    title:"Rol Actualizado", 
+                                    text:"Rol actualizado con éxito", 
+                                    icon:"success", 
+                                    button:"Aceptar" 
+                                }); 
+                            } 
+                            else{ 
+                                swal({ 
+                                    title:"Error al actualizar rol ", 
+                                    text:respuesta_rol_creado.body.message, 
+                                    icon:"error", 
+                                    button:"Aceptar" 
+                                }); 
+                            } 
+
+                        }catch(e){ 
+                            console.log(e); 
+                            swal({ 
+                                title:"Error al editar datos de rol", 
+                                text: e.errorMessage, 
+                                icon: "error", 
+                                button:"Aceptar" 
+                            }); 
+                        } 
+
+                        //tipo="editarRolLista";
                     }
                     else
                     {
-                        tipo="agregarRolLista";
+                        try{ 
+ 
+                            let respuesta_rol_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_ROL) 
+                            .set('Accept', 'application/json') 
+                            .set("Authorization", "Bearer " + token) 
+                            .send(valor) 
+
+                            if(respuesta_rol_creado.body.message == "OK") 
+                            { 
+                                swal({ 
+                                    title:"Rol Creado", 
+                                    text:"Rol creado con éxito", 
+                                    icon:"success", 
+                                    button:"Aceptar" 
+                                }); 
+                            } 
+                            else{ 
+                                swal({ 
+                                    title:"Error al crear rol ", 
+                                    text:respuesta_rol_creado.body.message, 
+                                    icon:"error", 
+                                    button:"Aceptar" 
+                                }); 
+                            } 
+
+                        }catch(e) 
+                        { 
+                            console.log(e); 
+                            swal({ 
+                                title:"Error al crear datos de rol", 
+                                text: e.errorMessage, 
+                                icon: "error", 
+                                button:"Aceptar" 
+                            }); 
+                        } 
+
+                        //tipo="agregarRolLista";
                     }
 
-                let envio={tipo,valor};
-               
+                //let envio={tipo,valor};
+                tipo="actualizarListaRoles"; 
+                let envio={tipo};
 
                 await props.cambioDatos(envio);
                 _limpiarFormulario();

@@ -3,7 +3,10 @@ import swal from 'sweetalert';
 import request from 'superagent';
 import Cookies from 'js-cookie';
 
-
+//ApiTypes
+import {
+    API_CAMBIAR_ESTADO_ROL
+  } from '../../../api/apiTypes';
 
 const SwitchRolActivo = props =>{
 
@@ -38,6 +41,8 @@ const SwitchRolActivo = props =>{
     const _cambioRolActivo=(e)=>{
         e.preventDefault();
 
+        try{
+
         let mensaje_advertencia = "";
         let boton_aceptar ="";
         console.log("id y activo ==>: ",props.id_rol, props.rol_activo);
@@ -66,23 +71,66 @@ const SwitchRolActivo = props =>{
 
                 let datos={id_rol};
 
-                // let token= Cookies.get('token');  
+                let token= Cookies.get('token');
 
-                // let respuesta = await request.post(process.env.REACT_APP_ENDPOINT_BASE_URL + "/ruta")
-                //                              .send(datos)
-                //                              .set('Accept', 'application/json')
-                //                              .set('Authorization', "Bearer " + token);
+                let respuesta = await request.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CAMBIAR_ESTADO_ROL)
+                                              .send(datos)
+                                             .set('Accept', 'application/json')
+                                             .set('Authorization', "Bearer " + token);
 
-                let valor ={id_rol};
-                let tipo ="actualizarListaRoles";
-                let envio ={tipo, valor};
+                // let valor ={id_rol};
+                console.log("RESPUESTA: ", respuesta);
 
-                props.cambioEnRoles(envio);
-
+                if(respuesta.body.message == "OK") 
+                        { 
+                            swal({ 
+                                title:"Estado Actualizado", 
+                                text:"Estado actualizado correctamente", 
+                                icon: "success", 
+                                button:"Aceptar", 
+                                timer:3000 
+                            }) 
+ 
+                            let tipo ="actualizarListaRoles"; 
+                            let envio ={tipo}; 
+     
+                            props.cambioEnRoles(envio); 
+                        } 
+                        else{ 
+                            let mensaje_error=respuesta.body.message; 
+ 
+                            swal({ 
+                                title:"Error al cambiar el estado del rol", 
+                                text:mensaje_error, 
+                                icon: "error", 
+                                button:"Aceptar", 
+                            }) 
+ 
+                        }                      
             }
         })
 
+    }
+    catch(error){
+        console.log("EL ERROR: ",error) 
+        let mensaje_error=""; 
+        switch(error.status){ 
+            case 401: 
+              mensaje_error=error.message; 
+            case 500: 
+                mensaje_error=error.message; 
+              break; 
+            default: 
+                mensaje_error="Error de comunicación con el servidor"; 
+          } 
 
+          swal({ 
+            title:"Error al cambiar el estado del rol", 
+            text:mensaje_error, 
+            icon: "warning", 
+            button:"Aceptar", 
+                }) 
+        }   
     }
     return(
         <Fragment>

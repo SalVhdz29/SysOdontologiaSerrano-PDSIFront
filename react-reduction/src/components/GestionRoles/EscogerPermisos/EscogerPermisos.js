@@ -7,6 +7,14 @@ import {
    AvCheckbox
 } from 'availity-reactstrap-validation';
 
+import Cookies from 'js-cookie';
+import superagent from 'superagent';
+
+//ApiTypes
+import {
+    API_LISTA_ROLES_PERMISO
+  } from '../../../api/apiTypes';
+
 import{
     FormGroup,
     Button,
@@ -49,7 +57,19 @@ const EscogerPermisos = props =>{
    //Funcion que simula una petición al servidor por la lista de Permisos activos.
     const _obtenerPermisos = async ()=> {
         let permisosList = await listPermisosJson;
-         setListaPermisos(permisosList);
+
+        let token= Cookies.get('token'); 
+        
+ 
+         
+        let respuesta_permisos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_ROLES_PERMISO) 
+                                                 .set('Accept', 'application/json') 
+                                                 .set("Authorization", "Bearer " + token); 
+     
+        console.log("la respuesta: ", respuesta_permisos.body); 
+ 
+         setListaPermisos( respuesta_permisos.body);
+        //setListaPermisos(permisosList);
     }
     //Funcion que comunica por medio de props los permisos seleccionados.
     const _permisosSubmit=()=>{
