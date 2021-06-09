@@ -17,12 +17,29 @@ import{
     AvField
 } from 'availity-reactstrap-validation'
 
+
+
+import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
+import{
+    API_CREAR_TIPORECURSO,
+    API_ACTUALIZAR_TIPO_RECURSO
+} from '../../../api/apiTypes';
+
+
+
+
 //Jsons
 import { columnasTabla } from './Json/columnasTabla';
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
 import EscogerRecurso from '../EscogerRecurso/EscogerRecurso';
+import swal from 'sweetalert';
+
+
 
 
 //Componente
@@ -107,6 +124,7 @@ const NuevoTipoRecurso = props =>{
 
     const _registrarTipoRecurso=async(valor_inputs)=>{
             //console.log("el valor obtenido", valor_inputs);
+            let token= Cookies.get('token');
 
             let { nombreTipoRecursoIpx,
                     descripcionTipoRecursoIpx
@@ -123,14 +141,95 @@ const NuevoTipoRecurso = props =>{
             if(props.isEditable)
                         {
                             valor.tipo_recurso_id = props.defaultValue.idTipoRecurso;
-                            tipo="editarTipoRecursoLista";
+                            //tipo="editarTipoRecursoLista";
+
+                            try{
+                                let respuesta_tiporecurso_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_TIPO_RECURSO)
+                                .set('Accept', 'application/json')
+                                .set("Authorization", "Bearer " + token)
+                                .send(valor)
+
+                                if(respuesta_tiporecurso_creado.body.message == "OK")
+                                {
+                                    swal({
+                                        title:"Tipo Recurso Actualizado",
+                                        text:"Tipo Recurso actualizado con éxito",
+                                        icon:"success",
+                                        button:"Aceptar"
+                                    });
+                                }
+                                else{
+                                    swal({
+                                        title:"Error al actualizar el Tipo Recurso ",
+                                        text:respuesta_tiporecurso_creado.body.message,
+                                        icon:"error",
+                                        button:"Aceptar"
+                                    });
+                                }
+
+                            }catch(e){
+                                console.log(e);
+                                swal({
+                                    title:"Error al Editar datos del Tipo Recurso",
+                                    text: e.errorMessage,
+                                    icon: "error",
+                                    button:"Aceptar"
+                                });
+                            }
+          
+
                         }
                         else
                         {
-                            tipo="agregarTipoRecursoLista";
+                            //tipo="agregarTipoRecursoLista";
+
+                            try{
+
+                                let respuesta_tiporecurso_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_TIPORECURSO)
+                                .set('Accept', 'application/json')
+                                .set("Authorization", "Bearer " + token)
+                                .send(valor)
+
+                                if(respuesta_tiporecurso_creado.body.message == "OK")
+                                {
+                                    swal({
+                                        title:"Tipo Recurso Creado",
+                                        text:"Tipo Recurso creado con éxito",
+                                        icon:"success",
+                                        button:"Aceptar"
+                                    });
+                                }
+                                else{
+                                    swal({
+                                        title:"Error al crear el Tipo Recurso ",
+                                        text:respuesta_tiporecurso_creado.body.message,
+                                        icon:"error",
+                                        button:"Aceptar"
+                                    });
+                                }
+
+                            }catch(e)
+                            {
+                                console.log(e);
+                                swal({
+                                    title:"Error al crear datos de Tipo Recurso",
+                                    text: e.errorMessage,
+                                    icon: "error",
+                                    button:"Aceptar"
+                                });
+                            }
+
+
+
                         }
 
-            let envio={tipo,valor};
+
+            tipo="actualizarListaRecurso";
+            let envio={tipo};
+            await props.cambioDatos(envio);
+            tipo="actualizarListaTipoRecurso";
+            envio={tipo};
+            //let envio={tipo,valor};
             await props.cambioDatos(envio);
             _limpiarFormulario();
             setModalOpen(false);

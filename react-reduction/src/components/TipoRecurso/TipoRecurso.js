@@ -19,6 +19,13 @@ import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
 
+
+
+import superagent from 'superagent';
+
+
+
+
 //Componentes
 import NuevoTipoRecurso from "./NuevoTipoRecurso/NuevoTipoRecurso";
 import DataTable from '../DataTable/DataTable';
@@ -27,6 +34,15 @@ import SwitchTipoRecursoActivo from './switchTipoRecursoActivo/SwitchTipoRecurso
 //jsons de prueba
 import listTipoRecurso from './Json/listTipoRecurso.json';
 import listRecurso from './Json/listRecurso.json';
+
+
+//apiTypes
+import {
+  API_LISTA_TIPORECURSO_REGISTRADOS,
+ // API_LISTA_USUARIO_ROLES,
+  API_LISTA_RECURSO_ACTIVOS
+} from '../../api/apiTypes';
+
 
 // Redux
 import { connect } from "react-redux";
@@ -69,43 +85,76 @@ const TipoRecurso = props =>{
 
 
 
-/*
-
-    useEffect(()=>{
-        //obteniendo el token almacenado en las cookies 
-    _obtener_token();
-      
-    },[])
-
-    useEffect(()=>{
-        //effect que escucha los cambios del estado: tokenU
-        console.log(tokenU);
-
-    },[tokenU])
-
-
-    const _obtener_token=async()=>{
-        let token = Cookies.get('token');
-        await setTokenU(token);
-    }
-    */
-
     //Función que simula la inicialización de servicios.
+
+
     const _obtenerServicios=async(listaTipoRecurso, listaRecurso)=>{
       /* simulando la llamada a un servicio */
       //console.log("valor del JSON en el llamado: ", listaRecurso);
-
+/*
       await props.setListaTipoRecurso(listaTipoRecurso);
       await props.setListaRecurso(listaRecurso);
-          
+       */
+      
+      
+      let token= Cookies.get('token');
+
+
+      let respuesta_tiporecurso = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_TIPORECURSO_REGISTRADOS)
+                                               .set('Accept', 'application/json')
+                                               .set("Authorization", "Bearer " + token);
+
+      console.log("la respuesta: ", respuesta_tiporecurso.body);
+
+      await props.setListaTipoRecurso(respuesta_tiporecurso.body);
+
+
+      let respuesta_recurso = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_RECURSO_ACTIVOS)
+                                               .set('Accept', 'application/json')
+                                               .set("Authorization", "Bearer " + token);
+
+      console.log("la respuesta: ", respuesta_recurso.body);
+
+
+      await props.setListaRecurso(respuesta_recurso.body);
+
+
 
   }
 
 
     //Función que llama a los usuarios en el servidor.
-    const _obtenerTipoRecurso = async(listaTipoRecurso) =>{
+    //const _obtenerTipoRecurso = async(listaTipoRecurso) =>{
+    const _obtenerTipoRecurso = async() =>{
       //console.log("valor del JSON en el llamado: ", listaUsuarios);
-      await props.setListaTipoRecurso(listaTipoRecurso);
+      //await props.setListaTipoRecurso(listaTipoRecurso);
+
+      let token= Cookies.get('token');
+
+      let respuesta_tiporecurso = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_TIPORECURSO_REGISTRADOS)
+              .set('Accept', 'application/json')
+              .set("Authorization", "Bearer " + token);
+    
+              
+      console.log("la respuesta: ", respuesta_tiporecurso.body);
+
+      await props.setListaTipoRecurso(respuesta_tiporecurso.body);
+
+  }
+
+  //Funcion que llama a los recursos activos.
+  const _obtenerRecurso = async() =>{
+      let token= Cookies.get('token');
+
+      let respuesta_recurso = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_RECURSO_ACTIVOS)
+      .set('Accept', 'application/json')
+      .set("Authorization", "Bearer " + token);
+
+      console.log("la respuesta: ", respuesta_recurso.body);
+
+      await props.setListaRecurso(respuesta_recurso.body);
+
+
   }
 
 
@@ -115,14 +164,17 @@ const TipoRecurso = props =>{
       //console.log("vino al cambio usuarios con: ", tipo);
       switch(tipo){
           case 'actualizarListaTipoRecurso':
-              let nuevas_filas= _cambiarActivoJsonTipoRecurso(valor.tipo_recurso_id);
+             // let nuevas_filas= _cambiarActivoJsonTipoRecurso(valor.tipo_recurso_id);
                   //console.log("volvio");
-                  _obtenerTipoRecurso(nuevas_filas);
+                  //_obtenerTipoRecurso(nuevas_filas);
+                  _obtenerTipoRecurso();
               break;
           case 'agregarTipoRecursoLista':
-                  let nueva_lista =_agregarTipoRecursoALista(valor);
+                  //let nueva_lista =_agregarTipoRecursoALista(valor);
                   //console.log("lo que devolvio: ", nueva_lista);
-                  _obtenerTipoRecurso(nueva_lista);
+                  //_obtenerTipoRecurso(nueva_lista);
+                  _obtenerTipoRecurso();
+
               break;
           case 'editarTipoRecursoLista':
               //console.log(valor, "deeee");
@@ -142,6 +194,10 @@ const TipoRecurso = props =>{
       //console.log("detecto el cambio");
 
       let filas=[];
+
+      if(props.state.listaTipoRecurso.length != 0)
+      {
+
 
       props.state.listaTipoRecurso.map(TipoRecurso=>{
 
@@ -216,6 +272,8 @@ const TipoRecurso = props =>{
           )
           filas.push(fila);
       })
+
+    }
       props.setFilasListaTipoRecursoActivos(filas);
 
   }

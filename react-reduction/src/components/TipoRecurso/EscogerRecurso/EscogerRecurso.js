@@ -24,15 +24,17 @@ import { columnasTabla } from './Json/columnasTabla';
 //componente
 import DataTable from '../../DataTable/DataTable';
 
-const selectRow = {
-    mode: 'checkbox',
-    className: 'Avcheckbox',
-    onSelect: (row, isSelect, rowIndex, e) => {
-      // ...
-    }
-  };
 
-  
+import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
+//apiTypes
+import{
+    API_LISTA_RECURSO_ACTIVOS
+} from '../../../api/apiTypes';
+
+
 const EscogerRecurso = props =>{
 
     const [modalRecursoOpen, setModalRecursoOpen] = useState(false);
@@ -56,7 +58,7 @@ const EscogerRecurso = props =>{
         //console.log("longitud >> ",listaRecurso.length)
         if(listaRecurso.length != 0)
         {  
-           
+            
             _setearRecurso();
         }
     },[props.recursoAsignados, listaRecurso])
@@ -66,7 +68,20 @@ const EscogerRecurso = props =>{
    //Funcion que simula una petición al servidor por la lista de recursos activos.
     const _obtenerRecurso = async ()=> {
         let RecursoList = await listRecursoJson;
-         setListaRecurso(RecursoList);
+        //setListaRecurso(RecursoList);
+        let token= Cookies.get('token');
+
+
+
+        let respuesta_recursos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_RECURSO_ACTIVOS)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+
+        console.log("la respuesta: ", respuesta_recursos.body);
+
+        setListaRecurso( respuesta_recursos.body);
+
+
     }
 
  //Funcion que comunica por medio de props los recursos seleccionados.
@@ -207,9 +222,9 @@ const EscogerRecurso = props =>{
                                                         return(
                                                         //<Col md={20} style={checkBoxStyle} key={key}>
                                                           
-                                                         
+                                                         /*
                                                         recurso.estado_recurso?
-                                                        (
+                                                        (*/
 
                                                             <tr>
                                                             <td style={checkBoxStyle} key={key}>
@@ -230,9 +245,9 @@ const EscogerRecurso = props =>{
                                                         
                                                                 </tr>
 
-                                                        )
+                                                   /*     )
                                                         :undefined
-                                                       
+                                                       */
 
                                                        // </Col>
                                                 
