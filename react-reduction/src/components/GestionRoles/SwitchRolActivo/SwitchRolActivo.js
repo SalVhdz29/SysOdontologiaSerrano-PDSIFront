@@ -30,7 +30,7 @@ const SwitchRolActivo = props =>{
         console.log("useF rol activo, id y valor", props.id_rol, props.rol_activo);
         if(props.rol_activo != undefined && props.rol_activo!= null)
         {
-            console.log("si viniste");
+           // console.log("si viniste");
 
             setRolActivo(rolActivo)
         }
@@ -78,8 +78,7 @@ const SwitchRolActivo = props =>{
                                              .set('Accept', 'application/json')
                                              .set('Authorization', "Bearer " + token);
 
-                // let valor ={id_rol};
-                console.log("RESPUESTA: ", respuesta);
+                //console.log("RESPUESTA: ", respuesta);
 
                 if(respuesta.body.message == "OK") 
                         { 
@@ -112,7 +111,7 @@ const SwitchRolActivo = props =>{
 
     }
     catch(error){
-        console.log("EL ERROR: ",error) 
+       // console.log("EL ERROR: ",error) 
         let mensaje_error=""; 
         switch(error.status){ 
             case 401: 

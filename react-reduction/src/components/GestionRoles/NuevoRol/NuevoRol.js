@@ -150,7 +150,7 @@ const NuevoRol = props =>{
                             } 
 
                         }catch(e){ 
-                            console.log(e); 
+                         //   console.log(e); 
                             swal({ 
                                 title:"Error al editar datos de rol", 
                                 text: e.errorMessage, 
@@ -159,7 +159,6 @@ const NuevoRol = props =>{
                             }); 
                         } 
 
-                        //tipo="editarRolLista";
                     }
                     else
                     {
@@ -190,7 +189,7 @@ const NuevoRol = props =>{
 
                         }catch(e) 
                         { 
-                            console.log(e); 
+                       //     console.log(e); 
                             swal({ 
                                 title:"Error al crear datos de rol", 
                                 text: e.errorMessage, 
@@ -199,10 +198,8 @@ const NuevoRol = props =>{
                             }); 
                         } 
 
-                        //tipo="agregarRolLista";
                     }
 
-                //let envio={tipo,valor};
                 tipo="actualizarListaRoles"; 
                 let envio={tipo};
 

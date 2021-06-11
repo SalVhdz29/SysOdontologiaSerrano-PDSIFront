@@ -28,6 +28,8 @@ import{
 //Jsons
 import listPermisosJson from './Json/ListPermisos.json';
 
+//Icono
+import {BsFillFolderFill } from 'react-icons/bs';
 
 //Componente
 const EscogerPermisos = props =>{
@@ -56,20 +58,19 @@ const EscogerPermisos = props =>{
 
    //Funcion que simula una petición al servidor por la lista de Permisos activos.
     const _obtenerPermisos = async ()=> {
-        let permisosList = await listPermisosJson;
+
 
         let token= Cookies.get('token'); 
         
- 
-         
+    
         let respuesta_permisos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_ROLES_PERMISO) 
                                                  .set('Accept', 'application/json') 
                                                  .set("Authorization", "Bearer " + token); 
      
-        console.log("la respuesta: ", respuesta_permisos.body); 
+       // console.log("la respuesta: ", respuesta_permisos.body); 
  
          setListaPermisos( respuesta_permisos.body);
-        //setListaPermisos(permisosList);
+
     }
     //Funcion que comunica por medio de props los permisos seleccionados.
     const _permisosSubmit=()=>{
@@ -135,24 +136,6 @@ const EscogerPermisos = props =>{
 
     }
 
-    //Funcion para verificar si al menos un checkbox fue escogido- NO EN USO.
-    const _verificarCheckbox=(value, ctx, input, cb)=>{
-        //console.log("value: ", value);
-
-        if(value.length!=0)
-        {
-            return true;
-        }
-        else
-        {
-            return "Debe escoger al menos un permiso para el Rol.";
-        }
-    }
-
-  
-    
-
-
 
     return(
         <Fragment>
@@ -199,11 +182,12 @@ const EscogerPermisos = props =>{
                     <div className="modal-body">
                         <Container fluid={true}>
                             <Row>                                
-                                <Label for="checkboxExample">Listado de permisos</Label>
+                                <Label for="checkboxExample" >Listado de permisos</Label>
                             </Row>
                             <Row>
                                 <Col md={12}>
-                                <AvCheckboxGroup  name="permisosEscogidosCbx" 
+                                
+                                <AvCheckboxGroup  name="permisosEscogidosCbx"
                                     //validate={{myValidation: _verificarCheckbox}}
                                     >
                                     <Row>
@@ -218,6 +202,8 @@ const EscogerPermisos = props =>{
 
                                                         return(
                                                         <Col md={6} style={checkBoxStyle} key={key}>
+                                                        <Row>
+                                                        < BsFillFolderFill/>                                                      
                                                         <AvCheckbox 
                                                             label={permiso.nombre_rol} 
                                                             value={permiso.id_rol} 
@@ -225,8 +211,7 @@ const EscogerPermisos = props =>{
                                                             key={key}
                                                              onChange={_cambioCheckbox}
                                                             className="checkbox_animated "
-                                                            // 
-                                                        />
+                                                        /></Row>
                                                         </Col>
                                                         )
                                                     })
