@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react"
 
 import superagent from 'superagent';
+
 import {
-  API_NUEVO_EXPEDIENTE
+  API_NUEVO_EXPEDIENTE,
+  API_UPDATE_EXPEDIENTE,
+  API_OBTENER_EXPEDIENTE,
+  API_OBTENER_UN_EXPEDIENTE
 } from  '../../api/apiTypes';
 
 
@@ -70,41 +74,32 @@ const Expediente = props =>{
   //Fin ciclo de vida
 
 
-
-/*
-
-    useEffect(()=>{
-        //obteniendo el token almacenado en las cookies 
-    _obtener_token();
-      
-    },[])
-
-    useEffect(()=>{
-        //effect que escucha los cambios del estado: tokenU
-        console.log(tokenU);
-
-    },[tokenU])
-
-
-    const _obtener_token=async()=>{
-        let token = Cookies.get('token');
-        await setTokenU(token);
-    }
-    */
-
     //Función que simula la inicialización de servicios.
     const _obtenerServicios=async(listaExpediente)=>{
       /* simulando la llamada a un servicio */
 
-      await props.setListaExpediente(listaExpediente);       
+      //await props.setListaExpediente(listaExpediente);      
+       let token= Cookies.get('token');
+
+
+      let respuesta_Expediente = await superagent.post(
+        process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
+        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+        await props.setListaExpediente(respuesta_Expediente.body);
   }
 
 
     //Función que llama a los usuarios en el servidor.
-    const _obtenerExpediente = async(listaExpediente) =>{
+    const _obtenerExpediente = async() =>{
       //console.log("valor del JSON en el llamado: ", listaUsuarios);
-      await props.setListaExpediente(listaExpediente);
-      
+      //await props.setListaExpediente(listaExpediente);
+      let token= Cookies.get('token');
+
+      let respuesta_Expediente = await superagent.post(
+        process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
+      .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+
+      await props.setListaExpediente(respuesta_Expediente.body);
   }
 
 
@@ -139,7 +134,8 @@ const Expediente = props =>{
 
       props.state.listaExpediente.map(Expediente=>{
 
-          let {id_expediente,
+          let {
+              id_expediente,
               nombre_paciente,
               apellido_paciente,
               dui,
@@ -151,18 +147,23 @@ const Expediente = props =>{
               direccion
                } = Expediente;
 
-
           let fila ={};
           fila.id_expediente = id_expediente;
           fila.nombre_paciente = nombre_paciente;
           fila.apellido_paciente = apellido_paciente;
           fila.dui = dui;
-          fila.sexo = sexo;
+          //fila.sexo = sexo;
           fila.correo = correo;
           fila.telefono = telefono;
           fila.ultima_fecha = ultima_fecha;
           fila.fecha_nacimiento = fecha_nacimiento;
           fila.direccion = direccion;
+
+          if(sexo){
+            fila.sexo = "Masculino";
+          }else{
+            fila.sexo = "Femenino";
+          }
 
           // fila.
           
@@ -179,6 +180,7 @@ const Expediente = props =>{
                   fecha_nacimiento: fecha_nacimiento,
                   direccion: direccion
               }
+              
           fila.operaciones=(
               < FormGroup>
               <NuevoExpediente
@@ -204,7 +206,6 @@ const Expediente = props =>{
 
   //Función que simula el añadir el tipo expediente obtenido para anexarlo al JSON - temporal.
   const _agregarExpedienteALista = (nuevo_expediente)=>{
-    console.log("el nuevo ", nuevo_expediente);
 
     let { listaExpediente } = props.state;
 
@@ -228,7 +229,7 @@ const Expediente = props =>{
     Expediente.fecha_nacimiento = nuevo_expediente.fecha_nacimiento;
     Expediente.direccion = nuevo_expediente.direccion;
 
-
+    
     n_lista.push(Expediente);
     //console.log("la lista antes de ingresar ", n_lista);
   return n_lista;
@@ -239,7 +240,6 @@ const Expediente = props =>{
     //Función que simula la actualización en la data de un tipo expediente.
     const _actualizarExpediente = (expediente_actualizar)=>{
 
-      console.log("AHORITA ENTRO A ACTUALIZAR");
       let { listaExpediente } = props.state;
 
       let n_lista = [];
@@ -249,8 +249,8 @@ const Expediente = props =>{
 
           if(Expediente.id_expediente == expediente_actualizar.id_expediente)
           {
-            console.log("entro al if ENTRO A ACTUALIZAR");
               //console.log("coincidencia: ",Expediente.id_expediente);
+              Expediente.id_expediente = expediente_actualizar.id_expediente;
               Expediente.nombre_paciente = expediente_actualizar.nombre_paciente;
               Expediente.apellido_paciente = expediente_actualizar.apellido_paciente;
               Expediente.sexo = expediente_actualizar.sexo;
@@ -261,6 +261,7 @@ const Expediente = props =>{
               Expediente.fecha_nacimiento = expediente_actualizar.fecha_nacimiento;
               Expediente.direccion = expediente_actualizar.direccion;
     }
+
           n_lista.push(Expediente);
 
       });
@@ -322,5 +323,3 @@ const mapDispatchToProps = dispatch =>{
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Expediente);
-
-

@@ -1,9 +1,14 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
 import superagent from 'superagent'; 
+
 import {
-  API_NUEVO_EXPEDIENTE
+  API_NUEVO_EXPEDIENTE,
+  API_UPDATE_EXPEDIENTE,
+  API_OBTENER_EXPEDIENTE,
+  API_OBTENER_UN_EXPEDIENTE
 } from  '../../api/apiTypes';
+
 import Cookies from 'js-cookie';
 
 
@@ -69,6 +74,7 @@ const nuevoExpediente = props =>{
 
     //Función que da valores por defecto a los campos en el formulario.
     const _setDefaultValue=()=>{
+        let id_expediente = 0;
         let nombre_paciente_front="";
         let apellido_paciente_front="";
         let dui_front = "";
@@ -98,7 +104,9 @@ const nuevoExpediente = props =>{
             apellido_paciente_front = apellido_paciente;
         }
         if(sexo){
-            sexo_front = sexo;
+            sexo_front = "Masculino";
+        }else{
+            sexo_front = "Femenino";
         }
         if(dui){
             dui_front = dui;
@@ -118,7 +126,7 @@ const nuevoExpediente = props =>{
         if(direccion){
             direccion_front = direccion;
         }
-        console.log("default Value", props.defaultValue)
+        //console.log("default Value", props.defaultValue)
 
 
         setDefaultValues({nombre_paciente_front,apellido_paciente_front,dui_front, sexo_front,correo_front, telefono_front, ultima_fecha_front,fecha_nacimiento_front,direccion_front});
@@ -126,6 +134,7 @@ const nuevoExpediente = props =>{
 
     const _registrarExpediente=async(valor_inputs)=>{
             //console.log("el valor obtenido", valor_inputs);
+            console.log("ENTRO AL METODO REGISTRAS");
             let fecha_actual = new Date();            
             let mes = fecha_actual.getMonth()+1;
             let { 
@@ -143,23 +152,38 @@ const nuevoExpediente = props =>{
             valor.nombre_paciente = nombre_paciente_front;
             valor.apellido_paciente = apellido_paciente_front;
             valor.dui = dui_front;
-            valor.sexo =sexo_front;
+            
             valor.correo = correo_front;
             valor.telefono = telefono_front;
             valor.ultima_fecha = fecha_actual.getDate()+"-"+mes+"-"+fecha_actual.getFullYear();
             valor.fecha_nacimiento = fecha_nacimiento_front;
             valor.direccion = direccion_front;
-           // console.log("valor.recurso =", valor.recurso)
+            console.log("antes del sexo");
+           if(sexo_front == "M"){
+            valor.sexo = 1;
+           }else{
+            valor.sexo = 0;
+           }
+           console.log("despues del sexo del sexo");
 
             let tipo="";
             if(props.isEditable)
                         {
                             valor.id_expediente = props.defaultValue.id_expediente;
                             tipo="editarExpedienteLista";
+                            let token= Cookies.get('token');
+                              let respuesta_Expediente = await superagent.post(
+                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_UPDATE_EXPEDIENTE)
+                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
                         }
                         else
                         {
+                            console.log("entro al else: "+valor.sexo);
                             tipo="agregarExpedienteLista";
+                            let token= Cookies.get('token');
+                              let respuesta_Expediente = await superagent.post(
+                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_NUEVO_EXPEDIENTE)
+                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
                         }
 
             let envio={tipo,valor};
@@ -248,7 +272,6 @@ const nuevoExpediente = props =>{
                                                 //id="nombreUsuarioIpx"
                                                 id="nombre_paciente_front"
                                                 name="nombre_paciente_front"
-                                             
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Escriba el nombre"
@@ -267,8 +290,8 @@ const nuevoExpediente = props =>{
                                             <Label><b>Apellido</b></Label>
                                             <AvField
                                                 //id="nombreUsuarioIpx"
-                                                id="Apellido_paciente_front"
-                                                name="Apellido_paciente_front"
+                                                id="apellido_paciente_front"
+                                                name="apellido_paciente_front"
                                              
                                                 value=""
                                                 className="form-control"
@@ -306,7 +329,8 @@ const nuevoExpediente = props =>{
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Escriba el DUI del paciente"
-                                                type="phone"
+                                                type="text"
+                                                pattern="^[0-9]{9}$"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
@@ -325,16 +349,15 @@ const nuevoExpediente = props =>{
                                                 name="sexo_front"
                                                 value=""
                                                 className="form-control"
-                                                placeholder="Masculino o Femenino"
-                                                type="select"
+                                                type="text"
+                                                placeholder="M = masculino o F = femenino"
+                                                pattern="[MF]{1}"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
                                                 }}
                                             >
-                                                <option>Masculino</option>
-                                                <option>Femenino</option>
                                                 </AvField>
                                         </FormGroup>
                                     </Col>
@@ -363,8 +386,9 @@ const nuevoExpediente = props =>{
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Escriba el correo del paciente"
-                                                type="text"
+                                                type="mail"
                                                 disabled={props.isReadOnly?true:false}
+                                                pattern= "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
@@ -385,6 +409,7 @@ const nuevoExpediente = props =>{
                                                 className="form-control"
                                                 placeholder="Escriba el telefono del paciente"
                                                 type="text"
+                                                pattern="^[0-9]{8}$"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
@@ -417,8 +442,9 @@ const nuevoExpediente = props =>{
                                              
                                                 value=""
                                                 className="form-control"
-                                                placeholder="DD-MM-YY"
+                                                placeholder="YYYY-MM-DD"
                                                 type="text"
+                                                pattern = "^\d{4}([\-/.])(0?[1-9]|1[0-2])\1(3[01]|[12][0-9]|0?[1-9])$"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
