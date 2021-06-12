@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react"
+//Librerias
+import request from 'superagent';
 
 import{
     FormGroup,
@@ -10,17 +12,33 @@ import{
     Col
 } from 'reactstrap';
 
+
+
 import{
     AvForm,
     AvField
 } from 'availity-reactstrap-validation'
+
+import Select from 'react-select';
+
+import Cookies from 'js-cookie';
+
+import superagent from 'superagent';
+
+import{
+    API_CREAR_RECURSO,
+    API_ACTUALIZAR_RECURSO,
+
+}from '../../../api/apiTypes';
 
 //Jsons
 import { columnasTabla } from './Json/columnasTabla';
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
+import swal from 'sweetalert';
 
+//Componente
 const NuevoRecurso = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
@@ -68,40 +86,107 @@ const NuevoRecurso = props =>{
 
 
     const _registrarRecurso=async(valor_inputs)=>{
-        console.log("el valor obtenido", valor_inputs);
+        //console.log("el valor obtenido", valor_inputs);
 
+            let token= Cookies.get('token');
 
-        let { nombreRecursoIpx,
-              descripcionRecursoIpx,
-              rutaRecursoIpx} = valor_inputs;
+            let { nombreRecursoIpx,
+                descripcionRecursoIpx,
+                rutaRecursoIpx} = valor_inputs;
 
+            let valor = {};
+            valor.nombre_recurso = nombreRecursoIpx;
+            valor.descripcion_Recurso =descripcionRecursoIpx;
+            valor.ruta_Recurso = rutaRecursoIpx;
+            valor.recurso_activo = recursoActivo;
+            let tipo="";
+                            if(props.isEditable)
+                            {
+                                valor.id_recurso = props.defaultValue.idRecurso;
 
-        let valor = {};
-        valor.nombre_recurso = nombreRecursoIpx;
-        valor.descripcion_Recurso =descripcionRecursoIpx;
-        valor.ruta_Recurso = rutaRecursoIpx;
-        valor.recurso_activo = recursoActivo;
-        let tipo="";
-                        if(props.isEditable)
-                        {
-                            valor.id_recurso = props.defaultValue.idRecurso;
-                            tipo="editarRecursoLista";
-                        }
-                        else
-                        {
-                            tipo="agregarRecursoLista";
-                        }
-                    //let envio={tipo, valor};
+                                try{
+                                    let respuesta_recurso_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_RECURSO)
+                                    .set('Accept', 'application/json')
+                                    .set("Authorization", "Bearer " + token)
+                                    .send(valor)
+    
+                                    if(respuesta_recurso_creado.body.message == "OK")
+                                    {
+                                        swal({
+                                            title:"Recurso Actualizado",
+                                            text:"Recurso actualizado con éxito",
+                                            icon:"success",
+                                            button:"Aceptar"
+                                        });
+                                    }
+                                    else{
+                                        swal({
+                                            title:"Error al actualizar el Recurso ",
+                                            text:respuesta_recurso_creado.body.message,
+                                            icon:"error",
+                                            button:"Aceptar"
+                                        });
+                                    }
+    
+                                }catch(e){
+                                    console.log(e);
+                                    swal({
+                                        title:"Error al Editar datos del Recurso",
+                                        text: e.errorMessage,
+                                        icon: "error",
+                                        button:"Aceptar"
+                                    });
+                                }
+                            }
 
-        let envio={tipo, valor};
-        envio.tipo="agregarRecursoLista";
+                            else
+                            {
+                                try{
 
-        await props.cambioDatos(envio);
-        //_limpiarFormulario();
-        setModalOpen(false);
-    }
+                                    let respuesta_recurso_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_RECURSO)
+                                    .set('Accept', 'application/json')
+                                    .set("Authorization", "Bearer " + token)
+                                    .send(valor)
+    
+                                    if(respuesta_recurso_creado.body.message == "OK")
+                                    {
+                                        swal({
+                                            title:"Recurso Creado",
+                                            text:"Recurso creado con éxito",
+                                            icon:"success",
+                                            button:"Aceptar"
+                                        });
+                                    }
+                                    else{
+                                        swal({
+                                            title:"Error al crear el recurso ",
+                                            text:respuesta_recurso_creado.body.message,
+                                            icon:"error",
+                                            button:"Aceptar"
+                                        });
+                                    }
+    
+                                }catch(e)
+                                {
+                                    console.log(e);
+                                    swal({
+                                        title:"Error al crear datos de usuario",
+                                        text: e.errorMessage,
+                                        icon: "error",
+                                        button:"Aceptar"
+                                    });
+                                }
+                            }
+                        tipo="actualizarListaRecursos";
+                        envio={tipo};
+                        await props.cambioDatos(envio);
+                        //_limpiarFormulario();
+                        setModalOpen(false);
+            //let envio={tipo, valor};
 
-
+            //let envio={tipo, valor};
+            //envio.tipo="agregarRecursoLista";
+        }
 
     //
 
@@ -121,7 +206,7 @@ const NuevoRecurso = props =>{
     }
 
 
-
+    //Inicio del form
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
@@ -261,6 +346,7 @@ const NuevoRecurso = props =>{
 
                                   {/* fin switch */}
                                     <br /><br />
+                                    
 
                                    
                                     </Col>
@@ -269,22 +355,26 @@ const NuevoRecurso = props =>{
                                 
                            
                         </Container>
+
                 </div>
-                <div className="modal-footer">
+
+             <div className="modal-footer">
                     <Row>
                         <Col >
+                        {props.isReadOnly?(undefined):(
                         <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
                               type="submit"
                             >
-                             Crear Recurso
+                             Guardar
                             </Button>
-                          </div> 
+                          </div>
+                          )} 
                         </Col>
                         <Col>
                             <div className="mt-3">
-                            <Button className="btn btn-danger btn-md w-md " onClick={()=>{setModalOpen(false)}}>Cancelar</Button>
+                            <Button className="btn btn-danger btn-md w-md " onClick={()=>{setModalOpen(false)}}>Cerrar</Button>
                             </div>
                         </Col>
                     </Row>
