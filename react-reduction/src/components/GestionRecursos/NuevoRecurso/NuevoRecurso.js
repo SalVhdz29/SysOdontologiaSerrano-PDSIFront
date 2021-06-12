@@ -12,14 +12,12 @@ import{
     Col
 } from 'reactstrap';
 
-
-
 import{
     AvForm,
     AvField
 } from 'availity-reactstrap-validation'
 
-import Select from 'react-select';
+//import Select from 'react-select';
 
 import Cookies from 'js-cookie';
 
@@ -177,16 +175,14 @@ const NuevoRecurso = props =>{
                                     });
                                 }
                             }
-                        tipo="actualizarListaRecursos";
-                        envio={tipo};
-                        await props.cambioDatos(envio);
-                        //_limpiarFormulario();
-                        setModalOpen(false);
-            //let envio={tipo, valor};
-
-            //let envio={tipo, valor};
-            //envio.tipo="agregarRecursoLista";
-        }
+                            tipo="actualizarListaRecursos";
+                            let envio ={tipo};
+                            envio={tipo};
+                            await props.cambioDatos(envio);
+                            //_limpiarFormulario();
+                            setModalOpen(false);
+            }
+        
 
     //
 

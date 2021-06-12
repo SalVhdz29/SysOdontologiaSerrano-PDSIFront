@@ -34,7 +34,7 @@ import listRecursos from '../Json/listRecursos.json';
 //apiTypes
 import{
     API_RECURSOS_REGISTRADOS,
-}from '../../api/apiTypes';
+}from '../../../api/apiTypes';
 
 
 // Redux
@@ -108,7 +108,7 @@ const GestionRecursos = props =>{
         console.log("Respuesta: ", respuesta_recursos.body);
       
         //await props.setListaRecursos(listaRecursos);
-        await props.setListaRecursos(respuesta_usuarios.body);
+        await props.setListaRecursos(respuesta_recursos.body);
   }
 
   //Función que sirve de puerto en cambios obtenidos por componentes hijos.
@@ -142,7 +142,7 @@ const GestionRecursos = props =>{
       //console.log("detecto el cambio");
 
       let filas=[];
-      if (props.state.listRecursos.length !=0){
+      if (props.state.listaRecursos.length !=0){
 
         props.state.listaRecursos.map(recurso=>{
 
