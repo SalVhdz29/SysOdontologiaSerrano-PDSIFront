@@ -16,6 +16,13 @@ import {
 import Cookies from 'js-cookie';
 import { FaEye, FaPencilAlt } from 'react-icons/fa';
 
+import superagent from 'superagent';
+
+//apiTypes
+import{
+    API_ACTUALIZAR_RECURSO
+} from '../../../api/apiTypes';
+
 //Componentes
 import NuevoRecurso from '../NuevoRecurso/NuevoRecurso';
 import DataTable from '../../DataTable/DataTable';
@@ -23,6 +30,12 @@ import SwitchRecursoActivo from '../SwitchRecursoActivo/SwitchRecursoActivo';
 
 //jsons de prueba
 import listRecursos from '../Json/listRecursos.json';
+
+//apiTypes
+import{
+    API_RECURSOS_REGISTRADOS,
+}from '../../api/apiTypes';
+
 
 // Redux
 import { connect } from "react-redux";
@@ -50,7 +63,7 @@ const GestionRecursos = props =>{
   },[])
 
   useEffect(()=>{
-          console.log("vino aqui");
+          //console.log("vino aqui");
        setListaRecursos(props.state.listaRecursos);
     let result =  _crearFilasListaRecurso();
   },[props.state.listaRecursos]) 
@@ -64,20 +77,38 @@ const GestionRecursos = props =>{
   },[props.state.filasListaRecursosActivos]) //detecta cambios en las filas en el reducer y las setea en el estado local - de momento, inutil.
   //Fin ciclo de vida
 
+
+
   //Función que simula la inicialización de servicios.
   const _obtenerServicios=async(listaRecursos)=>{
       /* simulando la llamada a un servicio */
       //console.log("valor del JSON en el llamado: ", listaRecursos);
+      let token= Cookies.get('token');
      
+      let respuesta_recursos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_RECURSOS_REGISTRADOS)
+                                                .set('Accept', 'application/json')
+                                                .set("Authorization", "Bearer " + token);
+     //let {lista_recursos} = respuesta_recursos.body;
+     console.log("Respuesta: ", respuesta_recursos.body);
 
-      await props.setListaRecursos(listaRecursos);
+      //await props.setListaRecursos(listaRecursos);
+      await props.setListaRecursos(respuesta_recursos.body);
       
      
   }
-  //Función que llama a los usuarios en el servidor.
-  const _obtenerRecursos = async(listaRecursos) =>{
+  //Función que llama a los recursos en el servidor.
+  const _obtenerRecursos = async() =>{
       //console.log("valor del JSON en el llamado: ", listaRecursos);
-      await props.setListaRecursos(listaRecursos);
+      let token= Cookies.get('token');
+
+      let respuesta_recursos = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_RECURSOS_REGISTRADOS)
+                .set('Accept', 'application/json')
+                .set("Authorization", "Bearer " + token);
+        //let {lista_recursos} = respuesta_recursos.body;
+        console.log("Respuesta: ", respuesta_recursos.body);
+      
+        //await props.setListaRecursos(listaRecursos);
+        await props.setListaRecursos(respuesta_usuarios.body);
   }
 
   //Función que sirve de puerto en cambios obtenidos por componentes hijos.
@@ -85,9 +116,9 @@ const GestionRecursos = props =>{
       //console.log("vino al cambio usuarios con: ", tipo);
       switch(tipo){
           case 'actualizarListaRecursos':
-                 let nuevas_filas= _cambiarActivoJsonRecursos(valor.id_recurso);
+                 //let nuevas_filas= _cambiarActivoJsonRecursos(valor.id_recurso);
                   //console.log("volvio");
-                  _obtenerRecursos(nuevas_filas);
+                  _obtenerRecursos();
               break;
           case 'agregarRecursoLista':
                   let nueva_lista =_agregarRecursoALista(valor);
@@ -108,85 +139,86 @@ const GestionRecursos = props =>{
 
   //Función que crea las filas a partir de la lista de usuarios optenida.
   const _crearFilasListaRecurso=async()=>{
-      console.log("detecto el cambio");
+      //console.log("detecto el cambio");
 
       let filas=[];
+      if (props.state.listRecursos.length !=0){
 
-      props.state.listaRecursos.map(recurso=>{
+        props.state.listaRecursos.map(recurso=>{
 
-          let {id_recurso,
-              nombre_recurso, 
-              descripcion_recurso, 
-              fecha_creacion_recurso, 
-              recurso_activo } = recurso;
+            let {id_recurso,
+                nombre_recurso, 
+                descripcion_recurso, 
+                fecha_creacion_recurso, 
+                recurso_activo } = recurso;
 
-              if(recurso_activo == 1)
-              {
-                  recurso_activo=true;
-              }
-              else{
-                  recurso_activo=false;
-              }
+                if(recurso_activo == 1)
+                {
+                    recurso_activo=true;
+                }
+                else{
+                    recurso_activo=false;
+                }
 
-          console.log("funciona ya alv ");
-          let fila ={};
-          fila.id_recurso = id_recurso;
-          fila.nombre_recurso=nombre_recurso;
-          fila.descripcion_recurso = descripcion_recurso;
-          fila.fecha_creacion_recurso = fecha_creacion_recurso;
+            //console.log("funciona ya alv ");
+            let fila ={};
+            fila.id_recurso = id_recurso;
+            fila.nombre_recurso=nombre_recurso;
+            fila.descripcion_recurso = descripcion_recurso;
+            fila.fecha_creacion_recurso = fecha_creacion_recurso;
 
-          // fila.
+            // fila.
 
-          fila.recurso_activo = (
-              <div>
-                  <SwitchRecursoActivo
-                      id_recurso={id_recurso}
-                      recurso_activo={recurso_activo}
-                      cambioEnRecursos={_cambiosEnRecursos}
-                  />
-              </div>
-          );
-          fila.operaciones="Coming soon";
-              let defaultValues={
-                  idRecurso:id_recurso,
-                  nombreRecurso: nombre_recurso,
-                  descripcionRecurso: descripcion_recurso,
-                  recursoActivo: recurso_activo,
+            fila.recurso_activo = (
+                <div>
+                    <SwitchRecursoActivo
+                        id_recurso={id_recurso}
+                        recurso_activo={recurso_activo}
+                        cambioEnRecursos={_cambiosEnRecursos}
+                    />
+                </div>
+            );
+            fila.operaciones="Coming soon";
+                let defaultValues={
+                    idRecurso:id_recurso,
+                    nombreRecurso: nombre_recurso,
+                    descripcionRecurso: descripcion_recurso,
+                    recursoActivo: recurso_activo,
 
-              }
-          fila.operaciones=(
-              < FormGroup>
+                }
+            fila.operaciones=(
+                < FormGroup>
 
-              <NuevoRecurso
-                  isReadOnly={true}
-                  defaultValue={defaultValues}
-                  classNames={"btn-success btn-sm "}
-                  mensajeBoton={<FaEye />}
-              />{' '}
-              <NuevoRecurso 
-                  defaultValue={defaultValues}
-                  classNames={"btn-danger btn-sm "}
-                  mensajeBoton={<FaPencilAlt />}
-                  isEditable={true}
-                  cambioDatos={_cambiosEnRecursos}
-              />
+                <NuevoRecurso
+                    isReadOnly={true}
+                    defaultValue={defaultValues}
+                    classNames={"btn-success btn-sm "}
+                    mensajeBoton={<FaEye />}
+                />{' '}
+                <NuevoRecurso 
+                    defaultValue={defaultValues}
+                    classNames={"btn-danger btn-sm "}
+                    mensajeBoton={<FaPencilAlt />}
+                    isEditable={true}
+                    cambioDatos={_cambiosEnRecursos}
+                />
 
-              </FormGroup>
-          )
-          console.log("Fila antes del push");
-          console.log(fila);
-          filas.push(fila);
+                </FormGroup>
+            )
+            //console.log("Fila antes del push");
+            console.log(fila);
+            filas.push(fila);
       })
-        console.log("Revisando valor de filas");
+        //console.log("Revisando valor de filas");
         console.log(filas);
-       props.setFilasListaRecursosActivos(filas);
-
+        props.setFilasListaRecursosActivos(filas);
+    }
 
   }
 
   //Función que simula los cambios de estado en los usuarios en el servidor. -temporal.
   const _cambiarActivoJsonRecursos=(id_recurso)=>{
-      console.log("vino al cambio JSOn");
+      //console.log("vino al cambio JSOn");
       let nueva_lista_recursos=[];
       props.state.listaRecursos.map(recurso=>{
           let recurso_it = {...recurso};
