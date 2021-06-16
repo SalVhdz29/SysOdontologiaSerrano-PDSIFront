@@ -18,11 +18,6 @@ import { FaEye, FaPencilAlt } from 'react-icons/fa';
 
 import superagent from 'superagent';
 
-//apiTypes
-import{
-    API_ACTUALIZAR_RECURSO
-} from '../../../api/apiTypes';
-
 //Componentes
 import NuevoRecurso from '../NuevoRecurso/NuevoRecurso';
 import DataTable from '../../DataTable/DataTable';

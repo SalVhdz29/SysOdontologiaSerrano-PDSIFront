@@ -80,9 +80,6 @@ const NuevoRecurso = props =>{
         }
 
 
-
-
-
     const _registrarRecurso=async(valor_inputs)=>{
         //console.log("el valor obtenido", valor_inputs);
 
