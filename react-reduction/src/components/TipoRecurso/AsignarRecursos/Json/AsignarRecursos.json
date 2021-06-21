@@ -1,0 +1,30 @@
+[
+    {
+        "id_recurso":1,
+        "nombre_recurso":"Nombre Recurso 1"
+    },
+    {
+        "id_recurso":2,
+        "nombre_recurso":"Nombre mas largo Recurso 2"
+    },
+    {
+        "id_recurso":3,
+        "nombre_recurso":"Nombre Recurso 3"
+    },
+    {
+     "id_recurso":4,
+     "nombre_recurso":"Nombre Recurso 4"
+     },
+     {
+         "id_recurso":5,
+         "nombre_recurso":"Recurso 5"
+     },
+     {
+         "id_recurso":6,
+         "nombre_recurso":"Recurso 6"
+     },
+     {
+         "id_recurso":7,
+         "nombre_recurso":"Recurso 7"
+     }
+ ]
