@@ -22,6 +22,7 @@ import BasePage from '../components/BasePage/BasePage';
 import GestionUsuarios from '../components/GestionUsuarios/GestionUsuarios';
 import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
 import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
+import GestionRoles from '../components/GestionRoles/GestionRoles';
 
 
 
@@ -47,9 +48,8 @@ const userRoutes =[
     {path:"/WidgetPage", component: WidgetPage},
     {path:"/BasePage", component:BasePage },
     {path:"/GestionUsuarios", component:GestionUsuarios},
-
     {path:"/TipoRecurso", component: TipoRecurso},
-
+    {path:"/GestionRoles", component:GestionRoles },
 ];
 
 const authRoutes=[

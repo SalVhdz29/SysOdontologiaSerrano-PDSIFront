@@ -1,0 +1,45 @@
+[
+    
+    {
+        "id_rol" : 1,
+        "nombre_rol":"superadmin",
+        "descripcion_rol": "Puede hacer de todo",
+        "fecha_rol": "15/05/2021",
+        "rol_activo": "estado",
+        "permisos":[
+            {"id_rol":1,
+            "nombre_rol":"Gestion de usuarios"},
+            {"id_rol":2,
+            "nombre_rol":"Gestion de Roles"}
+        ],
+        "operaciones_rol": "operaciones"       
+    },
+    {
+        "id_rol" : 2,
+        "nombre_rol":"Medico",
+        "descripcion_rol": "Atiende a los pacientes",
+        "fecha_rol": "15/05/2021",
+        "rol_activo": "estado",
+        "permisos":[
+            {"id_rol":1,
+            "nombre_rol":"Gestion de expedientes"},
+            {"id_rol":2,
+            "nombre_rol":"Gestion de transacciones"}
+        ],
+        "operaciones_rol": "operaciones"
+    },
+    {
+        "id_rol" : 3,
+        "nombre_rol":"Recepcionista",
+        "descripcion_rol": "Recibe a los pacientes",
+        "fecha_rol": "15/05/2021",
+        "rol_activo": "estado",
+        "permisos":[
+            {"id_rol":1,
+            "nombre_rol":"Gestion de fichas clinicas"},
+            {"id_rol":2,
+            "nombre_rol":"Gestion de insumos"}
+        ],
+        "operaciones_rol": "operaciones"
+    }
+]
