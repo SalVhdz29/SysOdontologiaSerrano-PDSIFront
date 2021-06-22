@@ -2,11 +2,8 @@ import logo200Image from 'assets/img/logo/logo_200.png';
 import logoSerrano from 'assets/img/logo/logoSerrano.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
-import React,{useEffect, useState} from 'react';
-import { FaGithub, FaTooth, FaUserAlt, FaUsers,FaFileMedical } from 'react-icons/fa';
-import {VscFileSubmodule} from 'react-icons/vsc';
-import {ImProfile} from 'react-icons/im';
-//import { IoFileTrayFullSharp } from 'react-icons/io';
+import React from 'react';
+import { FaGithub, FaTooth } from 'react-icons/fa';
 import {
   MdAccountCircle,
   MdArrowDropDownCircle,
@@ -40,10 +37,6 @@ import {
   NavLink as BSNavLink,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
-import { GrResources } from 'react-icons/gr';
-import SubMenu from './SubMenu/SubMenu';
-
-import { connect } from 'react-redux';
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -51,84 +44,70 @@ const sidebarBackground = {
   backgroundRepeat: 'no-repeat',
 };
 
-// const navComponents = [
-//   { to: '/ButtonPage', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
-//   {
-//     to: '/ButtonGroupPage',
-//     name: 'button groups',
-//     exact: false,
-//     Icon: MdGroupWork,
-//   },
-//   { to: '/FormPage', name: 'forms', exact: false, Icon: MdChromeReaderMode },
-//   { to: '/InputGroupPage', name: 'input groups', exact: false, Icon: MdViewList },
-//   {
-//     to: '/DropdownPage',
-//     name: 'dropdowns',
-//     exact: false,
-//     Icon: MdArrowDropDownCircle,
-//   },
-//   { to: '/BadgePage', name: 'badges', exact: false, Icon: MdStar },
-//   { to: '/AlertPage', name: 'alerts', exact: false, Icon: MdNotificationsActive },
-//   { to: '/ProgressPage', name: 'progress', exact: false, Icon: MdBrush },
-//   { to: '/ModalPage', name: 'modals', exact: false, Icon: MdViewDay },
-// ];
+const navComponents = [
+  { to: '/ButtonPage', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
+  {
+    to: '/ButtonGroupPage',
+    name: 'button groups',
+    exact: false,
+    Icon: MdGroupWork,
+  },
+  { to: '/FormPage', name: 'forms', exact: false, Icon: MdChromeReaderMode },
+  { to: '/InputGroupPage', name: 'input groups', exact: false, Icon: MdViewList },
+  {
+    to: '/DropdownPage',
+    name: 'dropdowns',
+    exact: false,
+    Icon: MdArrowDropDownCircle,
+  },
+  { to: '/BadgePage', name: 'badges', exact: false, Icon: MdStar },
+  { to: '/AlertPage', name: 'alerts', exact: false, Icon: MdNotificationsActive },
+  { to: '/ProgressPage', name: 'progress', exact: false, Icon: MdBrush },
+  { to: '/ModalPage', name: 'modals', exact: false, Icon: MdViewDay },
+];
 
-// const navContents = [
-//   { to: '/TypographyPage', name: 'typography', exact: false, Icon: MdTextFields },
-//   { to: '/TablePage', name: 'tables', exact: false, Icon: MdBorderAll },
-// ];
+const navContents = [
+  { to: '/TypographyPage', name: 'typography', exact: false, Icon: MdTextFields },
+  { to: '/TablePage', name: 'tables', exact: false, Icon: MdBorderAll },
+];
 
-// const pageContents = [
-//   { to: '/login', name: 'login / signup', exact: false, Icon: MdAccountCircle },
-//   {
-//     to: '/login-modal',
-//     name: 'login modal',
-//     exact: false,
-//     Icon: MdViewCarousel,
-//   },
-// ];
+const pageContents = [
+  { to: '/login', name: 'login / signup', exact: false, Icon: MdAccountCircle },
+  {
+    to: '/login-modal',
+    name: 'login modal',
+    exact: false,
+    Icon: MdViewCarousel,
+  },
+];
 
 const navItems = [
-  { to: '/', name: 'Inicio', exact: true, Icon: MdDashboard },
+  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to: '/CardPage', name: 'cards', exact: false, Icon: MdWeb },
   { to: '/ChartPage', name: 'charts', exact: false, Icon: MdInsertChart },
   { to: '/WidgetPage', name: 'widgets', exact: false, Icon: MdWidgets },
 ];
 
-const dashBoard={ to: '/', name: 'Inicio', exact: true, Icon: MdDashboard };
-
-const contents=[
-  //Modulo Seguridad
-  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to:'/GestionUsuarios', name: 'Gestión de Usuarios', exact: false, Icon: FaUserAlt},
-  { to:'/GestionRoles', name: 'Gestión de Roles', exact: false, Icon: FaUsers},
-  { to:"/infoRecursos", name: 'Gestión de Recursos', exact: false, Icon: GrResources},
-  { to:'/TipoRecurso', name: 'Gestión de Modulos', exact: false, Icon: VscFileSubmodule},
-  //Modulo Pacientes
-  {to:'/Expediente', name:'Expedientes', exact:false, Icon: FaFileMedical},
-  {to:'/NuevoExpediente', name: 'Expediente', exact:false, Icon: ImProfile}
-]
-
 const bem = bn.create('sidebar');
 
-const  Sidebar =props => {
- 
+class Sidebar extends React.Component {
+  state = {
+    isOpenComponents: true,
+    isOpenContents: true,
+    isOpenPages: true,
+  };
 
-  const[ isOpenComponents, setIsOpenComponents] = useState(true);
-  const[ isOpenContents, setIsOpenContents ] = useState(true);
-  const[ isOpenPages, setIsOpenPages] = useState(true);
+  handleClick = name => () => {
+    this.setState(prevState => {
+      const isOpen = prevState[`isOpen${name}`];
 
-  const [listaRecursos, setListaRecursos] =useState([]);
+      return {
+        [`isOpen${name}`]: !isOpen,
+      };
+    });
+  };
 
-  useEffect(()=>{
-    props.state.permisos!=null?(setListaRecursos(props.state.permisos)):(setListaRecursos([]))
-  },[props.state.permisos])
-
-
-
-  
-
-
+  render() {
     return (
       <aside className={bem.b()} data-image={sidebarBgImage}>
         <div className={bem.e('background')} style={sidebarBackground} />
@@ -148,7 +127,7 @@ const  Sidebar =props => {
             </SourceLink>
           </Navbar>
           <Nav vertical>
-            {/* {navItems.map(({ to, name, exact, Icon }, index) => (
+            {navItems.map(({ to, name, exact, Icon }, index) => (
               <NavItem key={index} className={bem.e('nav-item')}>
                 <BSNavLink
                   id={`navItem-${name}-${index}`}
@@ -166,7 +145,7 @@ const  Sidebar =props => {
 
             <NavItem
               className={bem.e('nav-item')}
-              //onClick={this.handleClick('Components')}
+              onClick={this.handleClick('Components')}
             >
               <BSNavLink className={bem.e('nav-item-collapse')}>
                 <div className="d-flex">
@@ -177,7 +156,7 @@ const  Sidebar =props => {
                   className={bem.e('nav-item-icon')}
                   style={{
                     padding: 0,
-                    transform: isOpenComponents
+                    transform: this.state.isOpenComponents
                       ? 'rotate(0deg)'
                       : 'rotate(-90deg)',
                     transitionDuration: '0.3s',
@@ -186,7 +165,7 @@ const  Sidebar =props => {
                 />
               </BSNavLink>
             </NavItem>
-            <Collapse isOpen={isOpenComponents}>
+            <Collapse isOpen={this.state.isOpenComponents}>
               {navComponents.map(({ to, name, exact, Icon }, index) => (
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
@@ -202,53 +181,8 @@ const  Sidebar =props => {
                   </BSNavLink>
                 </NavItem>
               ))}
-            </Collapse> */}
-       
-                <NavItem key={1} className={bem.e('nav-item')}>
-                <BSNavLink
-                  id={`navItem-${dashBoard.name}-${1}`}
-                  className="text-uppercase"
-                  tag={NavLink}
-                  to={dashBoard.to}
-                  activeClassName="active"
-                  exact={dashBoard.exact}
-                >
-                  <dashBoard.Icon className={bem.e('nav-item-icon')} />
-                  <span className="">{dashBoard.name}</span>
-                </BSNavLink>
-              </NavItem>
-        
+            </Collapse>
 
-            {
-              listaRecursos.map(modulo=>{
-                  let {nombre_modulo,
-                       id_modulo,
-                       recursos
-                      } = modulo;
-
-                  let navContent =[];
-
-                  recursos.map(recurso_it =>{
-                    //obteniendo los recursos de este módulo.
-                    let content = contents.find(content_it => content_it.to == recurso_it.ruta);
-
-                    content!=null?(navContent.push(content)):(content=null)
-                  });
-
-
-                return(
-                    <SubMenu 
-                        bem = {bem}
-                        navComponents={navContent}
-                        nombreModulo={nombre_modulo}
-      
-                    />
-                )
-              })
-            }
-
-           
-{/* 
             <NavItem
               className={bem.e('nav-item')}
               onClick={this.handleClick('Contents')}
@@ -262,7 +196,7 @@ const  Sidebar =props => {
                   className={bem.e('nav-item-icon')}
                   style={{
                     padding: 0,
-                    transform: isOpenContents
+                    transform: this.state.isOpenContents
                       ? 'rotate(0deg)'
                       : 'rotate(-90deg)',
                     transitionDuration: '0.3s',
@@ -271,7 +205,7 @@ const  Sidebar =props => {
                 />
               </BSNavLink>
             </NavItem>
-            <Collapse isOpen={isOpenContents}>
+            <Collapse isOpen={this.state.isOpenContents}>
               {navContents.map(({ to, name, exact, Icon }, index) => (
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
@@ -302,7 +236,7 @@ const  Sidebar =props => {
                   className={bem.e('nav-item-icon')}
                   style={{
                     padding: 0,
-                    transform: isOpenPages
+                    transform: this.state.isOpenPages
                       ? 'rotate(0deg)'
                       : 'rotate(-90deg)',
                     transitionDuration: '0.3s',
@@ -311,7 +245,7 @@ const  Sidebar =props => {
                 />
               </BSNavLink>
             </NavItem>
-            <Collapse isOpen={isOpenPages}>
+            <Collapse isOpen={this.state.isOpenPages}>
               {pageContents.map(({ to, name, exact, Icon }, index) => (
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
@@ -327,18 +261,12 @@ const  Sidebar =props => {
                   </BSNavLink>
                 </NavItem>
               ))}
-            </Collapse> */}
+            </Collapse>
           </Nav>
         </div>
       </aside>
     );
-  
-}
-
-const mapStateToProps=reducers=>{
-  return{
-    state: reducers.permisosReducer
   }
 }
 
-export default connect(mapStateToProps, undefined) (Sidebar);
+export default Sidebar;

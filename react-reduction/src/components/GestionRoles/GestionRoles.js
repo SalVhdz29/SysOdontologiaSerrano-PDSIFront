@@ -142,7 +142,7 @@ const GestionRoles = props =>{
 
           let {id_rol,
               nombre_rol, 
-              descripcion_rol, 
+              descripcion, 
               fecha_rol, 
               operaciones_rol,
               rol_activo,
@@ -161,7 +161,7 @@ const GestionRoles = props =>{
           let fila ={};
           fila.id_rol = id_rol;
           fila.nombre_rol=nombre_rol;
-          fila.descripcion_rol = descripcion_rol;
+          fila.descripcion_rol = descripcion;
           fila.fecha_rol = fecha_rol;
 
           fila.rol_activo = (
@@ -173,6 +173,10 @@ const GestionRoles = props =>{
                   />
               </div>
           ); 
+          if(permisos != undefined )
+          {
+
+          
           fila.permisos=(
             <ul>
                 {permisos.map(permiso => {
@@ -184,11 +188,12 @@ const GestionRoles = props =>{
 
             </ul>
         ) 
+      }
           fila.operaciones_rol="Operaciones";
               let defaultValues={
                   idRol:id_rol,
                   nombreRol: nombre_rol,
-                  descripcionRol: descripcion_rol,
+                  descripcionRol: descripcion,
                   rolActivo: rol_activo,
                   permisos: permisos
               }

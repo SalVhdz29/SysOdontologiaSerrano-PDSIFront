@@ -30,7 +30,7 @@ import {GrConfigure } from 'react-icons/gr';
 import Cookies from 'js-cookie';
 
 //Componentes
-import NuevoExpediente from './NuevoExpediente';
+import NuevoExpediente from './nuevoExpediente';
 import DataTable from '../DataTable/DataTable';
 
 //jsons de prueba
@@ -183,13 +183,13 @@ const Expediente = props =>{
               
           fila.operaciones=(
               < FormGroup>
-              <NuevoExpediente
+              <nuevoExpediente
                   isReadOnly={true}
                   defaultValue={defaultValues}
                   classNames={"btn btn-success btn-sm "}
                   mensajeBoton={<FaEye />}
               />{' '}
-              <NuevoExpediente 
+              <nuevoExpediente 
                   defaultValue={defaultValues}
                   classNames={"btn btn-danger btn-sm "}
                   mensajeBoton={<FaPencilAlt />}

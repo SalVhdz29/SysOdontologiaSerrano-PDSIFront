@@ -17,7 +17,7 @@ import { API_LOGIN,
  } from '../api/apiTypes';
 
  //actions
- import { setDatosUsuario, setTokenUsuario } from '../store/actions';
+ import { setDatosUsuario, setTokenUsuario, setListaPermisos } from '../store/actions';
 
 
 
@@ -36,19 +36,19 @@ const AuthPage = props =>{
                                   .set('Content-Type', 'application/json')
                                   .send(values);
       token = token.body.token;
-      console.log("token ", token);
+      // console.log("token ", token);
 
       Cookies.set('token', token);
-      console.log("primero: ===>:", process.env.REACT_APP_ENDPOINT_BASE_URL + API_LOGIN);
-      console.log("segundo  ===>: ", process.env.REACT_APP_ENDPOINT_BASE_URL + OBTENER_DATOS_USUARIO_TOKEN);
+     
 
       let datos_usuario = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + OBTENER_DATOS_USUARIO_TOKEN)
                                             .set('Accept', 'application/json')
                                             .set("Authorization", "Bearer " + token);
       datos_usuario = datos_usuario.body;
       datos_usuario.correo_electronico_usuario=correoElectronicoIpx; // borrar Al modificar servicio.
-      console.log("vine aqui");
-      console.log("datos Usuario", datos_usuario);
+  
+
+      props.setListaPermisos(datos_usuario.permisos)
 
       localStorage.setItem("authUser", JSON.stringify(
                                                         {
@@ -66,7 +66,7 @@ const AuthPage = props =>{
       await props.setTokenUsuario(token);
     
     setCargando_autenticacion(false);
-    console.log(props.state);
+    
     props.history.push("/");
     }catch(error)
     {
@@ -76,6 +76,7 @@ const AuthPage = props =>{
       switch(error.status){
         case 401:
           setMensaje_error_autenticacion(error.message);
+          break;
         case 500:
             setMensaje_error_autenticacion(error.message);
           break;
@@ -172,7 +173,8 @@ const AuthPage = props =>{
 
 const mapStateToProps = reducers => {
   return{
-    state: reducers.datosUsuarioReducer
+    state: reducers.datosUsuarioReducer,
+    permisos: reducers.permisosReducer
   }
 }
 
@@ -180,6 +182,7 @@ const mapDispatchToProps = dispatch => {
   return{
     setDatosUsuario: (datos) => dispatch(setDatosUsuario(datos)),
     setTokenUsuario: (token) => dispatch(setTokenUsuario(token)),
+    setListaPermisos: (permisos) => dispatch(setListaPermisos(permisos)),
   }
 }
 export default withRouter(

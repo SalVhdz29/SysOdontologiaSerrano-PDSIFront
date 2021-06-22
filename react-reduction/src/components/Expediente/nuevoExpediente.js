@@ -37,7 +37,7 @@ import DataTable from '../DataTable/DataTable';
 
 //Componente
 
-const nuevoExpediente = props =>{
+const NuevoExpediente = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
 
@@ -164,7 +164,7 @@ const nuevoExpediente = props =>{
            }else{
             valor.sexo = 0;
            }
-           console.log("despues del sexo del sexo");
+        //    console.log("despues del sexo del sexo");
 
             let tipo="";
             if(props.isEditable)
@@ -187,7 +187,11 @@ const nuevoExpediente = props =>{
                         }
 
             let envio={tipo,valor};
-            await props.cambioDatos(envio);
+            if(props.cambioDatos != undefined)
+            {
+                await props.cambioDatos(envio);
+            }
+            
             setModalOpen(false);
     }
 
@@ -531,4 +535,4 @@ const nuevoExpediente = props =>{
         </Fragment>
     )
 }
-export default nuevoExpediente;
+export default NuevoExpediente;

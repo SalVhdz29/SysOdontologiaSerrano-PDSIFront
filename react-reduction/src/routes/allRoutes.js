@@ -24,13 +24,13 @@ import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
 import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
 import GestionRoles from '../components/GestionRoles/GestionRoles';
 import Expediente from '../components/Expediente/';
-import NuevoExpediente from '../components/Expediente/NuevoExpediente';
+// import nuevoExpediente from '../components/Expediente/nuevoExpediente';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 
 
 const userRoutes =[
-    {path:"/", component: TipoRecurso},
+    //{path:"/", component: TipoRecurso},
     
     //{path:"/", component: BasePage},
     //{path:"/", component: DashboardPage},
@@ -53,8 +53,8 @@ const userRoutes =[
     {path:"/GestionUsuarios", component:GestionUsuarios},
     {path:"/TipoRecurso", component: TipoRecurso},
     {path:"/GestionRoles", component:GestionRoles },
-    {path:"/Expediente", component:Expediente },
-    {path:"/NuevoExpediente", component:NuevoExpediente },
+    {path:"/", component:Expediente },
+    // {path:"/NuevoExpediente", component:nuevoExpediente },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
 ];
