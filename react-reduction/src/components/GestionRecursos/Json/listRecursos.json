@@ -1,0 +1,26 @@
+[
+    {
+        "id_recurso":1,
+        "nombre_recurso":"Usuario 1",
+        "descripcion_recurso":"Descripcion 1",
+        "fecha_creacion_recurso": "xx/xx/xxxx",
+        "recurso_activo": 0
+    },
+    {
+        "id_recurso":2,
+        "nombre_recurso":"Usuario 2",
+        "descripcion_recurso":"Descripcion 2",
+        "fecha_creacion_recurso": "xx/xx/xxxx",
+        "recurso_activo": 0
+    },
+    {
+        "id_recurso":3,
+        "nombre_recurso":"Usuario 3",
+        "descripcion_recurso":"Descripcion 3",
+        "fecha_creacion_recurso": "xx/xx/xxxx",
+        "recurso_activo": 0
+    }
+
+    
+
+]
