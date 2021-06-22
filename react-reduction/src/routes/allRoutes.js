@@ -23,7 +23,8 @@ import GestionUsuarios from '../components/GestionUsuarios/GestionUsuarios';
 import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
 import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
 import GestionRoles from '../components/GestionRoles/GestionRoles';
-
+import Expediente from '../components/Expediente/';
+import NuevoExpediente from '../components/Expediente/NuevoExpediente';
 
 
 const userRoutes =[
@@ -50,6 +51,8 @@ const userRoutes =[
     {path:"/GestionUsuarios", component:GestionUsuarios},
     {path:"/TipoRecurso", component: TipoRecurso},
     {path:"/GestionRoles", component:GestionRoles },
+    {path:"/Expediente", component:Expediente },
+    {path:"/NuevoExpediente", component:NuevoExpediente },
 ];
 
 const authRoutes=[
