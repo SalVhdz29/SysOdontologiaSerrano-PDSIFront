@@ -19,8 +19,8 @@ import TablePage from 'pages/TablePage';
 import TypographyPage from 'pages/TypographyPage';
 import WidgetPage from 'pages/WidgetPage';
 import BasePage from '../components/BasePage/BasePage';
-import infoRecursos from '../components/infoRecursos/infoRecursos'; 
-import NuevoRecurso from '../components/NuevoRecurso/NuevoRecurso';
+import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
+import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 
 const userRoutes =[
     {path:"/", component: DashboardPage},

@@ -51,6 +51,7 @@ const GestionRecursos = props =>{
 
   const[listaRecursos, setListaRecursos] = useState([]);
   const[filasListaRecurso, setFilasListaRecurso] =useState([]);
+  const[rutas, setRutas]=useState([]);
 
   //Ciclo de vida
   useEffect(()=>{
@@ -64,7 +65,7 @@ const GestionRecursos = props =>{
   },[props.state.listaRecursos]) 
 
   useEffect(()=>{
-      console.log("valor de filas detectadas: ", props.state.filasListaRecursosActivos)
+    //   console.log("valor de filas detectadas: ", props.state.filasListaRecursosActivos)
       const _setearFilas =async()=>{
           await setFilasListaRecurso(props.state.filaslistaRecursosActivos);
       }
@@ -84,7 +85,7 @@ const GestionRecursos = props =>{
                                                 .set('Accept', 'application/json')
                                                 .set("Authorization", "Bearer " + token);
      //let {lista_recursos} = respuesta_recursos.body;
-     console.log("Respuesta: ", respuesta_recursos.body);
+    //  console.log("Respuesta: ", respuesta_recursos.body);
 
       //await props.setListaRecursos(listaRecursos);
       await props.setListaRecursos(respuesta_recursos.body);
@@ -100,7 +101,7 @@ const GestionRecursos = props =>{
                 .set('Accept', 'application/json')
                 .set("Authorization", "Bearer " + token);
         //let {lista_recursos} = respuesta_recursos.body;
-        console.log("Respuesta: ", respuesta_recursos.body);
+        // console.log("Respuesta: ", respuesta_recursos.body);
       
         //await props.setListaRecursos(listaRecursos);
         await props.setListaRecursos(respuesta_recursos.body);
@@ -139,13 +140,25 @@ const GestionRecursos = props =>{
       let filas=[];
       if (props.state.listaRecursos.length !=0){
 
+        let rutas=[];
+        for(let recurso of props.state.listaRecursos)
+        {
+            let { ruta_recurso, id_recurso } = recurso;
+            let ruta={ruta_recurso, id_recurso}
+            rutas.push(ruta)
+        }
+
+        setRutas(rutas);
+
         props.state.listaRecursos.map(recurso=>{
 
             let {id_recurso,
                 nombre_recurso, 
                 descripcion_recurso, 
                 fecha_creacion_recurso, 
-                recurso_activo } = recurso;
+                recurso_activo,
+                ruta_recurso,
+                tipo_recurso } = recurso;
 
                 if(recurso_activo == 1)
                 {
@@ -161,6 +174,8 @@ const GestionRecursos = props =>{
             fila.nombre_recurso=nombre_recurso;
             fila.descripcion_recurso = descripcion_recurso;
             fila.fecha_creacion_recurso = fecha_creacion_recurso;
+            fila.ruta_recurso = ruta_recurso;
+            fila.tipo_recurso = tipo_recurso.nombre_tipo_recurso;
 
             // fila.
 
@@ -179,6 +194,8 @@ const GestionRecursos = props =>{
                     nombreRecurso: nombre_recurso,
                     descripcionRecurso: descripcion_recurso,
                     recursoActivo: recurso_activo,
+                    tipo_recurso,
+                    ruta_recurso
 
                 }
             fila.operaciones=(
@@ -189,6 +206,7 @@ const GestionRecursos = props =>{
                     defaultValue={defaultValues}
                     classNames={"btn-success btn-sm "}
                     mensajeBoton={<FaEye />}
+                    rutas={rutas}
                 />{' '}
                 <NuevoRecurso 
                     defaultValue={defaultValues}
@@ -196,16 +214,17 @@ const GestionRecursos = props =>{
                     mensajeBoton={<FaPencilAlt />}
                     isEditable={true}
                     cambioDatos={_cambiosEnRecursos}
+                    rutas={rutas}
                 />
 
                 </FormGroup>
             )
             //console.log("Fila antes del push");
-            console.log(fila);
+            // console.log(fila);
             filas.push(fila);
       })
         //console.log("Revisando valor de filas");
-        console.log(filas);
+        // console.log(filas);
         props.setFilasListaRecursosActivos(filas);
     }
 
@@ -309,6 +328,7 @@ const GestionRecursos = props =>{
                   <Col md={4} xs={12}>
                       <NuevoRecurso 
                           cambioDatos={_cambiosEnRecursos}
+                          rutas={rutas}
 
                       />
                   </Col>

@@ -17,7 +17,8 @@ import{
     AvField
 } from 'availity-reactstrap-validation'
 
-//import Select from 'react-select';
+
+import Select from 'react-select';
 
 import Cookies from 'js-cookie';
 
@@ -26,11 +27,12 @@ import superagent from 'superagent';
 import{
     API_CREAR_RECURSO,
     API_ACTUALIZAR_RECURSO,
+    API_LISTA_TIPOS_RECURSO
 
 }from '../../../api/apiTypes';
 
 //Jsons
-import { columnasTabla } from './Json/columnasTabla';
+import { columnasTablaRecursos } from '../Json/columnasTablaRecursos';
 
 //Componentes
 import DataTable from '../../DataTable/DataTable';
@@ -45,7 +47,18 @@ const NuevoRecurso = props =>{
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
+    const [optionsTipoRecurso, setOptionsTipoRecurso ] = useState([]);
+
+    const [ tipoRecurso, setTipoRecurso ] = useState({label:"Seleccione un tipo de recurso", value:0})
+    const [rutaRepetida, setRutaRepetida ] = useState(false);
+    const [errorRuta, setErrorRuta ] =useState("");
+    const [errorTipoRecurso,setErrorTipoRecurso] =useState("");
+
         //CICLO DE VIDA
+
+        useEffect(()=>{
+            _obtenerServicios();
+        },[])
         useEffect(()=>{
 
             if(props.isReadOnly == true || props.isEditable == true)
@@ -55,14 +68,45 @@ const NuevoRecurso = props =>{
             }
     
         },[props.defaultValue])
+
+        // useEffect(()=>{
+
+        //     rutaRepetida?(setErrorRuta("Ruta ya registrada")):(setErrorRuta(""))
+        // },[rutaRepetida]);
     
         //FIN CICLO DE VIDA
+
+        //Funcion que llama servicios registrados
+        const _obtenerServicios=async()=>{
+            let token= Cookies.get('token');
+            let respuesta = await superagent.get(process.env.REACT_APP_ENDPOINT_BASE_URL + API_LISTA_TIPOS_RECURSO)
+                                            .set('Accept', 'application/json')
+                                            .set("Authorization", "Bearer " + token);
+      
+
+            let default_op = {label:"Seleccione un tipo de recurso", value:0};
+
+            let options=[];
+            options.push(default_op);
+
+            let { tipos_recurso_registrados } = respuesta.body;
+
+            for(let tipo_recurso of tipos_recurso_registrados)
+            {
+             
+                let option_it = { value: tipo_recurso.ID_TIPO_RECURSO, label: tipo_recurso.NOMBRE_TIPO_RECURSO};
+                options.push(option_it);
+            }
+
+            setOptionsTipoRecurso(options);
+        }
 
         //Función que da valores por defecto a los campos en el formulario.
         const _setDefaultValue=()=>{
             let nombreRecursoIpx="";
             let descripcionRecursoIpx = "";
-            let {nombreRecurso, descripcionRecurso, recursoActivo} = props.defaultValue;
+            let rutaRecursoIpx = "";
+            let {nombreRecurso, descripcionRecurso, recursoActivo, tipo_recurso, ruta_recurso} = props.defaultValue;
             // console.log("default Value", props.defaultValue)
             if(nombreRecurso){
                 nombreRecursoIpx = nombreRecurso;
@@ -75,8 +119,18 @@ const NuevoRecurso = props =>{
             {
                 setRecursoActivo(recursoActivo);
             }
+            if(tipoRecurso)
+            {
+                let option = {value:tipo_recurso.id_tipo_recurso, label: tipo_recurso.nombre_tipo_recurso};
+               
+                setTipoRecurso(option);
+            }
+            if(ruta_recurso)
+            {
+                rutaRecursoIpx = ruta_recurso;
+            }
 
-            setDefaultValues({nombreRecursoIpx, descripcionRecursoIpx});
+            setDefaultValues({nombreRecursoIpx, descripcionRecursoIpx, rutaRecursoIpx});
         }
 
 
@@ -84,7 +138,9 @@ const NuevoRecurso = props =>{
         //console.log("el valor obtenido", valor_inputs);
 
             let token= Cookies.get('token');
-
+           
+    
+        tipoRecurso.value!=0 && tipoRecurso.value != "0" && rutaRepetida == false?(async ()=>{
             let { nombreRecursoIpx,
                 descripcionRecursoIpx,
                 rutaRecursoIpx} = valor_inputs;
@@ -94,6 +150,7 @@ const NuevoRecurso = props =>{
             valor.descripcion_Recurso =descripcionRecursoIpx;
             valor.ruta_Recurso = rutaRecursoIpx;
             valor.recurso_activo = recursoActivo;
+            valor.tipo_recurso = tipoRecurso.value;
             let tipo="";
                             if(props.isEditable)
                             {
@@ -178,6 +235,10 @@ const NuevoRecurso = props =>{
                             await props.cambioDatos(envio);
                             //_limpiarFormulario();
                             setModalOpen(false);
+                        })():(
+                            // 
+                            setErrorTipoRecurso("Escoja un modulo para el recurso")
+                        )
             }
         
 
@@ -193,9 +254,48 @@ const NuevoRecurso = props =>{
         }
     }
 
+    const _unicidadRuta=(value, ctx, input, cb) =>{
+       
+        let id_recurso =0;
+        let validacion=true;
+        if(props.defaultValue != null && props.defaultValue != undefined)
+        {
+            id_recurso = props.defaultValue.idRecurso;
+            console.log("id_recurso: ", id_recurso);
+        }
+
+            props.rutas.length != 0?(()=>{
+                let coincidencias = props.rutas.filter(ruta =>ruta.ruta_recurso == value && ruta.id_recurso != id_recurso);
+                if(coincidencias.length != 0)
+                {
+                    setRutaRepetida(true);
+                   
+                    validacion= "ruta ya registrada";
+                }
+                else{
+                    setRutaRepetida(false);
+        
+                    validacion= true;
+                }
+            })():(()=>{
+                setRutaRepetida(false);
+                validacion= true
+            })()
+
+        return validacion;
+        
+     
+        
+    }
+
     const _cambiarEstadoActivo = ()=>
     {
         setRecursoActivo(!recursoActivo);
+    }
+
+    const _cambioTipoRecurso = (value) =>{
+        setTipoRecurso(value)
+        setErrorTipoRecurso("");
     }
 
 
@@ -203,7 +303,7 @@ const NuevoRecurso = props =>{
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
-            <FormGroup>
+            {/* <FormGroup> */}
             <Button 
                     className={props.classNames?(props.classNames):("btn btn-success ")}
                     onClick={()=>{setModalOpen(true)}}
@@ -217,7 +317,7 @@ const NuevoRecurso = props =>{
                     }
                    
                 </Button>
-            </FormGroup>
+            {/* </FormGroup> */}
 
             <Modal
                 size="lg"
@@ -263,7 +363,7 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="ej: salher"
                                                 type="text"
-                                                disable={props.isReadOnly?true:false}
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                   //myValidation: _validacionEjemplo -> CUSTOM VALIDATION EXAMPLE ON HOOKS, POR FIN
@@ -282,7 +382,7 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="Ingrese la descripcion del recurso"
                                                 type="textarea"
-                                                disable={props.isReadOnly?true:false}
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                 }}
@@ -301,12 +401,14 @@ const NuevoRecurso = props =>{
                                                 className="form-control"
                                                 placeholder="ej: /ruta_ejemplo_recurso"
                                                 type="text"
-                                                disable={props.isReadOnly?true:false}
+                                                disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
+                                                  myValidation: _unicidadRuta
                                                   
                                                 }}
                                             />
+                                            <p id="errorRuta" name="errorRuta" style={{color:"red"}}>{errorRuta}</p>
 
                                     </Col>
 
@@ -342,6 +444,17 @@ const NuevoRecurso = props =>{
                                     
 
                                    
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                            <Select 
+                                                value={tipoRecurso}
+                                                onChange={(valor)=>{_cambioTipoRecurso(valor)}}
+                                                options={optionsTipoRecurso}
+                                                isDisabled={props.isReadOnly?true:false}
+                                            />
+                                        <p  id="errorTipoRecurso" style={{color:"red"}}>{errorTipoRecurso}</p>
                                     </Col>
                                 </Row>
 
