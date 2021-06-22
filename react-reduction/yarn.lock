@@ -10307,7 +10307,11 @@
     "strip-ansi" "5.0.0"
     "text-table" "0.2.0"
 
+<<<<<<< HEAD
 "react-dom@^15.3.0 || ^16.0.0 || ^17.0.0", "react-dom@^16.8.4":
+=======
+"react-dom@^16.8.4":
+>>>>>>> dev-wilbert
   "integrity" "sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
   "version" "16.14.0"
@@ -10510,6 +10514,7 @@
     "shallowequal" "^1.1.0"
     "throttle-debounce" "^2.1.0"
 
+<<<<<<< HEAD
 "react-switch@^6.0.0":
   "integrity" "sha512-QV3/6eRK5/5epdQzIqvDAHRoGLbCv/wDpHUi6yBMXY1Xco5XGuIZxvB49PHoV1v/SpEgOCJLD/Zo43iic+aEIw=="
   "resolved" "https://registry.npmjs.org/react-switch/-/react-switch-6.0.0.tgz"
@@ -10517,6 +10522,8 @@
   dependencies:
     "prop-types" "^15.7.2"
 
+=======
+>>>>>>> dev-wilbert
 "react-tiny-virtual-list@^2.0.0":
   "integrity" "sha512-MDiy2xyqfvkWrRiQNdHFdm36lfxmcLLKuYnUqcf9xIubML85cmYCgzBJrDsLNZ3uJQ5LEHH9BnxGKKSm8+C0Bw=="
   "resolved" "https://registry.npmjs.org/react-tiny-virtual-list/-/react-tiny-virtual-list-2.2.0.tgz"
@@ -10563,7 +10570,11 @@
     "envify" "^3.0.0"
     "fbjs" "^0.6.1"
 
+<<<<<<< HEAD
 "react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^16.14.0":
+=======
+"react@^16.14.0":
+>>>>>>> dev-wilbert
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"
