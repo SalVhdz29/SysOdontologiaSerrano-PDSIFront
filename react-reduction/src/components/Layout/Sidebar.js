@@ -95,18 +95,19 @@ const navItems = [
   { to: '/WidgetPage', name: 'widgets', exact: false, Icon: MdWidgets },
 ];
 
-const dashBoard={ to: '/', name: 'Inicio', exact: true, Icon: MdDashboard };
+const dashBoard={ to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard};
 
 const contents=[
   //Modulo Seguridad
-  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
+  //{ to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to:'/GestionUsuarios', name: 'Gestión de Usuarios', exact: false, Icon: FaUserAlt},
   { to:'/GestionRoles', name: 'Gestión de Roles', exact: false, Icon: FaUsers},
   { to:"/infoRecursos", name: 'Gestión de Recursos', exact: false, Icon: GrResources},
   { to:'/TipoRecurso', name: 'Gestión de Modulos', exact: false, Icon: VscFileSubmodule},
   //Modulo Pacientes
   {to:'/Expediente', name:'Expedientes', exact:false, Icon: FaFileMedical},
-  {to:'/NuevoExpediente', name: 'Expediente', exact:false, Icon: ImProfile}
+  {to:'/NuevoExpediente', name: 'Expediente', exact:false, Icon: ImProfile},
+  {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard }
 ]
 
 const bem = bn.create('sidebar');

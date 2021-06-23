@@ -169,12 +169,14 @@ const NuevoExpediente = props =>{
             let tipo="";
             if(props.isEditable)
                         {
+                            console.log("LO QUE ENVIA: ", valor);
                             valor.id_expediente = props.defaultValue.id_expediente;
                             tipo="editarExpedienteLista";
                             let token= Cookies.get('token');
                               let respuesta_Expediente = await superagent.post(
                                 process.env.REACT_APP_ENDPOINT_BASE_URL + API_UPDATE_EXPEDIENTE)
                                 .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
+                                console.log("LA RESPUESTA: ", respuesta_Expediente)
                         }
                         else
                         {

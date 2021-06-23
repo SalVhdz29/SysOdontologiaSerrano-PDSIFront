@@ -5,6 +5,7 @@ import SearchInput from 'components/SearchInput';
 import { notificationsData } from 'demos/header';
 import logoSerrano from 'assets/img/logo/logoSerrano.png';
 import withBadge from 'hocs/withBadge';
+import { withRouter, Link } from "react-router-dom";
 import React from 'react';
 import {
   MdClearAll,
@@ -30,6 +31,7 @@ import {
   PopoverBody,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
+import Cookies from 'js-cookie';
 
 const bem = bn.create('header');
 
@@ -46,12 +48,18 @@ const MdNotificationsActiveWithBadge = withBadge({
   children: <small>5</small>,
 })(MdNotificationsActive);
 
+const authUser = localStorage.getItem('authUser');
+// console.log("auth: ", authUser);
+// console.log("otro: ",authUser.usuario_nombreUsuario);
+
 class Header extends React.Component {
   state = {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
     isOpenUserCardPopover: false,
+
   };
+
 
   toggleNotificationPopover = () => {
     this.setState({
@@ -75,10 +83,15 @@ class Header extends React.Component {
 
     document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
   };
+  cerrarSesion=()=>{
+          Cookies.remove("token");
+          localStorage.removeItem("authUser")
+          this.props.history.push("/login");
+  }
+
 
   render() {
-    const { isNotificationConfirmed } = this.state;
-
+    
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
@@ -142,13 +155,12 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
+                  title={authUser.usuario_nombreUsuario}
+                  subtitle={authUser.usuario_correoElectronico} 
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
+                    {/* <ListGroupItem tag="button" action className="border-light">
                       <MdPersonPin /> Profile
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
@@ -162,9 +174,9 @@ class Header extends React.Component {
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
                       <MdHelp /> Help
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdExitToApp /> Signout
+                    </ListGroupItem> */}
+                    <ListGroupItem tag="button" action className="border-light" onClick={this.cerrarSesion}>
+                      <MdExitToApp /> Cerrar Sesión
                     </ListGroupItem>
                   </ListGroup>
                 </UserCard>
@@ -177,4 +189,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

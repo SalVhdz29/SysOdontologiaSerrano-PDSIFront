@@ -327,6 +327,36 @@ const NuevoUsuario = props =>{
         setNuevaContrasenia(!nuevaContrasenia);
     }
 
+    const _unicidadCorreoElectronico = (value, ctx, input, cb)=>{
+        let id_usuario =0;
+        let validacion=true;
+        if(props.defaultValue != null && props.defaultValue != undefined)
+        {
+            id_usuario = props.defaultValue.idUsuario;
+            console.log("id_recurso: ", id_usuario);
+        }
+
+            props.correos.length != 0?(()=>{
+                let coincidencias = props.correos.filter(correo =>correo.correo_electronico == value && correo.id_usuario != id_usuario);
+                if(coincidencias.length != 0)
+                {
+                    // setRutaRepetida(true);
+                   
+                    validacion= "correo ya registrado";
+                }   
+                else{
+                    // setRutaRepetida(false);
+        
+                    validacion= true;
+                }
+            })():(()=>{
+                //setRutaRepetida(false);
+                validacion= true
+            })()
+
+        return validacion;
+    }
+
 
 
 
@@ -414,7 +444,8 @@ const NuevoUsuario = props =>{
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
-                                                  email: { value: true, errorMessage: "Debe escribir un correo válido"}
+                                                  email: { value: true, errorMessage: "Debe escribir un correo válido"},
+                                                  myValidation: _unicidadCorreoElectronico
                                                 }}
                                             />
                                     </Col>

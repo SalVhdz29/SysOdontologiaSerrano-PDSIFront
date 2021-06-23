@@ -61,6 +61,7 @@ const GestionUsuarios = props =>{
     const[listaUsuarios, setListaUsuarios] = useState([]);
     const[filasListaUsuario, setFilasListaUsuario] =useState([]);
     const[listaEmpleados, setListaEmpleados] = useState([]);
+    const [correos, setCorreos] = useState([]);
 
     //Ciclo de vida
     useEffect(()=>{
@@ -149,11 +150,10 @@ const GestionUsuarios = props =>{
 
     //Función que sirve de puerto en cambios obtenidos por componentes hijos.
     const _cambiosEnUsuarios =({tipo, valor})=>{
-        //console.log("vino al cambio usuarios con: ", tipo);
+      
         switch(tipo){
             case 'actualizarListaUsuarios':
-                   //let nuevas_filas= _cambiarActivoJsonUsuarios(valor.id_usuario);
-                    //console.log("volvio");
+                  
                     _obtenerUsuarios();
                 break;
             case 'actualizarListaEmpleados':
@@ -161,13 +161,13 @@ const GestionUsuarios = props =>{
                 break;
             case 'agregarUsuarioLista':
                     let nueva_lista =_agregarUsuarioALista(valor);
-                    //console.log("lo que devolvio: ", nueva_lista);
+                 
                     _obtenerUsuarios(nueva_lista);
                 break;
             case 'editarUsuarioLista':
-                //console.log(valor, "deeee");
+                
                     let lista_actualizada =_actualizarUsuario(valor);
-                    //console.log("lo devuelto: ", lista_actualizada);
+        
                     _obtenerUsuarios(lista_actualizada);
                 break;
 
@@ -178,11 +178,20 @@ const GestionUsuarios = props =>{
 
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaUsuario=async()=>{
-        //console.log("detecto el cambio");
+        
 
         let filas=[];
         if(props.state.listaUsuarios.length != 0)
         {
+            let correos=[];
+            for(let usuario of props.state.listaUsuarios)
+            {
+                let { correo_electronico, id_usuario } = usuario;
+                let correo={correo_electronico, id_usuario}
+                correos.push(correo)
+            }
+    
+            setCorreos(correos);
 
        
             props.state.listaUsuarios.map(usuario=>{
@@ -252,6 +261,7 @@ const GestionUsuarios = props =>{
                         defaultValue={defaultValues}
                         classNames={"btn-success btn-sm "}
                         mensajeBoton={<FaEye />}
+                        correos={correos}
                     />{' '}
                     <NuevoUsuario 
                         defaultValue={defaultValues}
@@ -259,6 +269,7 @@ const GestionUsuarios = props =>{
                         mensajeBoton={<FaPencilAlt />}
                         isEditable={true}
                         cambioDatos={_cambiosEnUsuarios}
+                        correos={correos}
                     />
 
                     </FormGroup>
@@ -389,6 +400,7 @@ const GestionUsuarios = props =>{
                         <NuevoUsuario 
                             cambioDatos={_cambiosEnUsuarios}
                             listaEmpleados={props.state.listaEmpleados}
+                            correos={correos}
                         />
                     </Col>
                   </Row>

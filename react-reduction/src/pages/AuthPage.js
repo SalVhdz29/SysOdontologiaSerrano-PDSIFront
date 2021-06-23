@@ -7,6 +7,7 @@ import {AvForm, AvField} from 'availity-reactstrap-validation';
 import Cookies from 'js-cookie';
 import { Alert } from 'reactstrap';
 import { withRouter, Link } from "react-router-dom"
+import logoSerrano from 'assets/img/logo/logoSerrano2.png';
 
 // Redux
 import { connect } from "react-redux"
@@ -28,7 +29,7 @@ const AuthPage = props =>{
   const [cargando_autenticacion, setCargando_autenticacion]=useState(false);
   const _autenticar=async(passwordIpx, correoElectronicoIpx)=>{
     try{
-      console.log(passwordIpx, correoElectronicoIpx);
+     
       setCargando_autenticacion(true);
     
       let values={correo_electronico:correoElectronicoIpx, contrasenia:passwordIpx};
@@ -36,7 +37,7 @@ const AuthPage = props =>{
                                   .set('Content-Type', 'application/json')
                                   .send(values);
       token = token.body.token;
-      // console.log("token ", token);
+      
 
       Cookies.set('token', token);
      
@@ -105,14 +106,14 @@ const AuthPage = props =>{
             <AvForm
               className="form-horizontal"
               onValidSubmit={(e,v) =>{
-                console.log(v);
+                
                 let {passwordIpx, correoElectronicoIpx} = v;
                 _autenticar(passwordIpx, correoElectronicoIpx)
               }}
             >
               <div className="text-center pb-4">
             <img
-              src={logo200Image}
+              src={logoSerrano}
               className="rounded"
               style={{ width: 60, height: 60, cursor: 'pointer' }}
               alt="logo"

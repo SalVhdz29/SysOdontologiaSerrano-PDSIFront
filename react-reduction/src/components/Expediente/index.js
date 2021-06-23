@@ -52,20 +52,20 @@ const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
   const[filasListaExpediente, setFilasListaExpediente] =useState([]);
 
-//const [tokenU, setTokenU] = useState(null);
+
     //Ciclo de vida
     useEffect(()=>{
       _obtenerServicios(listExpediente);
   },[])
 
   useEffect(()=>{
-       //  console.log("vino aqui");
+    
     setListaExpediente(props.state.listaExpediente);
     let result =  _crearFilasListaExpediente();
   },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
 
   useEffect(()=>{
-      //console.log("valor de filas detectadas: ", props.state.filasListaUsuariosActivos)
+      
       const _setearFilas =async()=>{
           await setFilasListaExpediente(props.state.filasListaExpedienteActivos);
       }
@@ -91,8 +91,7 @@ const Expediente = props =>{
 
     //Función que llama a los usuarios en el servidor.
     const _obtenerExpediente = async() =>{
-      //console.log("valor del JSON en el llamado: ", listaUsuarios);
-      //await props.setListaExpediente(listaExpediente);
+  
       let token= Cookies.get('token');
 
       let respuesta_Expediente = await superagent.post(
@@ -110,13 +109,13 @@ const Expediente = props =>{
       switch(tipo){
           case 'agregarExpedienteLista':
                   let nueva_lista =_agregarExpedienteALista(valor);
-                  //console.log("lo que devolvio: ", nueva_lista);
+                 
                   _obtenerExpediente(nueva_lista);
               break;
           case 'editarExpedienteLista':
-              //console.log(valor, "deeee");
+      
                   let lista_actualizada =_actualizarExpediente(valor);
-                  //console.log("lo devuelto: ", lista_actualizada);
+               
                   _obtenerExpediente(lista_actualizada);
               break;
 
@@ -128,7 +127,7 @@ const Expediente = props =>{
 
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaExpediente=async()=>{
-      //console.log("detecto el cambio");
+     
 
       let filas=[];
 
@@ -183,13 +182,13 @@ const Expediente = props =>{
               
           fila.operaciones=(
               < FormGroup>
-              <nuevoExpediente
+              <NuevoExpediente
                   isReadOnly={true}
                   defaultValue={defaultValues}
                   classNames={"btn btn-success btn-sm "}
                   mensajeBoton={<FaEye />}
               />{' '}
-              <nuevoExpediente 
+              <NuevoExpediente 
                   defaultValue={defaultValues}
                   classNames={"btn btn-danger btn-sm "}
                   mensajeBoton={<FaPencilAlt />}
@@ -249,7 +248,7 @@ const Expediente = props =>{
 
           if(Expediente.id_expediente == expediente_actualizar.id_expediente)
           {
-              //console.log("coincidencia: ",Expediente.id_expediente);
+              
               Expediente.id_expediente = expediente_actualizar.id_expediente;
               Expediente.nombre_paciente = expediente_actualizar.nombre_paciente;
               Expediente.apellido_paciente = expediente_actualizar.apellido_paciente;
