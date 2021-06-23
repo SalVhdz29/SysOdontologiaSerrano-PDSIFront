@@ -1,0 +1,22 @@
+[
+    {
+        "id_rol":1,
+        "nombre_rol":"Salvador Hernández"
+    },
+    {
+        "id_rol":2,
+        "nombre_rol":"Daniel Ernesto"
+    },
+    {
+        "id_rol":3,
+        "nombre_rol":"Wilbert "
+    },
+    {
+        "id_rol":4,
+        "nombre_rol":"Mauricio Ordoñez"
+    },
+    {
+        "id_rol":5,
+        "nombre_rol":"Nelson Gonzales"
+    }
+]

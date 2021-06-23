@@ -1,0 +1,45 @@
+[
+    {
+        "id_recurso":1,
+        "nombre_recurso":"Gestión de Usuarios",
+        "descripcion_recurso":"Descripcion Recurso 1",
+        "estado_recurso":1
+    },
+    {
+        "id_recurso":2,
+        "nombre_recurso":"Gestión de Expedientes",
+        "descripcion_recurso":"Descripcion Recurso 2",
+        "estado_recurso":1
+    },
+    {
+        "id_recurso":3,
+        "nombre_recurso":"Nombre Recurso 3",
+        "descripcion_recurso":"Descripcion Recurso 3",
+        "estado_recurso":0
+    },
+    {
+     "id_recurso":4,
+     "nombre_recurso":"Nombre Recurso 4",
+     "descripcion_recurso":"Descripcion Recurso 4",
+     "estado_recurso":1
+     },
+     {
+         "id_recurso":5,
+         "nombre_recurso":"Recurso 5",
+         "descripcion_recurso":"Descripcion Recurso 5",
+         "estado_recurso":0
+
+     },
+     {
+         "id_recurso":6,
+         "nombre_recurso":"Recurso 6",
+         "descripcion_recurso":"Descripcion Recurso 6",
+         "estado_recurso":1
+     },
+     {
+         "id_recurso":7,
+         "nombre_recurso":"Recurso 7",
+         "descripcion_recurso":"Descripcion Recurso 7",
+         "estado_recurso":1
+     }
+ ]
