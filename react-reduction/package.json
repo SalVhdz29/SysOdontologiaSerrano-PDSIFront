@@ -5,7 +5,7 @@
   "homepage": "https://reduction-admin.github.io/react-reduction",
   "dependencies": {
     "availity-reactstrap-validation": "^2.7.1",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.6.0",
     "chart.js": "2.7.2",
     "classnames": "^2.2.6",
     "d3-geo": "^1.11.3",
@@ -34,6 +34,7 @@
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
     "react-switch": "^6.0.0",
+    "react-tabs": "^3.2.2",
     "reactstrap": "^7.1.0",
     "redux": "^4.0.5",
     "superagent": "^6.1.0",

@@ -1,31 +1,25 @@
 export const columnasTabla = [
   {
-    text: "ID Expediente",
-    dataField: "id_expediente",
+    text: "No Cita",
+    dataField: "id_sesion",
     align: 'center',
     valign: 'middle'
   },
   {
-    text: "Paciente",
-    dataField: "nombre_paciente",
+    text: "Fecha",
+    dataField: "fech_sesion",      
     align: 'center',
     valign: 'middle'
   },
   {
-    text: "Sexo",
-    dataField: "sexo",      
+    text: "Servicio",
+    dataField: "nombre_servicio",
     align: 'center',
     valign: 'middle'
   },
   {
-    text: "N° de contacto",
-    dataField: "telefono",
-    align: 'center',
-    valign: 'middle'
-  },
-  {
-    text: "Ultima Cita",
-    dataField: "ultima_fecha",
+    text: "Detalles",
+    dataField: "detalles_servicio",
     align: 'center',
     valign: 'middle'
   },

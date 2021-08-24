@@ -24,13 +24,14 @@ import {
   FormGroup
 } from "reactstrap"
 
-import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaRegFolderOpen } from 'react-icons/fa';
 import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
 
 //Componentes
 import NuevoExpediente from './nuevoExpediente';
+import HistorialExpediente from './historialExpediente';
 import DataTable from '../DataTable/DataTable';
 
 //jsons de prueba
@@ -47,6 +48,8 @@ import {
 
 //columnas -tabla Expedientes
 import {columnasTabla} from './Json/columnasExpediente';
+
+
 
 const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
@@ -118,6 +121,8 @@ const Expediente = props =>{
                
                   _obtenerExpediente(lista_actualizada);
               break;
+
+
 
           default:
               break;
@@ -194,6 +199,17 @@ const Expediente = props =>{
                   mensajeBoton={<FaPencilAlt />}
                   isEditable={true}
                   cambioDatos={_cambiosEnExpediente}
+              />{' '}
+
+            <HistorialExpediente 
+                  defaultValue={defaultValues}
+                  classNames={"btn btn-info btn-sm "}
+                  mensajeBoton={<FaRegFolderOpen />}
+                  nombre={fila.nombre_paciente}
+                  apellido={fila.apellido_paciente}
+                  historial={true}
+                  isReadOnly={true}
+                  
               />
               </FormGroup>
           )
@@ -269,6 +285,9 @@ const Expediente = props =>{
     return n_lista;
   }
 
+
+
+  
     return(
         <React.Fragment>
         <div className="page-content">
@@ -278,7 +297,11 @@ const Expediente = props =>{
                   <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i></i> 
                   <b>Gestión de Expedientes </b></h4>
                     <br/>
-                    <Row>
+
+
+
+
+                   <Row>
                     <Col md={4} xs={12}>
                     
                         <NuevoExpediente 
