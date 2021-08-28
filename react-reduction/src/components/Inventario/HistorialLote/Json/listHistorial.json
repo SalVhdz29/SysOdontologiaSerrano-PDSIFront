@@ -1,0 +1,14 @@
+[  
+    {
+        "n_lote" : 1,
+        "fecha_lote":"20/01/2021",
+        "existencia_lote": 50,
+        "estado_lote": "En uso"     
+    },
+    {
+        "n_lote" : 2,
+        "fecha_lote":"21/01/2021",
+        "existencia_lote": 50,
+        "estado_lote": "Terminado"     
+    }
+]

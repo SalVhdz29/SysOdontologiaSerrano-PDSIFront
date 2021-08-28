@@ -28,6 +28,8 @@ import Expediente from '../components/Expediente/';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes';
+import HistorialLote from '../components/Inventario/HistorialLote/HistorialLote';
+import InventarioLote from '../components/Inventario/InventarioLote';
 
 
 const userRoutes =[
@@ -58,7 +60,9 @@ const userRoutes =[
     // {path:"/NuevoExpediente", component:nuevoExpediente },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
-    {path:"/", component: BusquedaPacientes}
+    {path:"/", component: BusquedaPacientes},
+    {path:"/HistorialLote", component:HistorialLote},
+    {path:"/InventarioLote", component:InventarioLote},
 ];
 
 const authRoutes=[
