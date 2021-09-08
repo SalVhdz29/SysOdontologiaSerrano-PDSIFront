@@ -24,7 +24,7 @@ import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
 import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
 import GestionRoles from '../components/GestionRoles/GestionRoles';
 import Expediente from '../components/Expediente/';
-// import nuevoExpediente from '../components/Expediente/nuevoExpediente';
+import Insumo from '../components/Insumo/Insumo';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes';
@@ -55,7 +55,7 @@ const userRoutes =[
     {path:"/TipoRecurso", component: TipoRecurso},
     {path:"/GestionRoles", component:GestionRoles },
     {path:"/Expediente", component:Expediente },
-    // {path:"/NuevoExpediente", component:nuevoExpediente },
+     {path:"/Insumo", component:Insumo },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
     {path:"/", component: BusquedaPacientes}

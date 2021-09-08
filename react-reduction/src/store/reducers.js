@@ -6,6 +6,7 @@ import gestionRecursosReducer from './GestionRecursos/reducer'
 
 import TipoRecursoReducer from './TipoRecurso/reducer'
 import ExpedienteReducer from './Expediente/reducers'
+import InsumoReducer from './Insumo/reducers'
 import permisosReducer from './Permisos/reducer';
 const rootReducer = combineReducers({
     datosUsuarioReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     TipoRecursoReducer,
     gestionRolesReducer,
     ExpedienteReducer,
+    InsumoReducer,	
     gestionRecursosReducer,
     permisosReducer
 });
