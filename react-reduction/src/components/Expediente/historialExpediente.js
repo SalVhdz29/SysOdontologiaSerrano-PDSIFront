@@ -6,11 +6,14 @@ import {
   API_NUEVO_EXPEDIENTE,
   API_UPDATE_EXPEDIENTE,
   API_OBTENER_EXPEDIENTE,
-  API_OBTENER_UN_EXPEDIENTE
+  API_OBTENER_UN_EXPEDIENTE,
+  API_OBTENER_PIEZAS
 } from  '../../api/apiTypes';
 
 import Cookies from 'js-cookie';
 
+
+import DetalleDiente from './detalleDiente';
 
 import{
     FormGroup,
@@ -22,11 +25,18 @@ import{
     Col
 } from 'reactstrap';
 
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
 
 import{
     AvForm,
-    AvField
+    AvField,
+    AvRadio,
+    AvCheckboxGroup,
+    AvCheckbox
 } from 'availity-reactstrap-validation'
+import AvRadioGroup from 'availity-reactstrap-validation/lib/AvRadioGroup';
+
 
 //Jsons
 import { columnasTabla } from './Json/columnasHistorial';
@@ -34,7 +44,6 @@ import { columnasTabla } from './Json/columnasHistorial';
 //Componentes
 import DataTable from '../DataTable/DataTable';
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import d11 from 'assets/img/dientes/11.jpg';
@@ -90,6 +99,30 @@ const HistorialExpediente = props =>{
 
 
 
+    //const _crearFilasListaExpediente=async()=>{
+/*
+const arraypiezas=async()=>{
+    let imagenes_piezas = {d11,d12,d13};
+    
+    for (let arrayimagenes of imagenes_piezas)
+    {
+        let imagen = (
+        <tr>
+        <td>
+            <center>
+            <DetalleDiente 
+        diente='18'
+        pieza={arrayimagenes}
+        />
+             </center>
+        </td>
+        </tr>
+        )
+
+    }
+
+}
+*/
 
     //CICLO DE VIDA
     useEffect(()=>{
@@ -167,6 +200,62 @@ const HistorialExpediente = props =>{
 
         setDefaultValues({nombre_paciente_front,apellido_paciente_front,dui_front, sexo_front,correo_front, telefono_front, ultima_fecha_front,fecha_nacimiento_front,direccion_front});
     }
+
+
+
+    function calcularEdad(birthday) {
+        var birthday_arr = birthday.split("-");
+        var birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
+        var ageDifMs = Date.now() - birthday_date.getTime();
+        var ageDate = new Date(ageDifMs);
+        return ageDate.getUTCFullYear()-2029 ; // Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
+
+
+
+
+//----------------------------------------------------------------------------
+
+
+    //Función que simula la inicialización de servicios.
+    const _obtenerServicios=async(listaExpediente)=>{
+        /* simulando la llamada a un servicio */
+           
+         let token= Cookies.get('token');  
+  
+        let respuesta_Expediente = await superagent.post(
+          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
+          .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+          await props.setListaExpediente(respuesta_Expediente.body);
+  
+          console.log("valor de filas detectadas: ", respuesta_Expediente.body)  
+  
+    }
+  
+  
+      //Función que llama a los usuarios en el servidor.
+      const _obtenerExpediente = async() =>{
+    
+        let token= Cookies.get('token');
+  
+        let respuesta_Expediente = await superagent.post(
+          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
+        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+  
+        
+  
+  
+        await props.setListaExpediente(respuesta_Expediente.body);
+    }
+  
+
+
+
+
+
+
+
 
     const _registrarExpediente=async(valor_inputs)=>{
             //console.log("el valor obtenido", valor_inputs);
@@ -253,11 +342,9 @@ const HistorialExpediente = props =>{
                     onClick={()=>{setModalOpen(true)}}
 
                 >
-                    {props.mensajeBoton!=undefined?(
+                    {
                         props.mensajeBoton
-                    ):(
-                        "Nuevo Expediente"
-                        )
+                    
                     }
 
                 </Button>
@@ -306,6 +393,14 @@ const HistorialExpediente = props =>{
                                     <Col md={6}>
                                     <h5> <b>Paciente:</b> {props.nombre} {props.apellido} </h5>
                                     </Col>
+
+
+
+                                    <Col md={6}>
+                                    <h5> <b>Edad:</b> {calcularEdad(props.edad)}</h5>
+                                    </Col>
+
+                                    
                                  
                                </Row>
 
@@ -325,19 +420,39 @@ const HistorialExpediente = props =>{
                         <div>
 
                             <h5 className="modal-title mt-0"><b>Odontograma</b></h5>      
+
+
+
 <table border='1' width='100%'>
+
+
+
                         <tr>
-                            <td><center>
+                            <td>
+                                <center>
+                                <DetalleDiente 
+                            diente='18'
+                            pieza={d18}
+                        />
+
                             <img
-                src={d18}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
+                                src={d18}
+                                width="30"
+                                height="50"
+                                className="pr-2"
+                                alt=""
+                                /><br></br>
                                 18
+
                                 </center>
+
                             </td>
+
+
+
+
+
+
                             <td><center>
                             <img
                 src={d17}
@@ -713,20 +828,217 @@ const HistorialExpediente = props =>{
                         </Row>
 
 
+  
+                    <Row>
+                        <Col md={12}>
 
-                        <Row>
-    <Col>
-    <br></br>
-    <br></br>
-    <br></br>
-    <h5> <b>Detalle</b> </h5>
-    </Col>
+                            <br/><br/>
+                            <h5> <b>Anexos</b> </h5>
+                        </Col>
+                    </Row>
+                    <hr />
+                    <AvForm >
+
+                    <Row>
+                    <Col md={12}>
+
+                    <h6> <b>Puente</b> </h6>
+                    </Col>
+</Row>
+<Row>
+                                <Col md={4}>
+
+                                        <Label><b>Diente Color</b></Label>
+                    <FormGroup>
+
+                                        <AvField
+                                            //id="nombreUsuarioIpx"
+                                            id="diente_color_front"
+                                            name="diente_color_front"
+                                            value=""
+                                            className="form-control"
+                                            placeholder="Escriba el Color del Diente"
+                                            type="text"
+                            key="5"
+                                           
+                                           
+                                        />
+                    </FormGroup>
+
+                                </Col>
+                             
+                                <Col md={4}>
+
+                                        <Label><b>Guia</b></Label>
+                    <FormGroup>
+
+                                        <AvField
+                                            //id="nombreUsuarioIpx"
+                                            id="guia_front"
+                                            name="guia_front"
+                            key="6"
+                                         
+                                            value=""
+                                            className="form-control"
+                                            placeholder="Escriba la guía"
+                                            type="text"
+                             
+                                        />
+                            </FormGroup>
+
+                                </Col>
+                           
+                                
+                       
+
+                                                    <Col md={4}>
+
+                            <Label><b>Tipo de Puente</b></Label>
+
+                            <AvRadioGroup inline name="tipo">
+
+                       
+
+                            <AvRadio                                       
+                                
+                                label="Acrílico"                                                        
+                                key="1"      
+                                />
+                
+                                <AvRadio                                     
+                                
+                                label="Porcelana"                                                        
+                                key="1"
+                                />
+                                  
+
+</AvRadioGroup>
+</Col>
+                                
+                           </Row>
+                           <hr />
+
+<Row>
+<Col>
+
+<h6> <b>Limpieza</b> </h6>
+<AvField
+                                            //id="nombreUsuarioIpx"
+                                            id="limpieza_front"
+                                            name="limpieza_front"
+                            key="6"
+                                         
+                                            value=""
+                                            className="form-control"
+                                            placeholder="Escriba el tipo de limpieza requerido"
+                                            type="text"
+                             
+                                        />
+
+</Col>
+</Row>
+                           <hr />
+
+                           <Row>
+                    <Col md={12}>
+
+                    <h6> <b>Endodoncia</b> </h6>
+                    </Col>
+</Row>
+<Row>
+                                <Col md={4}>
+
+                                        <Label><b>Diente</b></Label>
+                    <FormGroup>
+
+                                        <AvField
+                                            //id="nombreUsuarioIpx"
+                                            id="diente_front"
+                                            name="diente_front"
+                                            value=""
+                                            className="form-control"
+                                            placeholder="Escriba el Diente"
+                                            type="text"
+                            key="5"
+                                           
+                                           
+                                        />
+                    </FormGroup>
+
+                                </Col>
+                             
+                                <Col md={4}>
+
+                                        <Label><b>Vitalidad</b></Label>
+                    <FormGroup>
+
+                                        <AvField
+                                            //id="nombreUsuarioIpx"
+                                            id="guia_front"
+                                            name="guia_front"
+                            key="6"
+                                         
+                                            value=""
+                                            className="form-control"
+                                            placeholder="Escriba el nivel de Vitaliad"
+                                            type="text"
+                             
+                                        />
+                            </FormGroup>
+
+                                </Col>
+                             
+                             <Col md={4}>
+
+                                     <Label><b>Medida Provisional</b></Label>
+                 <FormGroup>
+
+                                     <AvField
+                                         //id="nombreUsuarioIpx"
+                                         id="medida_front"
+                                         name="medida_front"
+                         key="6"
+                                      
+                                         value=""
+                                         className="form-control"
+                                         placeholder="Escriba el tipo de lima a Usar"
+                                         type="text"
+                          
+                                     />
+                         </FormGroup>
+
+                             </Col>
+                                
+                                           
+                      
+                      
+                            </Row>
+
+                            <hr />
+
+<Row>
+<Col md={12}>
+
+<h6> <b>Notas Adicionales</b> </h6>
+
+
+                            <AvField
+                                                
+                                                id="otros"
+                                                name="otros"
+                                                
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Notas Relevantes"
+                                                type="textarea"    
+                                                style={{ height: 120 }}                                                      
+
+                                            />
+
+</Col>
 </Row>
 
-
-
-
-
+</AvForm>
 
 
       
@@ -747,21 +1059,22 @@ const HistorialExpediente = props =>{
     </TabPanel>
   </Tabs>
 
-
-
-
-
-
-
-
-
-
                                 <Row>
                         <Col >
+
+
+
+
+
+
+
                    </Col>
                         </Row>
 
            
+
+
+
 
 
 

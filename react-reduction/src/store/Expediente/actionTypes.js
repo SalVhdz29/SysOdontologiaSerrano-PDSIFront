@@ -1,3 +1,4 @@
 export const SETLISTAExpediente = "SETLISTAExpediente";
 export const SETFILASLISTAExpedienteACTIVOS="SETFILASLISTAExpedienteACTIVOS";
 export const SETFILASLISTAExpedienteINACTIVOS="SETFILASLISTAExpedienteINACTIVOS";
+export const SETLISTAPIEZAS = "SETLISTAPIEZAS";
