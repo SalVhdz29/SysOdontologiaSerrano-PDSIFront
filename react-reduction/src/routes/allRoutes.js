@@ -58,8 +58,8 @@ const userRoutes =[
     // {path:"/NuevoExpediente", component:nuevoExpediente },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
-   // {path:"/", component: BusquedaPacientes}
-    {path:"/", component: Expediente}
+    {path:"/", component: BusquedaPacientes}
+   // {path:"/", component: Expediente}
 
 ];
 
