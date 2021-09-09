@@ -59,6 +59,8 @@ const userRoutes =[
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
     {path:"/", component: BusquedaPacientes}
+   // {path:"/", component: Expediente}
+
 ];
 
 const authRoutes=[

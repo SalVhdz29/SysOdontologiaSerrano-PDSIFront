@@ -6,6 +6,7 @@ import {
   API_NUEVO_EXPEDIENTE,
   API_UPDATE_EXPEDIENTE,
   API_OBTENER_EXPEDIENTE,
+  API_OBTENER_PIEZAS,
   API_OBTENER_UN_EXPEDIENTE
 } from  '../../api/apiTypes';
 
@@ -24,13 +25,14 @@ import {
   FormGroup
 } from "reactstrap"
 
-import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaRegFolderOpen } from 'react-icons/fa';
 import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
 
 //Componentes
 import NuevoExpediente from './nuevoExpediente';
+import HistorialExpediente from './historialExpediente';
 import DataTable from '../DataTable/DataTable';
 
 //jsons de prueba
@@ -48,15 +50,34 @@ import {
 //columnas -tabla Expedientes
 import {columnasTabla} from './Json/columnasExpediente';
 
+
+
 const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
   const[filasListaExpediente, setFilasListaExpediente] =useState([]);
 
+  const[listaPiezas, setListaPiezas] = useState([]);
 
     //Ciclo de vida
     useEffect(()=>{
       _obtenerServicios(listExpediente);
   },[])
+
+
+  useEffect(()=>{
+    
+    setListaPiezas(props.state.listaPiezas);
+  //  let result =  _crearFilasListPiezas();
+  },[props.state.listaPiezas]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
+
+
+    
+    useEffect(()=>{
+    
+      setListaExpediente(props.state.listaExpediente);
+      let result =  _crearFilasListaExpediente();
+    },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
+
 
   useEffect(()=>{
     
@@ -86,6 +107,10 @@ const Expediente = props =>{
         process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
         .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
         await props.setListaExpediente(respuesta_Expediente.body);
+
+        console.log("valor de filas detectadas: ", respuesta_Expediente.body)
+
+
   }
 
 
@@ -98,8 +123,24 @@ const Expediente = props =>{
         process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
       .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
 
+      
+
+
       await props.setListaExpediente(respuesta_Expediente.body);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,6 +160,8 @@ const Expediente = props =>{
                   _obtenerExpediente(lista_actualizada);
               break;
 
+
+
           default:
               break;
       }
@@ -128,8 +171,12 @@ const Expediente = props =>{
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaExpediente=async()=>{
      
-
+     // let piezas=[];
       let filas=[];
+
+   //_obtenerPiezas();
+
+
 
       props.state.listaExpediente.map(Expediente=>{
 
@@ -143,8 +190,10 @@ const Expediente = props =>{
               telefono,
               ultima_fecha,
               fecha_nacimiento,
-              direccion
+              direccion,
+              pieza
                } = Expediente;
+
 
           let fila ={};
           fila.id_expediente = id_expediente;
@@ -157,7 +206,7 @@ const Expediente = props =>{
           fila.ultima_fecha = ultima_fecha;
           fila.fecha_nacimiento = fecha_nacimiento;
           fila.direccion = direccion;
-
+        
           if(sexo){
             fila.sexo = "Masculino";
           }else{
@@ -194,6 +243,18 @@ const Expediente = props =>{
                   mensajeBoton={<FaPencilAlt />}
                   isEditable={true}
                   cambioDatos={_cambiosEnExpediente}
+              />{' '}
+
+            <HistorialExpediente 
+                  defaultValue={defaultValues}
+                  classNames={"btn btn-info btn-sm "}
+                  mensajeBoton={<FaRegFolderOpen />}
+                  nombre={fila.nombre_paciente}
+                  apellido={fila.apellido_paciente}
+                  edad={fila.fecha_nacimiento}
+                  historial={true}
+                  isReadOnly={true}
+                  
               />
               </FormGroup>
           )
@@ -269,6 +330,9 @@ const Expediente = props =>{
     return n_lista;
   }
 
+
+
+  
     return(
         <React.Fragment>
         <div className="page-content">
@@ -278,7 +342,11 @@ const Expediente = props =>{
                   <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i></i> 
                   <b>Gestión de Expedientes </b></h4>
                     <br/>
-                    <Row>
+
+
+
+
+                   <Row>
                     <Col md={4} xs={12}>
                     
                         <NuevoExpediente 
