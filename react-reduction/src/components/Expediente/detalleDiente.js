@@ -93,6 +93,7 @@ import { columnasTabla } from './Json/columnasExpediente';
 //Componentes
 import DataTable from '../DataTable/DataTable';
 import AvRadioGroup from 'availity-reactstrap-validation/lib/AvRadioGroup';
+import Table from 'reactstrap/lib/Table';
 
 
 //Componente
@@ -363,92 +364,204 @@ const NuevoExpediente = props =>{
 <Tabs>
     <TabList>
       <Tab><b>Características</b></Tab>
-      <Tab><b>Requeridos</b></Tab>
-      <Tab><b>Observaciones</b></Tab>
+      <Tab disabled><b>Requeridos</b></Tab>
+      <Tab disabled><b>Observaciones</b></Tab>
     </TabList>
 
 
     <TabPanel>
-    <h5 className="modal-title mt-0"><b>Requeridos</b></h5>                         
-<p> 
-    Características de la Pieza
-</p>
 
+<Row>                  
+<Col md={12}>
 
+<Label for="checkboxExample" >Diagnóstico del Estado Actual de la Pieza</Label>
+</Col>
+</Row>
+    <Row>
+        <Col>
+    <AvForm> 
+    <AvRadioGroup  name="a" >
 
-
-
-
-
-<Row>                                
- <Label for="checkboxExample" >Diagnóstico del Estado Actual de la Pieza</Label>
-                            </Row>
-                            <Row>
-                                <Col md={12}>
-                                <AvForm> 
-                                <AvRadioGroup  name="a"
-                                
-                                >
-                                <Row>
-                                <Col md={6} >
-                                <Row>
-                                
-                                
-                                <AvRadio                                        
-                                
-                                label="Limpieza"                                                        
-                                key="1"                                
-                                
+        <Row>        
+        <Col>
+                    <Label>
+                        <center>
+                                <AvRadio     
+                                label="Bueno"                                                        
+                                key="1"  
+                                id="1"
                                 className="checkbox_animated "
-                                /></Row>
-                                <Row>
+                                />   
+                                <img
+                                src={e01}
+                                width="60"
+                                height="50"
+                                className="pr-2"
+                                alt=""
+                                />                            
+                                </center>
+                    </Label>
+                    </Col>
+        <Col>
                                 
-                                <AvRadio                                     
-                                
-                                label="Endodoncia"                                                        
-                                key="2"
-                                
+                    <Label>
+                        <center>
+                                <AvRadio     
+                                label="Ausente"                                                        
+                                key="1"  
+                                id="1"
                                 className="checkbox_animated "
-                                /></Row>                              
+                                />   
+                                <img
+                                src={e02}
+                                width="60"
+                                height="50"
+                                className="pr-2"
+                                alt=""
+                                />                            
+                                </center>
+                    </Label>      
+        </Col>
+        <Col>
                                 
+                                <Label>
+                                    <center>
+                                            <AvRadio     
+                                            label="Extraer"                                                        
+                                            key="1"  
+                                            id="1"
+                                            className="checkbox_animated "
+                                            />   
+                                            <img
+                                            src={e03}
+                                            width="60"
+                                            height="50"
+                                            className="pr-2"
+                                            alt=""
+                                            />                            
+                                    </center>
+
+                                </Label>      
+                    </Col>
+                    <Col>
                                 
-                                </Col>
+                                <Label>
+                                <center>
+
+                                            <AvRadio     
+                                            label="Endodoncia"                                                        
+                                            key="1"  
+                                            id="1"
+                                            className="checkbox_animated "
+                                            />   
+                                            <img
+                                            src={e04}
+                                            width="60"
+                                            height="50"
+                                            className="pr-2"
+                                            alt=""
+                                            />    
+                                    </center>
+
+                                </Label>      
+                    </Col>
+                    <Col>
                                 
+                                <Label>
+                                <center>
+
+                                            <AvRadio     
+                                            label="Caries 1"                                                        
+                                            key="1"  
+                                            id="1"
+                                            className="checkbox_animated "
+                                            />   
+                                            <img
+                                            src={e05}
+                                            width="60"
+                                            height="50"
+                                            className="pr-2"
+                                            alt=""
+                                            />    
+                                    </center>
+
+                                </Label>      
+                    </Col>
+                    <Col>
                                 
+                                <Label>
+                                <center>
+
+                                            <AvRadio     
+                                            label="Caries 2"                                                        
+                                            key="1"  
+                                            id="1"
+                                            className="checkbox_animated "
+                                            />   
+                                            <img
+                                            src={e06}
+                                            width="60"
+                                            height="50"
+                                            className="pr-2"
+                                            alt=""
+                                            />                            
+                                    </center>
+
+                                </Label>      
+                    </Col>
+                    <Col>
+                                
+                                <Label>
+                                <center>
+
+                                            <AvRadio     
+                                            label="Caries 3"                                                        
+                                            key="1"  
+                                            id="1"
+                                            className="checkbox_animated "
+                                            />   
+                                            <img
+                                            src={e07}
+                                            width="60"
+                                            height="50"
+                                            className="pr-2"
+                                            alt=""
+                                            />                            
+                                    </center>
+
+                                </Label>      
+                    </Col>
                                 </Row>
                                 </AvRadioGroup>
 
-                                </AvForm> 
-                                </Col>
-
+</AvForm>
+</Col> 
                                 </Row>
 
 
     </TabPanel>
 
     <TabPanel>
+    <Row>                  
+<Col md={12}>
     <h5 className="modal-title mt-0"><b>Requeridos</b></h5>                         
 <p> 
     Servicios Requeridos en pieza.
 </p>
 
+</Col>
+</Row>
 <Row>
-                                <Col md={12}>
-                                <AvForm> 
-                                <AvRadioGroup  name="a">
-                                <Row>
-                                <Col md={6} >
-                                <Row>
-                                
-                                
+        <Col md={12}>
+            <AvForm> 
+                <AvRadioGroup  name="a" >
                                 <AvRadio                                        
                                 
                                 label="Limpieza"                                                        
                                 key="1"                                
                                 
                                 className="checkbox_animated "
-                                /></Row>
-                                <Row>
+                                />                                
                                 
                                 <AvRadio                                     
                                 
@@ -456,13 +569,9 @@ const NuevoExpediente = props =>{
                                 key="2"
                                 
                                 className="checkbox_animated "
-                                /></Row>                              
+                                />
                                 
-                                
-                                </Col>
-                                
-                                
-                                </Row>
+                    
                                 </AvRadioGroup>
 
                                 </AvForm> 

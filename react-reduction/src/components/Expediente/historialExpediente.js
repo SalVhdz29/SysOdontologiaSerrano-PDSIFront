@@ -80,6 +80,7 @@ import d46 from 'assets/img/dientes/46.jpg';
 import d47 from 'assets/img/dientes/47.jpg';
 import d48 from 'assets/img/dientes/48.jpg';
 
+import e01 from 'assets/img/estados/1.jpg';
 
 
 //Componente
@@ -97,32 +98,10 @@ const HistorialExpediente = props =>{
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
+    const [ listaPiezas, setListaPiezas] = useState({});
+    const [ listadoPiezas, crearPiezas] = useState({});
 
 
-    //const _crearFilasListaExpediente=async()=>{
-/*
-const arraypiezas=async()=>{
-    let imagenes_piezas = {d11,d12,d13};
-    
-    for (let arrayimagenes of imagenes_piezas)
-    {
-        let imagen = (
-        <tr>
-        <td>
-            <center>
-            <DetalleDiente 
-        diente='18'
-        pieza={arrayimagenes}
-        />
-             </center>
-        </td>
-        </tr>
-        )
-
-    }
-
-}
-*/
 
     //CICLO DE VIDA
     useEffect(()=>{
@@ -135,10 +114,51 @@ const arraypiezas=async()=>{
 
     },[props.defaultValue])
 
-
+/*
+    useEffect(()=>{
+    
+        setListaPiezas(props.state.listaPiezas);
+      //  let result =  _crearFilasListPiezas();
+      },[props.state.listaPiezas]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
+    */
 
     //FIN CICLO DE VIDA
 
+
+
+/**///////////    const _setListaPiezas=()=>{****************************** */ */
+/*
+const _setListaPiezas=async()=>{
+        
+
+    let Piezas=[];
+    if(props.state.listaPiezas.length != 0)
+    {
+        let Piezas=[];
+        for(let pieza of props.state.listaPiezas)
+        {
+            
+            let {
+                id_pieza,
+                id_f_cuadrante,
+                numero_pieza,
+                ninio_diente
+                } = Piezas;
+
+  
+            Piezas.push(pieza)
+        }
+
+      
+       crearPiezas(Piezas);
+
+    }
+
+}
+
+*/
+
+    /**************************** */
 
 
     //Función que da valores por defecto a los campos en el formulario.
@@ -203,12 +223,17 @@ const arraypiezas=async()=>{
 
 
 
-    function calcularEdad(birthday) {
-        var birthday_arr = birthday.split("-");
-        var birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
-        var ageDifMs = Date.now() - birthday_date.getTime();
-        var ageDate = new Date(ageDifMs);
-        return ageDate.getUTCFullYear()-2029 ; // Math.abs(ageDate.getUTCFullYear() - 1970);
+    function calcularEdad(fecha) {
+        var hoy = new Date();
+        var cumpleanos = new Date(fecha);
+        var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+        var m = hoy.getMonth() - cumpleanos.getMonth();
+    
+        if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+            edad--;
+        }
+    
+        return edad;
     }
 
 
@@ -251,7 +276,20 @@ const arraypiezas=async()=>{
   
 
 
-
+    const obtenerPiezas = async() =>{
+    
+        let token= Cookies.get('token');
+  
+        let respuesta_Piezas = await superagent.post(
+          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
+        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);       
+        
+        console.log("piezas: ", respuesta_Piezas.body)  
+        
+  
+        await props.setListaPiezas(respuesta_Piezas.body);
+    }
+  
 
 
 
@@ -332,10 +370,40 @@ const arraypiezas=async()=>{
         }
     }
 
+
+function Imagenes()
+{
+    const img = [];
+    const pieza = [d26,d27,d28]
+
+    for (var i = 0; i < 3 ; i++)
+    {
+        const imagen = (
+            <td>
+                <center>
+                <img
+                src={pieza[i]}
+                width="30"
+                height="50"
+                className="pr-2"
+                alt=""
+                /><br></br>
+                17
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+    return (
+        <tr>{img}</tr>
+    );
+}
+
+
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
-     
+  
                 <Button 
                     className="btn btn-dark btn-sm"
                    
@@ -364,7 +432,7 @@ const arraypiezas=async()=>{
          
 
 
-
+                {props.listaPiezas} 
 
 
                         <h4 className="modal-title mt-0"><b>Historial Clínico</b></h4>                        
@@ -421,6 +489,11 @@ const arraypiezas=async()=>{
 
                             <h5 className="modal-title mt-0"><b>Odontograma</b></h5>      
 
+                            <table border='1' width='100%'>
+
+
+                        <Imagenes/>
+</table>
 
 
 <table border='1' width='100%'>
@@ -436,9 +509,9 @@ const arraypiezas=async()=>{
                         />
 
                             <img
-                                src={d18}
-                                width="30"
-                                height="50"
+                                src={e01}
+                                width="40"
+                                height="40"
                                 className="pr-2"
                                 alt=""
                                 /><br></br>
@@ -895,20 +968,21 @@ const arraypiezas=async()=>{
 
                             <Label><b>Tipo de Puente</b></Label>
 
-                            <AvRadioGroup inline name="tipo">
-
-                       
+                            <AvRadioGroup inline name="tipo">                   
 
                             <AvRadio                                       
                                 
                                 label="Acrílico"                                                        
-                                key="1"      
+                                key="1"     
+                                value="Acrílico" 
                                 />
                 
                                 <AvRadio                                     
                                 
                                 label="Porcelana"                                                        
                                 key="1"
+                                value="Porcelana" 
+
                                 />
                                   
 

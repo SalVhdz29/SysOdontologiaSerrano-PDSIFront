@@ -1,7 +1,8 @@
 import { SETLISTAExpediente, 
     SETFILASLISTAExpedienteACTIVOS,
     SETFILASLISTAExpedienteINACTIVOS,
-    SETLISTAPIEZAS  
+    SETLISTAPIEZAS,
+    SETFILASLISTAPIEZAS
 } from './actionTypes';
 export const setListaExpediente = listaExpediente =>({
 type: SETLISTAExpediente,
@@ -20,4 +21,9 @@ payload: listExpedienteInactivos
 export const setListaPiezas= listaPiezas =>({
     type: SETLISTAPIEZAS,
     payload: listaPiezas
+})
+
+export const setFilasListaPiezas= listPiezas =>({
+    type: SETFILASLISTAPIEZAS,
+    payload: listPiezas
 })
