@@ -44,6 +44,8 @@ import { connect } from "react-redux";
 import {
   setListaExpediente,
   setFilasListaExpedienteActivos,
+  setListaPiezas,
+  setFilasListaPiezas,
   setFilasListaExpedienteInactivos
 } from '../../store/actions'
 
@@ -55,8 +57,14 @@ import {columnasTabla} from './Json/columnasExpediente';
 const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
   const[filasListaExpediente, setFilasListaExpediente] =useState([]);
-
+  
   const[listaPiezas, setListaPiezas] = useState([]);
+  const [ filasListaPiezas, setFilasListaPiezas] = useState({});
+
+
+
+
+
 
     //Ciclo de vida
     useEffect(()=>{
@@ -67,7 +75,11 @@ const Expediente = props =>{
   useEffect(()=>{
     
     setListaPiezas(props.state.listaPiezas);
-  //  let result =  _crearFilasListPiezas();
+    let result =  _crearFilasListaPiezas();
+  console.log("LISTAPIEZAS: ", result)
+  //setListaPiezas(result);
+
+
   },[props.state.listaPiezas]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
 
 
@@ -79,11 +91,6 @@ const Expediente = props =>{
     },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
 
 
-  useEffect(()=>{
-    
-    setListaExpediente(props.state.listaExpediente);
-    let result =  _crearFilasListaExpediente();
-  },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
 
   useEffect(()=>{
       
@@ -108,7 +115,6 @@ const Expediente = props =>{
         .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
         await props.setListaExpediente(respuesta_Expediente.body);
 
-        console.log("valor de filas detectadas: ", respuesta_Expediente.body)
 
 
   }
@@ -123,14 +129,61 @@ const Expediente = props =>{
         process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
       .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
 
-      
-
-
       await props.setListaExpediente(respuesta_Expediente.body);
   }
 
 
 
+  const _obtenerPiezas = async() =>{
+    
+    let token= Cookies.get('token');
+
+    let respuesta_Piezas = await superagent.post(
+      process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
+    .set('Accept', 'application/json').set("Authorization", "Bearer " + token);       
+    
+    console.log("piezas: ", respuesta_Piezas.body);  
+    
+
+
+
+    await props.setListaPiezas(respuesta_Piezas.body);
+    
+}
+
+
+const _crearFilasListaPiezas=async()=>{
+  //console.log("detecto el cambio");
+
+  let filas=[];
+
+
+
+  props.state.listaPiezas.map(Piezas=>{
+
+      let {
+        id_pieza,
+        id_f_cuadrante,
+        numero_pieza,
+        ninio_diente
+        } = Piezas;
+
+
+      let fila ={};
+      fila.id_pieza = id_pieza;
+      fila.id_f_cuadrante = id_f_cuadrante;
+      fila.numero_pieza = numero_pieza;
+      fila.ninio_diente = ninio_diente;
+
+
+    
+      filas.push(fila);
+  })
+
+
+  props.setFilasListaPiezas(filas);
+
+}
 
 
 
@@ -168,14 +221,15 @@ const Expediente = props =>{
   }
 
 
+
+
+
+  
+
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaExpediente=async()=>{
      
-     // let piezas=[];
-      let filas=[];
-
-   //_obtenerPiezas();
-
+        let filas=[];
 
 
       props.state.listaExpediente.map(Expediente=>{
@@ -344,7 +398,7 @@ const Expediente = props =>{
                     <br/>
 
 
-
+             
 
                    <Row>
                     <Col md={4} xs={12}>
@@ -385,6 +439,10 @@ const mapDispatchToProps = dispatch =>{
     return{
         setExpediente: (datos) =>dispatch(setListaExpediente(datos)),
         setListaExpediente: (datos) =>dispatch(setListaExpediente(datos)),
+
+        setListaPiezas: (datos) =>dispatch(setListaPiezas(datos)),
+        setFilasListaPiezas: (datos) =>dispatch(setFilasListaPiezas(datos)),
+
         setFilasListaExpedienteActivos: (datos) =>dispatch(setFilasListaExpedienteActivos(datos)),
         setFilasListaExpedienteInactivos: (datos) =>dispatch(setFilasListaExpedienteInactivos(datos))
     }

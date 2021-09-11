@@ -364,8 +364,8 @@ const NuevoExpediente = props =>{
 <Tabs>
     <TabList>
       <Tab><b>Características</b></Tab>
-      <Tab><b>Requeridos</b></Tab>
-      <Tab><b>Observaciones</b></Tab>
+      <Tab disabled><b>Requeridos</b></Tab>
+      <Tab disabled><b>Observaciones</b></Tab>
     </TabList>
 
 
@@ -425,6 +425,7 @@ const NuevoExpediente = props =>{
         <Col>
                                 
                                 <Label>
+                                    <center>
                                             <AvRadio     
                                             label="Extraer"                                                        
                                             key="1"  
@@ -438,11 +439,15 @@ const NuevoExpediente = props =>{
                                             className="pr-2"
                                             alt=""
                                             />                            
+                                    </center>
+
                                 </Label>      
                     </Col>
                     <Col>
                                 
                                 <Label>
+                                <center>
+
                                             <AvRadio     
                                             label="Endodoncia"                                                        
                                             key="1"  
@@ -455,12 +460,16 @@ const NuevoExpediente = props =>{
                                             height="50"
                                             className="pr-2"
                                             alt=""
-                                            />                            
+                                            />    
+                                    </center>
+
                                 </Label>      
                     </Col>
                     <Col>
                                 
                                 <Label>
+                                <center>
+
                                             <AvRadio     
                                             label="Caries 1"                                                        
                                             key="1"  
@@ -473,12 +482,16 @@ const NuevoExpediente = props =>{
                                             height="50"
                                             className="pr-2"
                                             alt=""
-                                            />                            
+                                            />    
+                                    </center>
+
                                 </Label>      
                     </Col>
                     <Col>
                                 
                                 <Label>
+                                <center>
+
                                             <AvRadio     
                                             label="Caries 2"                                                        
                                             key="1"  
@@ -492,11 +505,15 @@ const NuevoExpediente = props =>{
                                             className="pr-2"
                                             alt=""
                                             />                            
+                                    </center>
+
                                 </Label>      
                     </Col>
                     <Col>
                                 
                                 <Label>
+                                <center>
+
                                             <AvRadio     
                                             label="Caries 3"                                                        
                                             key="1"  
@@ -510,6 +527,8 @@ const NuevoExpediente = props =>{
                                             className="pr-2"
                                             alt=""
                                             />                            
+                                    </center>
+
                                 </Label>      
                     </Col>
                                 </Row>
