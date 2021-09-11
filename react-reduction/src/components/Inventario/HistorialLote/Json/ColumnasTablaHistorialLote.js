@@ -4,11 +4,11 @@ export const ColumnasTablaHistorialLote =[
       dataField: "n_lote",
     },
     {
-      text: "Fecha de ingreso",
+      text: "Fecha de vencimiento",
       dataField: "fecha_lote",
     },
     {
-      text: "Existencia actual",
+      text: "Existencia",
       dataField: "existencia_lote",
     },
     {

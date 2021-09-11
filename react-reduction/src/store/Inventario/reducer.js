@@ -1,13 +1,15 @@
 import { 
     SETLISTALOTES, 
     SETFILASLISTALOTESACTIVOS, 
-    SETFILASLISTALOTESINACTIVOS
+    SETFILASLISTALOTESINACTIVOS,
+    SETLISTAHISTORIAL
 } from './actionTypes' 
  
 const INIT_STATE={ 
     listaLotes:[], 
     filasListaLotesActivos: [], 
-    filasListaLotesInactivos: [] 
+    filasListaLotesInactivos: [],
+    listaHistorial: [] 
 } 
  
 const inventarioReducer =(state = INIT_STATE, {type, payload})=>{ 
@@ -28,6 +30,11 @@ const inventarioReducer =(state = INIT_STATE, {type, payload})=>{
             return{ 
                 ...state, 
                 filasListaLotesInactivos: payload 
+            }
+        case SETLISTAHISTORIAL:
+            return{
+                ...state,
+                listaHistorial: payload
             } 
         default: 
             return state 

@@ -165,7 +165,7 @@ const InventarioLote = props =>{
                 
                 fila.operaciones_lote="Operaciones";
                 let defaultValues={
-                    nInsumo:n_insumo,
+                    nInsumo: n_insumo,
                     nombreInsumo: nombre_insumo,
                     existenciaInsumo: existencia_insumo,
                     loteActivo: lote_activo
@@ -176,14 +176,14 @@ const InventarioLote = props =>{
       
                     <IngresarLote
                         defaultValue={defaultValues}
-                        classNames={"btn-success btn-sm "}
+                        classNames={"btn-info btn-sm "}
                         isEditable={true}
                         mensajeBoton={<BsBoxArrowInRight />}
                         cambioDatos={_cambiosEnLotes}
                     />{' '}
                     <HistorialLote 
                         defaultValue={defaultValues}
-                        classNames={"btn-danger btn-sm "}
+                        classNames={"btn-warning btn-sm "}
                         mensajeBoton={<BsClockHistory />}
                         isEditable={false}
                     />
@@ -204,7 +204,7 @@ const InventarioLote = props =>{
         <Card>
                 <CardBody>
                   <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i>  </i>  Inventario </h4><br/>
-                  <DataTable datosTabla={listInventario} columnasTabla={ColumnasTablaInventario}/>
+                  <DataTable datosTabla={props.state.filasListaLotesActivos} columnasTabla={ColumnasTablaInventario}/>
                 </CardBody>
         </Card>
         </Container>
@@ -215,7 +215,7 @@ const InventarioLote = props =>{
 
 const mapStateToProps = reducers => {
     return{
-      state: reducers.InventarioReducer
+      state: reducers.inventarioReducer
     }
   }
 

@@ -1,6 +1,7 @@
 import { SETLISTALOTES,   
     SETFILASLISTALOTESACTIVOS, 
-    SETFILASLISTALOTESINACTIVOS         
+    SETFILASLISTALOTESINACTIVOS,
+    SETLISTAHISTORIAL         
 } from './actionTypes'; 
 export const setListaLotes = listaLotes =>({ 
 type: SETLISTALOTES, 
@@ -15,5 +16,10 @@ payload: listLotesActivos
 export const setFilasListaLotesInactivos = listLotesInactivos =>({ 
 type: SETFILASLISTALOTESINACTIVOS, 
 payload: listLotesInactivos 
-}) 
+})
+
+export const setListaHistorial = listaHistorial =>({ 
+    type: SETLISTAHISTORIAL, 
+    payload: listaHistorial 
+    })
  

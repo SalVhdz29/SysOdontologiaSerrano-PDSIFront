@@ -24,6 +24,7 @@ import{
 //Componentes
 import DataTable from '../../DataTable/DataTable';
 import swal from 'sweetalert'; 
+import { FaNotEqual } from 'react-icons/fa';
 
 
 const IngresarLote = props =>{
@@ -75,7 +76,7 @@ const IngresarLote = props =>{
                     let valor = {}; 
                     valor.nombre_insumo = insumoLoteIpx;  
                     let tipo=""; 
-                    tipo="agregarRolLista"; 
+                    tipo="agregarLoteLista"; 
 
                     let envio={tipo,valor}; 
                     
@@ -89,7 +90,7 @@ return(
     <Fragment> 
             {/* <FormGroup className="float-right"> */} 
                 <Button  
-                    className="btn btn-success" 
+                    className="btn btn-info" 
                     onClick={()=>{setModalOpen(true)}} 
  
                 > 
@@ -102,7 +103,7 @@ return(
                 </Button> 
  
             <Modal 
-                size="lg" 
+                size="xl" 
                 isOpen={modalOpen} 
                 toggle={()=>{ 
                     setModalOpen() 
@@ -131,31 +132,34 @@ return(
                             > 
                 <div className="modal-body"> 
                         <Container fluid={true}> 
-                            
+
                                 <Row> 
                                     <Col md={6}> 
                                         <FormGroup> 
-                                            <Label><b><u>Datos del Lote</u></b></Label> 
+                                            <Label Style="font-size: 170%;"><b><u>Datos del Lote</u></b></Label>
+                                            
                                             <FormGroup row>
-                                                <Label for="insumoSeleccionado" sm={2}>
+                                                <Label for="insumoSeleccionado" sm={2} md={6}>
                                                     Insumo: 
                                                 </Label>
                                                 <Col sm={10}>
                                                 <Input
+                                                class="form-control"
                                                 id = "insumoLoteIpx"
                                                 type="text"
                                                 name="insumoLoteIpx"
                                                 value=""
-                                                isReadOnly = {true}
+                                                readOnly
                                             />
                                                 </Col>
                                             </FormGroup>        
                                         </FormGroup> 
                                     </Col>  
                                     <Col md = {6}>
+                                    <br></br><br></br>
                                         <FormGroup row>
-                                            <Label for="fechaVencimiento" sm={2}>
-                                                Fecha de vencimiento
+                                            <Label for="fechaVencimiento" sm={2} md={6} >
+                                                Fecha de vencimiento:
                                             </Label>
                                             <Col sm={10}>
                                             <Input
@@ -178,7 +182,7 @@ return(
                                 <Row>
                                     <Col md={6}> 
                                         <FormGroup row>
-                                            <Label for="costoLote" sm={2}>
+                                            <Label for="costoLote" sm={2} md={6}>
                                                 Costo de Lote:
                                             </Label>
                                             <Col sm={10}>
@@ -197,7 +201,7 @@ return(
                                     </Col>
                                     <Col md={6}> 
                                         <FormGroup row>
-                                            <Label for="cantidadLote" sm={2}>
+                                            <Label for="cantidadLote" sm={2} md={6}>
                                                 Cantidad de Lote:
                                             </Label>
                                             <Col sm={10}>
@@ -221,26 +225,28 @@ return(
                                 <Row>
                                 <Col md={6}> 
                                         <FormGroup> 
-                                            <Label><b><u>Precios del Lote</u></b></Label> 
+                                            <Label Style="font-size: 170%;"><b><u>Precios del Lote</u></b></Label> 
                                             <FormGroup row>
-                                                <Label for="porcentajeInsumo" sm={2}>
+                                                <Label for="porcentajeInsumo" sm={2} md={6}>
                                                     Porcentaje de ganancia: 
                                                 </Label>
                                                 <Col sm={10}>
                                                 <Input
+                                                class="form-control"
                                                 id = "porcentajeLoteIpx"
                                                 type="text"
                                                 name="porcentajeLoteIpx"
                                                 value=""
-                                                isReadOnly = {true}
+                                                readOnly
                                             />
                                                 </Col>
                                             </FormGroup>        
                                         </FormGroup> 
                                     </Col>  
                                     <Col md = {6}>
+                                    <br></br><br></br>
                                         <FormGroup row>
-                                            <Label for="precioLote" sm={2}>
+                                            <Label for="precioLote" sm={2} md={6}>
                                                 Precio del lote:
                                             </Label>
                                             <Col sm={10}>
@@ -264,14 +270,14 @@ return(
                                 <Row>
                                     <Col md={6}> 
                                         <FormGroup row>
-                                            <Label check>
+                                            <Label check sm={2} md={6} Style="text-align: center;">
                                                 <Input type="checkbox" /> Cambiar precio sugerido
                                             </Label>
                                         </FormGroup>  
                                     </Col>
                                     <Col md={6}> 
                                         <FormGroup row>
-                                            <Label for="precioUnidadLote" sm={2}>
+                                            <Label for="precioUnidadLote" sm={2} md={6}>
                                                 Precio de Lote (por unidad):
                                             </Label>
                                             <Col sm={10}>
