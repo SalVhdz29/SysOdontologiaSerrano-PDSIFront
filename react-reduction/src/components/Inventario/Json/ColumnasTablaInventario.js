@@ -12,10 +12,6 @@ export const ColumnasTablaInventario =[
       dataField: "existencia_insumo",
     },
     {
-      text: "Estado",
-      dataField: "lote_activo",
-    },
-    {
       text: "Operaciones",
       dataField: "operaciones_lote",
     },

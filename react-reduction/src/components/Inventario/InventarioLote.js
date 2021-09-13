@@ -135,17 +135,9 @@ const InventarioLote = props =>{
             let {n_insumo,
                 nombre_insumo, 
                 existencia_insumo, 
-                operaciones_lote,
-                lote_activo
+                operaciones_lote
                 } = lote;
   
-                if(lote_activo == 1)
-                {
-                  lote_activo=true;
-                }
-                else{
-                  lote_activo=false;
-                }
 
 
                 let fila ={};
@@ -153,22 +145,12 @@ const InventarioLote = props =>{
                 fila.nombre_insumo=nombre_insumo;
                 fila.existencia_insumo = existencia_insumo;
       
-                fila.lote_activo = (
-                    <div>
-                        <SwitchLoteActivo
-                            n_insumo={n_insumo}
-                            lote_activo={lote_activo}
-                            cambioEnLotes={_cambiosEnLotes}
-                        />
-                    </div>
-                ); 
                 
                 fila.operaciones_lote="Operaciones";
                 let defaultValues={
                     nInsumo: n_insumo,
                     nombreInsumo: nombre_insumo,
-                    existenciaInsumo: existencia_insumo,
-                    loteActivo: lote_activo
+                    existenciaInsumo: existencia_insumo
                 }
 
                 fila.operaciones_lote=(
