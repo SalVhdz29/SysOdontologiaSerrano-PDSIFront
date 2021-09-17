@@ -29,7 +29,7 @@ const SwitchServicioActivo = props =>{
         console.log("useF servicio activo, id y valor", props.id_servicio, props.servicio_activo);
         if(props.servicio_activo != undefined && props.servicio_activo!= null)
         {
-            console.log("si vinistexd");
+            console.log("vino");
 
             setServicioActivo(servicioActivo)
         }
