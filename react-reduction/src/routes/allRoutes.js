@@ -28,7 +28,7 @@ import Expediente from '../components/Expediente/';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes';
-
+import infoServicios from '../components/GestionServicios/infoServicios/infoServicios';
 
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
@@ -58,6 +58,7 @@ const userRoutes =[
     // {path:"/NuevoExpediente", component:nuevoExpediente },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
+    {path: "/infoServicios", component: infoServicios},
     {path:"/", component: BusquedaPacientes}
 ];
 

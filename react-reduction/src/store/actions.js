@@ -5,3 +5,4 @@ export * from './GestionRoles/actions';
 export * from './Expediente/actions';
 export * from './GestionRecursos/actions';
 export * from './Permisos/actions';
+export * from './GestionServicios/actions';

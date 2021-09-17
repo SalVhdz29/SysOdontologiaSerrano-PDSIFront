@@ -1,0 +1,27 @@
+[
+    {
+        "id_servicio":1,
+        "nombre_servicio":"Servicio 1",
+        "descripcion_servicio":"Descripcion 1",
+        "precio_servicio": "xxxx",
+        "numero_citas": "xxxx",
+        "servicio_activo": 0
+    },
+    {
+        "id_servicio":2,
+        "nombre_servicio":"Servicio 2",
+        "descripcion_servicio":"Descripcion 2",
+        "precio_servicio": "xxxx",
+        "numero_citas": "xxxx",
+        "servicio_activo": 0
+    },
+    {
+        "id_servicio":3,
+        "nombre_servicio":"Servicio 3",
+        "descripcion_servicio":"Descripcion 3",
+        "precio_servicio": "xxxx",
+        "numero_citas": "xxxx",
+        "servicio_activo": 0
+    }
+
+]
