@@ -34,4 +34,4 @@ const gestionServiciosReducer =(state = INIT_STATE, {type, payload})=>{
     }
 }
 
-export default gestionServiciosReducer;
+export default gestionServiciosReducer; 
