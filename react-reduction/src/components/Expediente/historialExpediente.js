@@ -94,7 +94,6 @@ const HistorialExpediente = props =>{
   const [ activo, setActivo ] = useState(false);
 
 
-    const [ estadoExpediente, setExpedienteActivo] = useState(false);
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
@@ -103,123 +102,50 @@ const HistorialExpediente = props =>{
 
 
 
-    //CICLO DE VIDA
-    useEffect(()=>{
-
-        if(props.isReadOnly == true || props.isEditable == true)
-        {
-            //console.log("El default Value: ", props.defaultValue);
-            _setDefaultValue();
-        }
-
-    },[props.defaultValue])
-
 /*
+
     useEffect(()=>{
     
         setListaPiezas(props.state.listaPiezas);
-      //  let result =  _crearFilasListPiezas();
+ 
+        let result =  _crearFilasListPiezas();
       },[props.state.listaPiezas]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
-    */
+*/
 
     //FIN CICLO DE VIDA
 
-
-
-/**///////////    const _setListaPiezas=()=>{****************************** */ */
-/*
-const _setListaPiezas=async()=>{
-        
-
-    let Piezas=[];
-    if(props.state.listaPiezas.length != 0)
-    {
-        let Piezas=[];
-        for(let pieza of props.state.listaPiezas)
-        {
-            
-            let {
-                id_pieza,
-                id_f_cuadrante,
-                numero_pieza,
-                ninio_diente
-                } = Piezas;
-
-  
-            Piezas.push(pieza)
-        }
-
+    const _crearFilasListPiezas=async()=>{
+        //console.log("detecto el cambio");
       
-       crearPiezas(Piezas);
+        let filas=[];
 
-    }
+        props.state.listaPiezas.map(Piezas=>{
+      
+            let {
+              id_pieza,
+              id_f_cuadrante,
+              numero_pieza,
+              ninio_diente
+              } = Piezas;     
+                    
+            let fila ={};
+            fila.id_pieza = id_pieza;
+            fila.id_f_cuadrante = id_f_cuadrante;
+            fila.numero_pieza = numero_pieza;
+            fila.ninio_diente = ninio_diente;   
+      
+          
+            filas.push(fila);
+        })
+      
+      
+        props.setFilasListaPiezas(filas);
+      
+      }
 
-}
 
-*/
 
     /**************************** */
-
-
-    //Función que da valores por defecto a los campos en el formulario.
-    const _setDefaultValue=()=>{
-        let id_expediente = 0;
-        let nombre_paciente_front="";
-        let apellido_paciente_front="";
-        let dui_front = "";
-        let sexo_front = 0;
-        let correo_front = "";
-        let telefono_front = "";
-        let ultima_fecha_front = "";
-        let fecha_nacimiento_front="";
-        let direccion_front = "";
-
-        let {
-            nombre_paciente,
-            apellido_paciente,
-            dui,
-            sexo,
-            correo,
-            telefono,
-            ultima_fecha,
-            fecha_nacimiento,
-            direccion
-        } = props.defaultValue;
-
-        if(nombre_paciente){
-            nombre_paciente_front = nombre_paciente;
-        }
-        if(apellido_paciente){
-            apellido_paciente_front = apellido_paciente;
-        }
-        if(sexo){
-            sexo_front = "Masculino";
-        }else{
-            sexo_front = "Femenino";
-        }
-        if(dui){
-            dui_front = dui;
-        }
-        if(correo){
-            correo_front = correo;
-        }
-        if(telefono){
-            telefono_front = telefono;
-        }
-        if(ultima_fecha){
-            ultima_fecha_front = ultima_fecha;
-        }
-        if(fecha_nacimiento){
-            fecha_nacimiento_front = fecha_nacimiento;
-        }
-        if(direccion){
-            direccion_front = direccion;
-        }
-        //console.log("default Value", props.defaultValue)
-
-
-        setDefaultValues({nombre_paciente_front,apellido_paciente_front,dui_front, sexo_front,correo_front, telefono_front, ultima_fecha_front,fecha_nacimiento_front,direccion_front});
-    }
 
 
 
@@ -243,40 +169,8 @@ const _setListaPiezas=async()=>{
 //----------------------------------------------------------------------------
 
 
-    //Función que simula la inicialización de servicios.
-    const _obtenerServicios=async(listaExpediente)=>{
-        /* simulando la llamada a un servicio */
-           
-         let token= Cookies.get('token');  
-  
-        let respuesta_Expediente = await superagent.post(
-          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
-          .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
-          await props.setListaExpediente(respuesta_Expediente.body);
-  
-          console.log("valor de filas detectadas: ", respuesta_Expediente.body)  
-  
-    }
-  
-  
-      //Función que llama a los usuarios en el servidor.
-      const _obtenerExpediente = async() =>{
-    
-        let token= Cookies.get('token');
-  
-        let respuesta_Expediente = await superagent.post(
-          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
-        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
-  
-        
-  
-  
-        await props.setListaExpediente(respuesta_Expediente.body);
-    }
-  
 
-
-    const obtenerPiezas = async() =>{
+    const _obtenerPiezas = async() =>{
     
         let token= Cookies.get('token');
   
@@ -293,82 +187,6 @@ const _setListaPiezas=async()=>{
 
 
 
-
-
-    const _registrarExpediente=async(valor_inputs)=>{
-            //console.log("el valor obtenido", valor_inputs);
-            console.log("ENTRO AL METODO REGISTRAS");
-            let fecha_actual = new Date();            
-            let mes = fecha_actual.getMonth()+1;
-            let { 
-                    nombre_paciente_front,
-                    apellido_paciente_front,
-                    dui_front,
-                    sexo_front,
-                    correo_front,
-                    telefono_front,
-                    fecha_nacimiento_front,
-                    direccion_front
-                } = valor_inputs;
-
-            let valor = {};
-            valor.nombre_paciente = nombre_paciente_front;
-            valor.apellido_paciente = apellido_paciente_front;
-            valor.dui = dui_front;
-            
-            valor.correo = correo_front;
-            valor.telefono = telefono_front;
-            valor.ultima_fecha = fecha_actual.getDate()+"-"+mes+"-"+fecha_actual.getFullYear();
-            valor.fecha_nacimiento = fecha_nacimiento_front;
-            valor.direccion = direccion_front;
-            console.log("antes del sexo");
-           if(sexo_front == "M"){
-            valor.sexo = 1;
-           }else{
-            valor.sexo = 0;
-           }
-        //    console.log("despues del sexo del sexo");
-
-            let tipo="";
-            if(props.isEditable)
-                        {
-                            console.log("LO QUE ENVIA: ", valor);
-                            valor.id_expediente = props.defaultValue.id_expediente;
-                            tipo="editarExpedienteLista";
-                            let token= Cookies.get('token');
-                              let respuesta_Expediente = await superagent.post(
-                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_UPDATE_EXPEDIENTE)
-                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
-                                console.log("LA RESPUESTA: ", respuesta_Expediente)
-                        }
-                        else
-                        {
-                            console.log("entro al else: "+valor.sexo);
-                            tipo="agregarExpedienteLista";
-                            let token= Cookies.get('token');
-                              let respuesta_Expediente = await superagent.post(
-                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_NUEVO_EXPEDIENTE)
-                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
-                        }
-
-            let envio={tipo,valor};
-            if(props.cambioDatos != undefined)
-            {
-                await props.cambioDatos(envio);
-            }
-            
-            setModalOpen(false);
-    }
-
-    const _validacionEjemplo=(value, ctx, input, cb) =>{
-        if("palabra" == value)
-        {
-            return true;
-        }
-        else{
-            return "no dice palabra";
-        }
-    }
 
 
 function Imagenes()
@@ -410,6 +228,7 @@ function Imagenes()
                     onClick={()=>{setModalOpen(true)}}
 
                 >
+                   
                     {
                         props.mensajeBoton
                     
@@ -1133,34 +952,12 @@ function Imagenes()
     </TabPanel>
   </Tabs>
 
-                                <Row>
-                        <Col >
-
-
-
-
-
-
-
-                   </Col>
-                        </Row>
-
-           
-
-
-
-
-
-
-
-
-
                         </Container>
                 </div>
                 <div className="modal-footer">
                     <Row>
                         <Col >
-                        {props.isReadOnly?(undefined):(
+                       
                         <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
@@ -1169,7 +966,7 @@ function Imagenes()
                              Guardar
                             </Button>
                           </div> 
-                               )} 
+                            
                         </Col>
                         <Col>
                             <div className="mt-3">
