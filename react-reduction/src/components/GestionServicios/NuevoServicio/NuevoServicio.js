@@ -375,6 +375,7 @@ const NuevoServicio = props =>{
                                                 className="form-control"
                                                 placeholder="Mayor a cero"
                                                 type="text"
+                                                pattern="^[0-9]{1}$"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
@@ -393,6 +394,7 @@ const NuevoServicio = props =>{
                                                 className="form-control"
                                                 placeholder="Mayor a cero"
                                                 type="text"
+                                                pattern="^[1-9]{1}$"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
