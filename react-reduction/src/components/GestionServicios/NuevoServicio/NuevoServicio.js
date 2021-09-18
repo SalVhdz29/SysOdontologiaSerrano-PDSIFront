@@ -85,8 +85,9 @@ const NuevoServicio = props =>{
             let descripcionServicioIpx = "";
             let costoServicioIpx = "";
             let precioServicioIpx= "";
-            let numeroCitasIpx= "";
-            let {nombreServicio, descripcionServicio, servicioActivo, costoServicio, precioServicio, numeroCitas} = props.defaultValue;
+            let minimoCitasIpx= "";
+            let maximoCitasIpx= "";
+            let {nombreServicio, descripcionServicio, servicioActivo, costoServicio, precioServicio, minimoCitas, maximoCitas} = props.defaultValue;
             // console.log("default Value", props.defaultValue)
             if(nombreServicio){
                 nombreServicioIpx = nombreServicio;
@@ -107,12 +108,16 @@ const NuevoServicio = props =>{
             {
                 precioServicioIpx = precioServicio;
             }
-            if(numeroCitas)
+            if(minimoCitas)
             {
-                numeroCitasIpx = numeroCitas;
+                minimoCitasIpx = minimoCitas;
+            }
+            if(maximoCitas)
+            {
+                maximoCitasIpx = maximoCitas;
             }
 
-            setDefaultValues({nombreServicioIpx, descripcionServicioIpx, precioServicioIpx, costoServicioIpx, precioServicioIpx, numeroCitasIpx});
+            setDefaultValues({nombreServicioIpx, descripcionServicioIpx, precioServicioIpx, costoServicioIpx, precioServicioIpx, minimoCitasIpx, maximoCitasIpx});
         }
 
 
@@ -122,18 +127,18 @@ const NuevoServicio = props =>{
             let token= Cookies.get('token');
            
     
-        costoServicio.value!=0 && numeroCitas.value != "0"?(async ()=>{
+        costoServicio.value!=0 && minimoCitas.value != "0"?(async ()=>{
             let { nombreServicioIpx,
                 descripcionServicioIpx,
                 precioServicioIpx,
-                numeroCitasIpx} = valor_inputs;
+                minimoCitasIpx} = valor_inputs;
 
             let valor = {};
             valor.nombreServicio = nombreServicioIpx;
             valor.descripcionServicio =descripcionServicioIpx;
             valor.precioServicio = precioServicioIpx;
             valor.costoServicio = costoServicioIpx;
-            valor.numeroCitas = numeroCitasIpx;
+            valor.minimoCitas = minimoCitasIpx;
             valor.servicio_activo = servicioActivo;
             
             let tipo="";
@@ -361,11 +366,29 @@ const NuevoServicio = props =>{
                                 </Row>
                                 <Row>
                                     <Col md={6}>
-                                    <Label><b>Numero de Citas</b></Label>
+                                    <Label><b>Cantidad minima de Sesiones</b></Label>
                     
                                             <AvField
-                                                id="numeroCitasIpx"
-                                                name="numeroCitasIpx"
+                                                id="minimoCitasIpx"
+                                                name="minimoCitasIpx"
+                                                value=""
+                                                className="form-control"
+                                                placeholder="Mayor a cero"
+                                                type="text"
+                                                disabled={props.isReadOnly?true:false}
+                                                validate={{
+                                                  required: { value: true, errorMessage: "Obligatorio."},
+                                                                                                    
+                                                }}
+                                            />
+
+                                    </Col>
+                                    <Col md={6}>
+                                    <Label><b>Cantidad maxima de Sesiones</b></Label>
+                    
+                                            <AvField
+                                                id="maximoCitasIpx"
+                                                name="maximoCitasIpx"
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Mayor a cero"
