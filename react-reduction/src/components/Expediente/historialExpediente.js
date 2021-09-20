@@ -81,6 +81,17 @@ import d47 from 'assets/img/dientes/47.jpg';
 import d48 from 'assets/img/dientes/48.jpg';
 
 import e01 from 'assets/img/estados/1.jpg';
+import e02 from 'assets/img/estados/2.jpg';
+import e03 from 'assets/img/estados/3.jpg';
+import e04 from 'assets/img/estados/4.jpg';
+import e05 from 'assets/img/estados/5.jpg';
+import e06 from 'assets/img/estados/6.jpg';
+import e07 from 'assets/img/estados/7.jpg';
+import e08 from 'assets/img/estados/8.jpg';
+import e09 from 'assets/img/estados/9.jpg';
+import e10 from 'assets/img/estados/10.jpg';
+import e11 from 'assets/img/estados/11.jpg';
+import e12 from 'assets/img/estados/12.jpg';
 
 
 //Componente
@@ -99,6 +110,181 @@ const HistorialExpediente = props =>{
 
     const [ listaPiezas, setListaPiezas] = useState({});
     const [ listadoPiezas, crearPiezas] = useState({});
+
+
+    
+    
+    const [estadosPieza, setEstadosPieza]=useState(
+        {
+            1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1,
+            9 : 1, 10 : 1, 11 : 1, 12 : 1, 13 : 1, 14 : 1, 15 : 1, 16 : 1,
+            17 : 1, 18 : 1, 19 : 1, 20 : 1, 21 : 1, 22 : 1, 23 : 1, 24 : 1,
+            25 : 1, 26 : 1, 27 : 1, 28 : 1, 29 : 1, 30 : 1, 31 : 1, 32 : 1
+            
+        }
+        );
+
+        
+           /* 1 : 1, 2 : 5, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1,
+            9 : 1, 10 : 1, 11 : 1, 12 : 1, 13 : 1, 14 : 1, 15 : 1, 16 : 1,
+            17 : 1, 18 : 1, 19 : 1, 20 : 1, 21 : 1, 22 : 1, 23 : 1, 24 : 1,
+            25 : 1, 26 : 1, 27 : 1, 28 : 1, 29 : 1, 30 : 1, 31 : 1, 32 : 1*/
+
+    const [listaDientes, setEstadoDientes]=useState(
+        [ 
+            { 
+                "id_f_pieza":1,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":2,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":3,
+                "id_f_estado_pieza": 3            
+            },
+            { 
+                "id_f_pieza":4,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":5,
+                "id_f_estado_pieza": 2            
+            },
+            { 
+                "id_f_pieza":6,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":7,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":8,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":9,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":10,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":11,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":12,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":13,
+                "id_f_estado_pieza": 4            
+            },
+            { 
+                "id_f_pieza":14,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":15,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":16,
+                "id_f_estado_pieza": 10            
+            },
+            { 
+                "id_f_pieza":17,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":18,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":19,
+                "id_f_estado_pieza": 5            
+            },
+            { 
+                "id_f_pieza":20,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":21,
+                "id_f_estado_pieza": 7            
+            },
+            { 
+                "id_f_pieza":22,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":23,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":24,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":25,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":26,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":27,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":28,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":29,
+                "id_f_estado_pieza": 4            
+            },
+            { 
+                "id_f_pieza":30,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":31,
+                "id_f_estado_pieza": 1            
+            },
+            { 
+                "id_f_pieza":32,
+                "id_f_estado_pieza": 10            
+            }
+        ]
+        );
+
+
+        const pieza = [
+            d11, 	d12, 	d13, 	d14, 	d15, 	d16, 	d17, 	d18, 	
+            d21, 	d22, 	d23, 	d24, 	d25, 	d26, 	d27, 	d28, 	
+            d31, 	d32, 	d33, 	d34, 	d35, 	d36, 	d37, 	d38, 	
+            d41, 	d42, 	d43, 	d44, 	d45, 	d46, 	d47, 	d48,
+        ]
+
+        const estado = [
+            e01, 	e02, 	e03, 	e04, 	e05, 	e06,
+            e07, 	e08, 	e09, 	e10, 	e11, 	e12, 
+
+        ]
+
+
+        const _guardarEstado=({id_diente, valor_estado})=>{
+            let n_estados=[...estadosPieza]
+            n_estados[parseInt(id_diente)-1]=valor_estado
+            setEstadosPieza(n_estados)
+            }
+
+
 
 
 
@@ -167,7 +353,7 @@ const HistorialExpediente = props =>{
 
 
 //----------------------------------------------------------------------------
-
+/*
 
 
     const _obtenerPiezas = async() =>{
@@ -179,39 +365,149 @@ const HistorialExpediente = props =>{
         .set('Accept', 'application/json').set("Authorization", "Bearer " + token);       
         
         console.log("piezas: ", respuesta_Piezas.body)  
-        
   
         await props.setListaPiezas(respuesta_Piezas.body);
     }
   
 
 
+*/
 
 
-
-function Imagenes()
+function Superior()
 {
     const img = [];
-    const pieza = [d26,d27,d28]
 
-    for (var i = 0; i < 3 ; i++)
+
+    for (var i = 7; i > -1 ; i--)
     {
         const imagen = (
             <td>
                 <center>
-                <img
-                src={pieza[i]}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-                /><br></br>
-                17
+                <DetalleDiente 
+                            diente={i+11}
+                            id_pieza={i+1}
+                            pieza={pieza[i]}
+                            dentadura={listaDientes}
+                        />      
+                        <img
+                                src={estado[listaDientes[i].id_f_estado_pieza-1]}
+                                width="40"
+                                height="40"
+                                className="pr-2"
+                                alt=""
+                                />       
+                        
                 </center>
             </td>
         );
         img.push(imagen);
     }
+
+
+   const imagen = (
+        <td><center>
+            --</center>
+        </td>
+    );
+    img.push(imagen);
+
+
+    for (var i = 0; i <8 ; i++)
+    {
+        const imagen = (
+            <td>
+                <center>
+                <DetalleDiente 
+                            diente={i+21}
+                            id_pieza={i+9}
+                            pieza={pieza[i+8]}
+                            dentadura={listaDientes}
+                        />         
+                                <img
+                                src={estado[listaDientes[i+8].id_f_estado_pieza-1]}
+                                width="40"
+                                height="40"
+                                className="pr-2"
+                                alt=""
+                                />           
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+
+    return (
+        <tr>{img}</tr>
+    );
+}
+
+
+
+
+function Inferior()
+{
+    const img = [];
+
+
+    for (var i = 7; i > -1 ; i--)
+    {
+        const imagen = (
+            <td>
+                <center>
+                <DetalleDiente 
+                            diente={i+41}
+                            id_pieza={i+25}
+                            pieza={pieza[i+24]}
+                            dentadura={listaDientes}
+                        />      
+                        <img
+                                src={estado[listaDientes[i+24].id_f_estado_pieza-1]}
+                                width="40"
+                                height="40"
+                                className="pr-2"
+                                alt=""
+                                />       
+                        
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+
+
+   const imagen = (
+        <td><center>
+            --</center>
+        </td>
+    );
+    img.push(imagen);
+
+
+    for (var i = 0; i <8 ; i++)
+    {
+        const imagen = (
+            <td>
+                <center>
+                <DetalleDiente 
+                            diente={i+31}
+                            id_pieza={i+17}
+                            pieza={pieza[i+16]}
+                            dentadura={listaDientes}
+                        />         
+                                <img
+                                src={estado[listaDientes[i+16].id_f_estado_pieza-1]}
+                                width="40"
+                                height="40"
+                                className="pr-2"
+                                alt=""
+                                />           
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+
     return (
         <tr>{img}</tr>
     );
@@ -248,7 +544,7 @@ function Imagenes()
             >
 
                 <div className="modal-header">
-         
+       
 
 
                 {props.listaPiezas} 
@@ -297,7 +593,7 @@ function Imagenes()
                                <Tabs>
     <TabList>
       <Tab><b>Ficha Clínica</b></Tab>
-      <Tab><b>Diagnósticos</b></Tab>
+      <Tab disabled><b>Diagnósticos</b></Tab>
     </TabList>
 
     <TabPanel>
@@ -309,407 +605,15 @@ function Imagenes()
                             <h5 className="modal-title mt-0"><b>Odontograma</b></h5>      
 
                             <table border='1' width='100%'>
-
-
-                        <Imagenes/>
-</table>
-
-
-<table border='1' width='100%'>
-
-
-
-                        <tr>
-                            <td>
-                                <center>
-                                <DetalleDiente 
-                            diente='18'
-                            pieza={d18}
-                        />
-
-                            <img
-                                src={e01}
-                                width="40"
-                                height="40"
-                                className="pr-2"
-                                alt=""
-                                /><br></br>
-                                18
-
-                                </center>
-
-                            </td>
-
-
-
-
-
-
-                            <td><center>
-                            <img
-                src={d17}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                17
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d16}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                16
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d15}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                15
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d14}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                14
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d13}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                13
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d12}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                12
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d11}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                11
-                                </center>
-                            </td>
-                            <td><center>
-                                --
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d21}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                21
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d22}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                22
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d23}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                23
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d24}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                24
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d25}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                25
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d26}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                26
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d27}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                27
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d28}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                28
-                                </center>
-                            </td>
-                            
-                    
-
-                            
+                            <tr>
+                                <td colspan="17"><center>Hemisferios Superiores</center></td>
                             </tr>
 
-
-
-
-                                                    <tr>
-                            <td><center>
-                            <img
-                src={d48}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                48
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d47}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                47
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d46}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                46
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d45}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                45
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d44}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                44
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d43}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                43
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d42}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                42
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d41}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                41
-                                </center>
-                            </td>
-                            <td><center>
-                                --
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d31}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                31
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d32}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                32
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d33}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                33
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d34}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                34
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d35}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                35
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d36}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                36
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d37}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                37
-                                </center>
-                            </td>
-                            <td><center>
-                            <img
-                src={d38}
-                width="30"
-                height="50"
-                className="pr-2"
-                alt=""
-              /><br></br>
-                                38
-                                </center>
-                            </td>
-                            
-                    
-
-                            
+                        <Superior/>
+                            <tr>
+                                <td colspan="17"> <center> Hemisferios Inferiores </center></td>
                             </tr>
-
+                        <Inferior/>
 
 </table>
 
