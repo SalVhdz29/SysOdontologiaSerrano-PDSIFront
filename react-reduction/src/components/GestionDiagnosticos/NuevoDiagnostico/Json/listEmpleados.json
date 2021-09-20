@@ -1,0 +1,22 @@
+[
+    {
+        "id_empleado":1,
+        "nombre_empleado":"Salvador Hernández"
+    },
+    {
+        "id_empleado":2,
+        "nombre_empleado":"Daniel Ernesto"
+    },
+    {
+        "id_empleado":3,
+        "nombre_empleado":"Wilbert "
+    },
+    {
+        "id_empleado":4,
+        "nombre_empleado":"Mauricio Ordoñez"
+    },
+    {
+        "id_empleado":5,
+        "nombre_empleado":"Nelson Gonzales"
+    }
+]
