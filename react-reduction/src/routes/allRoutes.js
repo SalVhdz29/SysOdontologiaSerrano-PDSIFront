@@ -28,6 +28,9 @@ import Expediente from '../components/Expediente/';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes';
+import CitasPorAtender from '../components/CitasPorAtender/CitasPorAtender';
+import Diagnostico from '../components/Diagnostico/Diagnostico';
+import Factura from '../components/Factura/Factura';
 
 
 const userRoutes =[
@@ -58,7 +61,10 @@ const userRoutes =[
     // {path:"/NuevoExpediente", component:nuevoExpediente },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
-    {path:"/", component: BusquedaPacientes}
+    {path:"/CitasPorAtender", component:CitasPorAtender},
+    {path:"/", component: BusquedaPacientes},
+    {path:"/Diagnostico", component:Diagnostico},
+    {path:"/Factura", component:Factura},
 ];
 
 const authRoutes=[

@@ -5,18 +5,18 @@ export const columnasTabla = [
         },
         {
             text: "Paciente",
-            dataField: "nombre_paciente",
+            dataField: "nombre_persona",
         },
         {
             text: "Hora",
-            dataField: "hora_cita",
+            dataField: "hora_entrada",
         },
         {
             text: "Servicio",
-            dataField: "servicio_cita",
+            dataField: "nombre_servicio",
         },
         {
-            text: "Descripcion",
-            dataField: "descripcion_cita",
+            text: "Operaciones",
+            dataField: "operaciones",
         }
     ]

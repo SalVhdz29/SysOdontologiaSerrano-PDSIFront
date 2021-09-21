@@ -210,7 +210,7 @@ const NuevoExpediente = props =>{
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
-     
+            {/* <FormGroup> */}
                 <Button 
                     className="btn btn-dark btn-sm"
                    
@@ -225,6 +225,7 @@ const NuevoExpediente = props =>{
                     }
 
                 </Button>
+            {/* </FormGroup> */}
         
 
             <Modal
