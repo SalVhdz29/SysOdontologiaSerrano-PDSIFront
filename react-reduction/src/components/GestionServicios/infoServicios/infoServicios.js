@@ -108,10 +108,10 @@ const GestionServicios = props =>{
 
   //Función que sirve de puerto en cambios obtenidos por componentes hijos.
   const _cambiosEnServicios =({tipo, valor})=>{
-      //console.log("vino al cambio usuarios con: ", tipo);
+
       switch(tipo){
           case 'actualizarListaServicios':
-                 //let nuevas_filas= _cambiarActivoJsonServicios(valor.id_servicio);
+
                   //console.log("volvio");
                   _obtenerServicios();
               break;
@@ -123,7 +123,7 @@ const GestionServicios = props =>{
           case 'editarServicioLista':
               //console.log(valor, "deeee");
                   let lista_actualizada =_actualizarServicio(valor);
-                  //console.log("lo devuelto: ", lista_actualizada);
+
                   _obtenerServicios(lista_actualizada);
               break;
 
@@ -200,7 +200,7 @@ const GestionServicios = props =>{
                     defaultValue={defaultValues}
                     classNames={"btn-success btn-sm "}
                     mensajeBoton={<FaEye />}
-                    //rutas={rutas}
+
                 />{' '}
                 <NuevoServicio 
                     defaultValue={defaultValues}
@@ -208,16 +208,14 @@ const GestionServicios = props =>{
                     mensajeBoton={<FaPencilAlt />}
                     isEditable={true}
                     cambioDatos={_cambiosEnServicios}
-                    //rutas={rutas}
+
                 />
 
                 </FormGroup>
             )
-            //console.log("Fila antes del push");
             // console.log(fila);
             filas.push(fila);
       })
-        //console.log("Revisando valor de filas");
         // console.log(filas);
         props.setFilasListaServiciosActivos(filas);
     }
@@ -249,7 +247,7 @@ const GestionServicios = props =>{
       
       return nueva_lista_servicios
       //listServicios
-      /* comente las lineas donde clonaba el objeto porque no estoy modificando el store invalidamente, solo el JSOn de prueba. */
+
   }
 
   //Función que simula el añadir el usuario obtenido para anexarlo al JSON - temporal.
@@ -276,9 +274,8 @@ const GestionServicios = props =>{
       servicio.maximo_citas= nuevo_servicio.maximo_citas;
       servicio.servicio_activo = nuevo_servicio.servicio_activo;
 
-
       n_lista.push(servicio);
-      //console.log("la lista antes de ingresar ", n_lista);
+
     return n_lista;
 
   };
@@ -295,7 +292,7 @@ const GestionServicios = props =>{
 
           if(servicio.id_servicio == servicio_actualizar.id_servicio)
           {
-              //console.log("coincidencia: ",usuario.id_servicio);
+
               servicio.nombre_servicio = servicio_actualizar.nombre_servicio;
               servicio.descripcion_servicio = servicio_actualizar.descripcion_servicio;
               servicio.costo_servicio= servicio_actualizar.costo_servicio;
@@ -325,7 +322,7 @@ const GestionServicios = props =>{
                   <Col md={4} xs={12}>
                       <NuevoServicio 
                           cambioDatos={_cambiosEnServicios}
-                          //rutas={rutas}
+
 
                       />
                   </Col>

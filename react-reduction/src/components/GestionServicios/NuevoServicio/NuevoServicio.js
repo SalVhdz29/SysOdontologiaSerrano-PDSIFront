@@ -55,8 +55,6 @@ const NuevoServicio = props =>{
     const [minimoCitas,setMinimoCitas] =useState();
 
 
-
-
         //CICLO DE VIDA
 
         useEffect(()=>{
@@ -66,7 +64,6 @@ const NuevoServicio = props =>{
 
             if(props.isReadOnly == true || props.isEditable == true)
             {
-                //console.log("El default Value: ", props.defaultValue);
                 _setDefaultValue();
             }
     
@@ -240,8 +237,6 @@ const NuevoServicio = props =>{
                             )
                 }
         
-
-    //
 
     const _validacionEjemplo=(value, ctx, input, cb) =>{
         if("palabra" == value)
