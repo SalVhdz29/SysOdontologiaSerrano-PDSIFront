@@ -47,6 +47,15 @@ const NuevoServicio = props =>{
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
+    //Update estados
+    const [costoServicio,setCostoServicio] =useState();
+
+    const [errorCostoServicio, setErrorCostoServicio]= useState ("");
+
+    const [minimoCitas,setMinimoCitas] =useState();
+
+
+
 
         //CICLO DE VIDA
 
@@ -125,111 +134,111 @@ const NuevoServicio = props =>{
             let token= Cookies.get('token');
            
     
-        costoServicio.value!=0 && minimoCitas.value != "0"?(async ()=>{
-            let { nombreServicioIpx,
-                descripcionServicioIpx,
-                precioServicioIpx,
-                minimoCitasIpx,
-                maximoCitasIpx,
-                costoServicioIpx} = valor_inputs;
+            costoServicio.value!=0 && minimoCitas.value != "0"?(async ()=>{
+                let { nombreServicioIpx,
+                    descripcionServicioIpx,
+                    precioServicioIpx,
+                    minimoCitasIpx,
+                    maximoCitasIpx,
+                    costoServicioIpx} = valor_inputs;
 
-            let valor = {};
-            valor.nombreServicio = nombreServicioIpx;
-            valor.descripcionServicio =descripcionServicioIpx;
-            valor.precioServicio = precioServicioIpx;
-            valor.costoServicio = costoServicioIpx;
-            valor.minimoCitas = minimoCitasIpx;
-            valor.maximoCitas= maximoCitasIpx;
-            valor.servicio_activo = servicioActivo;
-            
-            let tipo="";
-                            if(props.isEditable)
-                            {
-                                valor.id_servicio = props.defaultValue.idServicio;
-
-                                try{
-                                    let respuesta_servicio_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_SERVICIO)
-                                    .set('Accept', 'application/json')
-                                    .set("Authorization", "Bearer " + token)
-                                    .send(valor)
-    
-                                    if(respuesta_servicio_creado.body.message == "OK")
-                                    {
-                                        swal({
-                                            title:"Servicio Actualizado",
-                                            text:"Servicio actualizado con éxito",
-                                            icon:"success",
-                                            button:"Aceptar"
-                                        });
-                                    }
-                                    else{
-                                        swal({
-                                            title:"Error al actualizar el Servicio ",
-                                            text:respuesta_servicio_creado.body.message,
-                                            icon:"error",
-                                            button:"Aceptar"
-                                        });
-                                    }
-    
-                                }catch(e){
-                                    console.log(e);
-                                    swal({
-                                        title:"Error al Editar datos del Servicio",
-                                        text: e.errorMessage,
-                                        icon: "error",
-                                        button:"Aceptar"
-                                    });
-                                }
-                            }
-
-                            else
-                            {
-                                try{
-
-                                    let respuesta_servicio_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_SERVICIO)
-                                    .set('Accept', 'application/json')
-                                    .set("Authorization", "Bearer " + token)
-                                    .send(valor)
-    
-                                    if(respuesta_servicio_creado.body.message == "OK")
-                                    {
-                                        swal({
-                                            title:"Servicio Creado",
-                                            text:"Servicio creado con éxito",
-                                            icon:"success",
-                                            button:"Aceptar"
-                                        });
-                                    }
-                                    else{
-                                        swal({
-                                            title:"Error al crear el servicio ",
-                                            text:respuesta_servicio_creado.body.message,
-                                            icon:"error",
-                                            button:"Aceptar"
-                                        });
-                                    }
-    
-                                }catch(e)
+                let valor = {};
+                valor.nombreServicio = nombreServicioIpx;
+                valor.descripcionServicio =descripcionServicioIpx;
+                valor.precioServicio = precioServicioIpx;
+                valor.costoServicio = costoServicioIpx;
+                valor.minimoCitas = minimoCitasIpx;
+                valor.maximoCitas= maximoCitasIpx;
+                valor.servicio_activo = servicioActivo;
+                
+                let tipo="";
+                                if(props.isEditable)
                                 {
-                                    console.log(e);
-                                    swal({
-                                        title:"Error al crear datos el servicio",
-                                        text: e.errorMessage,
-                                        icon: "error",
-                                        button:"Aceptar"
-                                    });
-                                }
-                            }
-                            tipo="actualizarListaServicios";
-                            let envio ={tipo};
-                            envio={tipo};
-                            await props.cambioDatos(envio);
-                            
-                            setModalOpen(false);
-                        })():(
+                                    valor.id_servicio = props.defaultValue.idServicio;
 
-                        )
-            }
+                                    try{
+                                        let respuesta_servicio_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_ACTUALIZAR_SERVICIO)
+                                        .set('Accept', 'application/json')
+                                        .set("Authorization", "Bearer " + token)
+                                        .send(valor)
+        
+                                        if(respuesta_servicio_creado.body.message == "OK")
+                                        {
+                                            swal({
+                                                title:"Servicio Actualizado",
+                                                text:"Servicio actualizado con éxito",
+                                                icon:"success",
+                                                button:"Aceptar"
+                                            });
+                                        }
+                                        else{
+                                            swal({
+                                                title:"Error al actualizar el Servicio ",
+                                                text:respuesta_servicio_creado.body.message,
+                                                icon:"error",
+                                                button:"Aceptar"
+                                            });
+                                        }
+        
+                                    }catch(e){
+                                        console.log(e);
+                                        swal({
+                                            title:"Error al Editar datos del Servicio",
+                                            text: e.errorMessage,
+                                            icon: "error",
+                                            button:"Aceptar"
+                                        });
+                                    }
+                                }
+
+                                else
+                                {
+                                    try{
+
+                                        let respuesta_servicio_creado = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_SERVICIO)
+                                        .set('Accept', 'application/json')
+                                        .set("Authorization", "Bearer " + token)
+                                        .send(valor)
+        
+                                        if(respuesta_servicio_creado.body.message == "OK")
+                                        {
+                                            swal({
+                                                title:"Servicio Creado",
+                                                text:"Servicio creado con éxito",
+                                                icon:"success",
+                                                button:"Aceptar"
+                                            });
+                                        }
+                                        else{
+                                            swal({
+                                                title:"Error al crear el servicio ",
+                                                text:respuesta_servicio_creado.body.message,
+                                                icon:"error",
+                                                button:"Aceptar"
+                                            });
+                                        }
+        
+                                    }catch(e)
+                                    {
+                                        console.log(e);
+                                        swal({
+                                            title:"Error al crear datos el servicio",
+                                            text: e.errorMessage,
+                                            icon: "error",
+                                            button:"Aceptar"
+                                        });
+                                    }
+                                }
+                                tipo="actualizarListaServicios";
+                                let envio ={tipo};
+                                envio={tipo};
+                                await props.cambioDatos(envio);
+                                
+                                setModalOpen(false);
+                            })():(
+                                setErrorCostoServicio("Valor debe ser mayor que cero")
+                            )
+                }
         
 
     //
