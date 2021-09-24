@@ -51,7 +51,6 @@ const GestionServicios = props =>{
 
   const[listaServicios, setListaServicios] = useState([]);
   const[filasListaServicio, setFilasListaServicio] =useState([]);
-  //const[rutas, setRutas]=useState([]);
 
   //Ciclo de vida
   useEffect(()=>{
