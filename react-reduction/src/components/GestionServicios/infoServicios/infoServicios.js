@@ -70,7 +70,7 @@ const GestionServicios = props =>{
           await setFilasListaServicio(props.state.filaslistaServiciosActivos);
       }
       _setearFilas();
-  },[props.state.filasListaServiciosActivos]) //detecta cambios en las filas en el reducer y las setea en el estado local - de momento, inutil.
+  },[props.state.filasListaServiciosActivos]) 
   //Fin ciclo de vida
 
 
@@ -140,16 +140,6 @@ const GestionServicios = props =>{
       let filas=[];
       if (props.state.listaServicios.length !=0){
 
-        //let rutas=[];
-        //for(let servicio of props.state.listaServicios)
-        //{
-            //let { ruta_servicio, id_servicio } = servicio;
-            //let ruta={ruta_servicio, id_servicio}
-            //rutas.push(ruta)
-        //}
-
-        //setRutas(rutas);
-
         props.state.listaServicios.map(servicio=>{
 
             let {id_servicio,
@@ -158,7 +148,8 @@ const GestionServicios = props =>{
                 costo_servicio,
                 precio_servicio, 
                 servicio_activo,
-                numero_citas,
+                minimo_citas,
+                maximo_citas,                
                 } = servicio;
 
                 if(servicio_activo == 1)
@@ -176,7 +167,8 @@ const GestionServicios = props =>{
             fila.descripcion_servicio = descripcion_servicio;
             fila.costo_servicio = costo_servicio;
             fila.precio_servicio = precio_servicio;
-            fila.numero_citas = numero_citas;
+            fila.minimo_citas = minimo_citas;
+            fila.maximo_citas = maximo_citas;
 
             // fila.
 
@@ -197,7 +189,8 @@ const GestionServicios = props =>{
                     costoServicio: costo_servicio,
                     precioServicio: precio_servicio,
                     servicioActivo: servicio_activo,
-                    numeroCitas: numero_citas
+                    minimo_citas: minimo_citas,
+                    maximo_citas: maximo_citas
 
                 }
             fila.operaciones=(
@@ -280,7 +273,8 @@ const GestionServicios = props =>{
       servicio.descripcion_servicio = nuevo_servicio.descripcion_servicio;
       servicio.costo_servicio=nuevo_servicio.costo_servicio;
       servicio.precio_servicio= nuevo_servicio.precio_servicio;
-      servicio.numero_citas=nuevo_servicio.numero_citas;
+      servicio.minimo_citas=nuevo_servicio.minimo_citas;
+      servicio.maximo_citas= nuevo_servicio.maximo_citas;
       servicio.servicio_activo = nuevo_servicio.servicio_activo;
 
 
@@ -307,7 +301,8 @@ const GestionServicios = props =>{
               servicio.descripcion_servicio = servicio_actualizar.descripcion_servicio;
               servicio.costo_servicio= servicio_actualizar.costo_servicio;
               servicio.precio_servicio= servicio_actualizar.precio_servicio;
-              servicio.numero_citas= servicio_actualizar.numero_citas;
+              servicio.minimo_citas= servicio_actualizar.minimo_citas;
+              servicio.maximo_citas= servicio_actualizar.maximo_citas;
               servicio.servicio_activo = servicio_actualizar.servicio_activo;
       
           }
