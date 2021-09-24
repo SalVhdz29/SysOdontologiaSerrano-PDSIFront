@@ -17,6 +17,13 @@ import {
   FormGroup
 } from "reactstrap"
 
+import {
+  API_NUEVO_INSUMO,
+  API_UPDATE_INSUMO,
+  API_OBTENER_INSUMO,
+  API_OBTENER_UN_INSUMO
+} from  '../../api/apiTypes';
+
 import { FaEye, FaPencilAlt } from 'react-icons/fa';
 import {GrConfigure } from 'react-icons/gr';
 
@@ -74,7 +81,11 @@ const Insumo = props =>{
       //await props.setListaInsumo(listaInsumo);      
        let token= Cookies.get('token');
 
-        await props.setListaInsumo(listaInsumo);
+       let respuesta_Insumo = await superagent.post(
+        process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_INSUMO)
+        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+        await props.setListaInsumo(respuesta_Insumo.body);
+
   }
 
 
@@ -83,7 +94,10 @@ const Insumo = props =>{
   
       let token= Cookies.get('token');
 
-      await props.setListaInsumo(listaInsumo);
+   let respuesta_Insumo = await superagent.post(
+        process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_INSUMO)
+        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
+        await props.setListaInsumo(respuesta_Insumo.body);
   }
 
 
@@ -121,14 +135,13 @@ const Insumo = props =>{
           let {
               id_insumo,
               nombre_insumo,
-              existencia,
               descripcion
                } = Insumo;
 
           let fila ={};
           fila.id_insumo = id_insumo;
           fila.nombre_insumo = nombre_insumo;
-          fila.existencia = existencia;
+          fila.existencia = 1;
           fila.descripcion = descripcion;
           
 
@@ -136,7 +149,6 @@ const Insumo = props =>{
               let defaultValues={
                   id_insumo:id_insumo,
                   nombre_insumo: nombre_insumo,
-                  existencia: existencia,
                   descripcion: descripcion
               }
               

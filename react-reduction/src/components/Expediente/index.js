@@ -157,7 +157,6 @@ const Expediente = props =>{
           fila.ultima_fecha = ultima_fecha;
           fila.fecha_nacimiento = fecha_nacimiento;
           fila.direccion = direccion;
-
           if(sexo){
             fila.sexo = "Masculino";
           }else{

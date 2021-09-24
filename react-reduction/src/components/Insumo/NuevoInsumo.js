@@ -15,6 +15,12 @@ import{
     Col
 } from 'reactstrap';
 
+import {
+  API_NUEVO_INSUMO,
+  API_UPDATE_INSUMO,
+  API_OBTENER_INSUMO,
+  API_OBTENER_UN_INSUMO
+} from  '../../api/apiTypes';
 
 import{
     AvForm,
@@ -75,7 +81,7 @@ const NuevoInsumo = props =>{
         let {
             nombre_insumo,
             existencia,
-            descripcion,
+            descripcion
         } = props.defaultValue;
 
         if(nombre_insumo){
@@ -105,23 +111,34 @@ const NuevoInsumo = props =>{
             valor.nombre_insumo = nombre_insumo_front;
             valor.existencia = existencia_front;
             valor.descripcion = descripcion_front;
+            valor.insumo_activo = 1;
             
         //    console.log("despues del sexo del sexo");
 
             let tipo="";
             if(props.isEditable)
                         {
-                            console.log("LO QUE ENVIA: ", valor);
+
+                            
                             valor.id_insumo = props.defaultValue.id_insumo;
+                            console.log("LO QUE ENVIA: ", valor);
                             tipo="editarInsumoLista";
                             let token= Cookies.get('token');
+                             let respuesta_Insumo = await superagent.post(
+                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_UPDATE_INSUMO)
+                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
+                                console.log("LA RESPUESTA: ", respuesta_Insumo)
                              
                         }
                         else
                         {
-                            console.log("entro al else: ");
+                            console.log("entro al else: ", valor);
                             tipo="agregarInsumoLista";
                             let token= Cookies.get('token');
+                             let respuesta_Insumo = await superagent.post(
+                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_NUEVO_INSUMO)
+                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
+                                console.log("LA RESPUESTA: ", respuesta_Insumo)
                             
                         }
 
@@ -295,6 +312,7 @@ const NuevoInsumo = props =>{
                                                 className="form-control"
                                                 placeholder="%"
                                                 type="number"
+                                                value = "20"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
