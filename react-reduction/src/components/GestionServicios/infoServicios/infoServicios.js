@@ -76,22 +76,22 @@ const GestionServicios = props =>{
 
 
   //Función que simula la inicialización de servicios.
-  const _obtenerServicios=async(listaServicios)=>{
+  //const _obtenerServicios=async(listaServicios)=>{
       /* simulando la llamada a un servicio */
       //console.log("valor del JSON en el llamado: ", listaServicios);
-      let token= Cookies.get('token');
+      //let token= Cookies.get('token');
      
-      let respuesta_servicios = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_SERVICIOS_REGISTRADOS)
-                                                .set('Accept', 'application/json')
-                                                .set("Authorization", "Bearer " + token);
+      //let respuesta_servicios = await superagent.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_SERVICIOS_REGISTRADOS)
+                                                //.set('Accept', 'application/json')
+                                                //.set("Authorization", "Bearer " + token);
      //let {lista_servicios} = respuesta_servicios.body;
     //  console.log("Respuesta: ", respuesta_servicios.body);
 
       //await props.setListaServicios(listaServicios);
-      await props.setListaServicios(respuesta_servicios.body);
+      //await props.setListaServicios(respuesta_servicios.body);
       
      
-  }
+ // }
   //Función que llama a los servicios en el servidor.
   const _obtenerServicios = async() =>{
       //console.log("valor del JSON en el llamado: ", listaServicios);

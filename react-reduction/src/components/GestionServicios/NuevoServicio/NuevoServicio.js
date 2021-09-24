@@ -63,11 +63,7 @@ const NuevoServicio = props =>{
     
         },[props.defaultValue])
 
-        // useEffect(()=>{
-
-        //     rutaRepetida?(setErrorRuta("Ruta ya registrada")):(setErrorRuta(""))
-        // },[rutaRepetida]);
-    
+  
         //FIN CICLO DE VIDA
 
         //Funcion que llama servicios registrados
@@ -77,6 +73,8 @@ const NuevoServicio = props =>{
                                             .set('Accept', 'application/json')
                                             .set("Authorization", "Bearer " + token);
 
+        let { servicios_registrados } = respuesta.body;
+        
         }
 
         //Función que da valores por defecto a los campos en el formulario.
@@ -122,7 +120,7 @@ const NuevoServicio = props =>{
 
 
     const _registrarServicio=async(valor_inputs)=>{
-        //console.log("el valor obtenido", valor_inputs);
+        
 
             let token= Cookies.get('token');
            
@@ -131,7 +129,9 @@ const NuevoServicio = props =>{
             let { nombreServicioIpx,
                 descripcionServicioIpx,
                 precioServicioIpx,
-                minimoCitasIpx} = valor_inputs;
+                minimoCitasIpx,
+                maximoCitasIpx,
+                costoServicioIpx} = valor_inputs;
 
             let valor = {};
             valor.nombreServicio = nombreServicioIpx;
@@ -139,6 +139,7 @@ const NuevoServicio = props =>{
             valor.precioServicio = precioServicioIpx;
             valor.costoServicio = costoServicioIpx;
             valor.minimoCitas = minimoCitasIpx;
+            valor.maximoCitas= maximoCitasIpx;
             valor.servicio_activo = servicioActivo;
             
             let tipo="";
@@ -223,11 +224,10 @@ const NuevoServicio = props =>{
                             let envio ={tipo};
                             envio={tipo};
                             await props.cambioDatos(envio);
-                            //_limpiarFormulario();
+                            
                             setModalOpen(false);
                         })():(
-                            // 
-                            setErrorTipoServicio("Escoja un modulo para el servicio")
+
                         )
             }
         
@@ -248,12 +248,6 @@ const NuevoServicio = props =>{
     {
         setServicioActivo(!servicioActivo);
     }
-
-    const _cambioTipoServicio = (value) =>{
-        setTipoServicio(value)
-        setErrorTipoServicio("");
-    }
-
 
     //Inicio del form
     return(
@@ -314,7 +308,6 @@ const NuevoServicio = props =>{
                                             <AvField
                                                 id="nombreServicioIpx"
                                                 name="nombreServicioIpx"
-                                                // label="Ingrese Nombre de Servicio"
                                                 value=""
                                                 className="form-control"
                                                 placeholder="ej: salher"
@@ -333,7 +326,6 @@ const NuevoServicio = props =>{
                                             <AvField
                                                 id="descripcionServicioIpx"
                                                 name="descripcionServicioIpx"
-                                                // label="Descripcion del Servicio"
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Ingrese la descripcion del servicio"
@@ -350,7 +342,6 @@ const NuevoServicio = props =>{
                                             <AvField
                                                 id="precioServicioIpx"
                                                 name="precioServicioIpx"
-                                                // label="Descripcion del Servicio"
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Ingrese precio del servicio"
