@@ -16,8 +16,12 @@ export const columnasTablaServicio =[
         dataField: "precio_servicio",
       },
       {
-        text: "Numero de Citas",
-        dataField: "numero_citas",
+        text: "Minimo Citas",
+        dataField: "minimo_citas",
+      },
+      {
+        text: "Maximo Citas",
+        dataField: "maximo_citas",
       },
       {
         text: " Activo",
