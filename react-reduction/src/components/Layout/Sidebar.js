@@ -29,6 +29,7 @@ import {
   MdViewList,
   MdWeb,
   MdWidgets,
+  MdDateRange
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -107,7 +108,9 @@ const contents=[
   //Modulo Pacientes
   {to:'/Expediente', name:'Expedientes', exact:false, Icon: FaFileMedical},
   {to:'/NuevoExpediente', name: 'Expediente', exact:false, Icon: ImProfile},
-  {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard }
+  {to:"/CitasPorAtender", name:"Citas de Hoy", exact:false, Icon: MdDateRange},
+  {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard },
+
 ]
 
 const bem = bn.create('sidebar');

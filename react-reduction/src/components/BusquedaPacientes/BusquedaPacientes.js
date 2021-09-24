@@ -12,7 +12,7 @@ import {
     FormGroup,
     Input
   } from "reactstrap"
-  import { FaEye, FaSearch } from 'react-icons/fa';
+  import { FaEye, FaSearch, FaMoneyBillAlt } from 'react-icons/fa';
 
   import {
 
@@ -22,6 +22,7 @@ import {
   import Cookies from 'js-cookie';
   import DataTable from '../DataTable/DataTable';
   import NuevoExpediente from '../Expediente/nuevoExpediente';
+  import EstimarServicios from '../CitasPorAtender/EstimarServicios/EstimarServicios';
 import { setFilasListaUsuariosInactivos } from '../../store/actions';
 
   const columnasTabla=[
@@ -104,14 +105,22 @@ const BusquedaPacientes = props =>{
                     }
                     
                 fila.operaciones=(
+                    <div className="btn-group">
                     < FormGroup>
                     <NuevoExpediente
                         isReadOnly={true}
                         defaultValue={defaultValues}
                         classNames={"btn btn-success btn-sm "}
                         mensajeBoton={<FaEye />}
+                    />{' '}
+                    <EstimarServicios
+                    textoBoton={<FaMoneyBillAlt />}
+                    id_expediente={id_expediente}
+                    nombre_paciente={nombre_paciente + " "+ apellido_paciente}
+                    classNames={"btn btn-success btn-sm "}
                     />
                     </FormGroup>
+                    </div>
                 )
 
                 filas.push(fila);
