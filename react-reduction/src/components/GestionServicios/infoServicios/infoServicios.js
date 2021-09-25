@@ -147,8 +147,8 @@ const GestionServicios = props =>{
                 costo_servicio,
                 precio_servicio, 
                 servicio_activo,
-                minimo_citas,
-                maximo_citas,                
+                minimo_numero_citas,
+                maximo_numero_citas,                
                 } = servicio;
 
                 if(servicio_activo == 1)
@@ -166,20 +166,20 @@ const GestionServicios = props =>{
             fila.descripcion_servicio = descripcion_servicio;
             fila.costo_servicio = costo_servicio;
             fila.precio_servicio = precio_servicio;
-            fila.minimo_citas = minimo_citas;
-            fila.maximo_citas = maximo_citas;
+            fila.minimo_citas = minimo_numero_citas;
+            fila.maximo_citas = maximo_numero_citas;
 
             // fila.
 
-            fila.servicio_activo = (
-                <div>
-                    <SwitchServicioActivo
-                        id_servicio={id_servicio}
-                        servicio_activo={servicio_activo}
-                        cambioEnServicios={_cambiosEnServicios}
-                    />
-                </div>
-            );
+            // fila.servicio_activo = (
+            //     <div>
+            //         <SwitchServicioActivo
+            //             id_servicio={id_servicio}
+            //             servicio_activo={servicio_activo}
+            //             cambioEnServicios={_cambiosEnServicios}
+            //         />
+            //     </div>
+            // );
             fila.operaciones="Coming soon";
                 let defaultValues={
                     idServicio:id_servicio,
@@ -188,8 +188,8 @@ const GestionServicios = props =>{
                     costoServicio: costo_servicio,
                     precioServicio: precio_servicio,
                     servicioActivo: servicio_activo,
-                    minimo_citas: minimo_citas,
-                    maximo_citas: maximo_citas
+                    minimo_citas: minimo_numero_citas,
+                    maximo_citas: maximo_numero_citas
 
                 }
             fila.operaciones=(

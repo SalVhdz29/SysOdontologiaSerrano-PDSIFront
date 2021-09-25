@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
     permisosReducer,
     CitasPorAtenderReducer,
     CitaModalReducer,
-    inventarioReducer
+    inventarioReducer,
     gestionServiciosReducer,
 });
 

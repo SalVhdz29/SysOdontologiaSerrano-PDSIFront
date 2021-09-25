@@ -52,7 +52,8 @@ const NuevoServicio = props =>{
 
     const [errorCostoServicio, setErrorCostoServicio]= useState ("");
 
-    const [minimoCitas,setMinimoCitas] =useState();
+    const [minimoCitas,setMinimoCitas] =useState(0);
+    const [maximoCitas, setMaximoCitas] = useState(0)
 
 
         //CICLO DE VIDA
@@ -130,22 +131,20 @@ const NuevoServicio = props =>{
 
             let token= Cookies.get('token');
            
-    
-            costoServicio.value!=0 && minimoCitas.value != "0"?(async ()=>{
+            console.log("valor Inputs: ", valor_inputs)
+            maximoCitas>0 && maximoCitas>minimoCitas && minimoCitas>0?(async ()=>{
                 let { nombreServicioIpx,
                     descripcionServicioIpx,
                     precioServicioIpx,
                     minimoCitasIpx,
-                    maximoCitasIpx,
-                    costoServicioIpx} = valor_inputs;
+                    maximoCitasIpx} = valor_inputs;
 
                 let valor = {};
-                valor.nombreServicio = nombreServicioIpx;
-                valor.descripcionServicio =descripcionServicioIpx;
-                valor.precioServicio = precioServicioIpx;
-                valor.costoServicio = costoServicioIpx;
-                valor.minimoCitas = minimoCitasIpx;
-                valor.maximoCitas= maximoCitasIpx;
+                valor.nombre_servicio = nombreServicioIpx;
+                valor.descripcion_servicio =descripcionServicioIpx;
+                valor.precio_servicio = precioServicioIpx;
+                valor.minimo_numero_citas = minimoCitasIpx;
+                valor.maximo_numero_citas= maximoCitasIpx;
                 valor.servicio_activo = servicioActivo;
                 
                 let tipo="";
@@ -349,7 +348,7 @@ const NuevoServicio = props =>{
                                                 value=""
                                                 className="form-control"
                                                 placeholder="Ingrese precio del servicio"
-                                                type="text"
+                                                type="number"
                                                 disabled={props.isReadOnly?true:false}
                                                 validate={{
                                                   required: { value: true, errorMessage: "Obligatorio."},
@@ -376,6 +375,7 @@ const NuevoServicio = props =>{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                                                                     
                                                 }}
+                                                onChange={(e)=>{setMinimoCitas(e.target.value)}}
                                             />
 
                                     </Col>
@@ -395,6 +395,7 @@ const NuevoServicio = props =>{
                                                   required: { value: true, errorMessage: "Obligatorio."},
                                                                                                     
                                                 }}
+                                                onChange={(e)=>{setMaximoCitas(e.target.value)}}
                                             />
 
                                     </Col>

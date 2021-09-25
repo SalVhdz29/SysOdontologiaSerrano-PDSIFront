@@ -23,10 +23,7 @@ export const columnasTablaServicio =[
         text: "Maximo Citas",
         dataField: "maximo_citas",
       },
-      {
-        text: " Activo",
-        dataField: "servicio_activo",
-      },
+
       {
         text: "Operaciones",
         dataField: "operaciones",
