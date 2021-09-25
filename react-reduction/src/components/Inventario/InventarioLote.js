@@ -14,6 +14,7 @@ import {
 
 import Cookies from 'js-cookie';
 import DataTable from '../DataTable/DataTable';
+import request from "superagent";
 
 // Redux
 import { connect } from "react-redux";
@@ -30,6 +31,12 @@ import {
     setFilasListaLotesActivos,
     setFilasListaLotesInactivos
   } from '../../store/actions'
+
+  //apis
+  import{
+      API_TABLA_INVENTARIO,
+      API_TABLA_HISTORIAL
+  } from '../../api/apiTypes';
 
 //Json
 import {ColumnasTablaInventario} from './Json/ColumnasTablaInventario';
@@ -65,8 +72,17 @@ const InventarioLote = props =>{
     const _obtenerServicios=async(listaLotes)=>{ 
         /* simulando la llamada a un servicio */ 
         //console.log("valor del JSON en el llamado: ", listaLotes); 
+
+        let token= Cookies.get('token');
+
         
-        await props.setListaLotes(listaLotes); 
+        let respuesta_inventario = await request.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_TABLA_INVENTARIO)
+                                                 .set('Accept', 'application/json')
+                                                 .set("Authorization", "Bearer " + token);
+
+        console.log("lotes_ :",respuesta_inventario.body)
+        
+        await props.setListaLotes(respuesta_inventario.body); 
             
     } 
 
@@ -76,53 +92,9 @@ const InventarioLote = props =>{
         await props.setListaLotes(listaLotes); 
     }
     
-    //Función que sirve de puerto en cambios obtenidos por componentes hijos. 
-    const _cambiosEnLotes =({tipo, valor})=>{ 
-        switch(tipo){ 
-          case 'actualizarListaLotes': 
-               let nuevas_filas= _cambiarActivoJsonLotes(valor.n_insumo); 
-                //console.log("volvio"); 
-                _obtenerLotes(nuevas_filas); 
-            break; 
-/*          case 'agregarLoteLista': 
-                let nueva_lista =_agregarLoteALista(valor); 
-                //console.log("lo que devolvio: ", nueva_lista); 
-                _obtenerLotes(nueva_lista); 
-            break; */
-   
-        default: 
-            break; 
-    } 
-  }
 
-    //Función que simula los cambios de estado en los Lotes en el servidor. -temporal. 
-    const _cambiarActivoJsonLotes=(n_insumo)=>{ 
-        //console.log("vino al cambio JSOn"); 
-        let nueva_lista_lotes=[]; 
-        props.state.listaLotes.map(lote=>{ 
-          let lote_it = {...lote}; 
-          if(lote_it.n_insumo == n_insumo) 
-          { 
-              let activo = lote_it.lote_activo; 
-     
-              if(activo == 0) 
-              { 
-                  activo =1; 
-              } 
-              else 
-              { 
-                  activo =0; 
-              } 
-              lote_it.lote_activo = activo; 
-          } 
-          nueva_lista_lotes.push(lote_it); 
-          
-     
-        });
-   
-    //console.log("nuevo valor del JSOn ", listRoles); 
-    return nueva_lista_lotes 
-} 
+
+
 
     //Función que crea las filas a partir de la lista de Lotes obtenida.
     const _crearFilasListaLote=async()=>{
@@ -132,7 +104,7 @@ const InventarioLote = props =>{
   
         props.state.listaLotes.map(lote=>{
   
-            let {n_insumo,
+            let {id_insumo,
                 nombre_insumo, 
                 existencia_insumo, 
                 operaciones_lote
@@ -141,14 +113,14 @@ const InventarioLote = props =>{
 
 
                 let fila ={};
-                fila.n_insumo = n_insumo;
+                fila.id_insumo = id_insumo;
                 fila.nombre_insumo=nombre_insumo;
                 fila.existencia_insumo = existencia_insumo;
       
                 
                 fila.operaciones_lote="Operaciones";
                 let defaultValues={
-                    nInsumo: n_insumo,
+                    id_insumo,
                     nombreInsumo: nombre_insumo,
                     existenciaInsumo: existencia_insumo
                 }
@@ -161,10 +133,10 @@ const InventarioLote = props =>{
                         classNames={"btn-info btn-sm "}
                         isEditable={true}
                         mensajeBoton={<BsBoxArrowInRight />}
-                        cambioDatos={_cambiosEnLotes}
+                        cambioDatos={_obtenerServicios}
                     />{' '}
                     <HistorialLote 
-                        defaultValue={defaultValues}
+                        id_insumo={id_insumo}
                         classNames={"btn-warning btn-sm "}
                         mensajeBoton={<BsClockHistory />}
                         isEditable={false}

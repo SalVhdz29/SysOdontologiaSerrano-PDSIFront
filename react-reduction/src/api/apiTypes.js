@@ -7,3 +7,4 @@ export * from './Insumo/apiTypes';
 export * from './GestionRecurso/apiTypes';
 export * from './EstimarServicios/apiTypes';
 export * from './CitasPorAtender/apiTypes';
+export * from './Inventarios/apiTypes';

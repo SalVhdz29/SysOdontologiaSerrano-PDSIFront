@@ -15,15 +15,19 @@ import {
   FormGroup
 } from "reactstrap"
 
-import Cookies from 'js-cookie';
 import DataTable from '../../DataTable/DataTable';
 import superagent from 'superagent';
 import swal from 'sweetalert'; 
-
+import request from "superagent";
+import Cookies from 'js-cookie';
 import{ 
   AvForm, 
   AvField 
 } from 'availity-reactstrap-validation' 
+
+import {
+  API_TABLA_HISTORIAL
+} from '../../../api/apiTypes'
 
 // Redux
 import { connect } from "react-redux";
@@ -42,26 +46,41 @@ const HistorialLote = props =>{
   const [modalOpen, setModalOpen ]= useState(false);
   const[listaHistorial, setListaHistorial] = useState([]);
   const[filasListaHistorial, setFilasListaHistorial] =useState([]);
+  const [obtenido, setObtenido]=useState(false)
 
   //CICLO DE VIDA
-  useEffect(()=>{
-    _obtenerServicios(listHistorial);
-    },[])
+  // useEffect(()=>{
+    
+  //   },[])
 
     useEffect(()=>{ 
       //console.log("vino aqui"); 
-      setListaHistorial(props.state.listaHistorial); 
-          let result =  _crearFilasListaHistorial(); 
-      }, [props.state.listaHistorial]) //detecta cambios en la lista del historial en el reducer y vuelve a formar las filas. 
+      if(obtenido == false)
+      {
+        _obtenerServicios();
+      }
+    
+         _crearFilasListaHistorial()
+      }, [listaHistorial, modalOpen]) //detecta cambios en la lista del historial en el reducer y vuelve a formar las filas. 
 
     //FIN DE CICLO DE VIDA  
     
     //Función que simula la inicialización de servicios. 
-    const _obtenerServicios=async(listaHistorial)=>{ 
+    const _obtenerServicios=async()=>{ 
       /* simulando la llamada a un servicio */ 
       //console.log("valor del JSON en el llamado: ", listaHistorial); 
-      
-      await props.setListaHistorial(listaHistorial); 
+      let token= Cookies.get('token');
+      let respuesta_historial = await request.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_TABLA_HISTORIAL)
+      .send({id_insumo: props.id_insumo})
+      .set('Accept', 'application/json')
+      .set("Authorization", "Bearer " + token);
+      console.log("respuesta historial: ", respuesta_historial.body)
+
+
+        await setListaHistorial(respuesta_historial.body); 
+        setObtenido(true)
+ 
+   
           
     } 
 
@@ -70,13 +89,15 @@ const HistorialLote = props =>{
       //console.log("detecto el cambio");
 
       let filas=[];
+      console.log("listaHisotirila: ", listaHistorial)
 
-      props.state.listaHistorial.map(lote=>{
+     listaHistorial.map(lote=>{
 
           let {n_lote,
               fecha_lote, 
               existencia_lote, 
               estado_lote
+              
               } = lote;
 
           let fila ={};
@@ -88,6 +109,8 @@ const HistorialLote = props =>{
           filas.push(fila);
 
         })
+        console.log("nfilas. ",filas)
+        setFilasListaHistorial(filas)
        
      }
 
@@ -138,7 +161,7 @@ const HistorialLote = props =>{
                           De insumo: <Col sm={10}><Typography className="text-primary">Insumo 1</Typography></Col>
                           </FormGroup>
                           </p>
-                          <DataTable datosTabla={listHistorial} columnasTabla={ColumnasTablaHistorialLote}/>
+                          <DataTable datosTabla={filasListaHistorial} columnasTabla={ColumnasTablaHistorialLote}/>
                         </CardBody>
                       </Card>
                     </Container>

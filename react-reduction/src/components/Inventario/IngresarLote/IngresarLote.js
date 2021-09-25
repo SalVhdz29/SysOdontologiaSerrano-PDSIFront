@@ -21,6 +21,10 @@ import{
     AvField 
 } from 'availity-reactstrap-validation' 
 
+import{
+    API_CREAR_LOTE
+} from '../../../api/apiTypes'
+
 //Componentes
 import DataTable from '../../DataTable/DataTable';
 import swal from 'sweetalert'; 
@@ -30,61 +34,75 @@ import { FaNotEqual } from 'react-icons/fa';
 const IngresarLote = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
-    const [defaultValues, setDefaultValues ]= useState({});
+    const [costoLote, setCostoLote] = useState(0.00);
+    const [fechaVencimiento, setFechaVencimiento]=useState(new Date());
+    const [porcentajeGanancia, setPorcentajeGanancia]=useState(0.20);
+    const [cantidadLote, setCantidadLote]=useState(0);
+    const [precioLote, setPrecioLote]=useState(0.00);
+    const [precioLoteUnidad, setPrecioLoteUnidad]=useState(0.00);
+    const [cambiarPrecio, setCambiarPrecio]=useState(false)
+
 
     //CICLO DE VIDA
     useEffect(()=>{
-        
-        if(props.isReadOnly == true || props.isEditable == true)
-        {
-            //console.log("El default Value: ", props.defaultValue);
-            _setDefaultValue();
-        }
+        console.log("costo lote: ", costoLote);
+        setPrecioLote(parseFloat(parseInt(costoLote)+parseInt(costoLote)*parseFloat(porcentajeGanancia)).toFixed(2));
 
-    },[props.defaultValue])
+    },[costoLote])
+    useEffect(()=>{
+        if(cantidadLote > 0)
+        {
+            setPrecioLoteUnidad(parseFloat(precioLote/cantidadLote).toFixed(2));
+        }
+        else
+        {
+            setPrecioLoteUnidad(0);
+        }
+       
+
+    },[precioLote, cantidadLote])
 
     //FIN CICLO DE VIDA
 
     //Función que da valores por defecto a los campos en el formulario.
-    const _setDefaultValue=()=>{
-        let insumoLoteIpx="";
-        let fechaLoteIpx="";
-        let costoLoteIpx="";
-        let cantidadLoteIpx="";
-        let porcentajeLoteIpx="";
-        let precioLoteIpx="";
-        let precioUnidadLoteIpx="";
-
-        let {insumoLote, porcentajeLote} = props.defaultValue;
-        if(insumoLote){
-            insumoLoteIpx = insumoLote;
-        }
-        if(porcentajeLote)
-        {
-            porcentajeLoteIpx = porcentajeLote;
-        }
-
-        setDefaultValues({insumoLoteIpx, fechaLoteIpx, costoLoteIpx, cantidadLoteIpx, porcentajeLoteIpx, precioLoteIpx, precioUnidadLoteIpx});
-    }
 
     const _registrarLote=async(valor_inputs)=>{ 
         //console.log("el valor obtenido", valor_inputs); 
 
-                let { insumoLoteIpx, fechaLoteIpx, costoLoteIpx, cantidadLoteIpx,
-                porcentajeLoteIpx, precioLoteIpx, precioUnidadLoteIpx} = valor_inputs; 
-                     
-                    let valor = {}; 
-                    valor.nombre_insumo = insumoLoteIpx;  
-                    let tipo=""; 
-                    tipo="agregarLoteLista"; 
+                if( parseInt(cantidadLote) > 0 && parseFloat(costoLote) > 0 && parseFloat(precioLote) > 0 && parseFloat(precioLoteUnidad) > 0)
+                {
+                    let token= Cookies.get('token');
+                    let respuesta_guardar = await request.post(process.env.REACT_APP_ENDPOINT_BASE_URL + API_CREAR_LOTE)
+                    .send({id_insumo: props.defaultValue.id_insumo, precio_lote: precioLote, cantidad_lote: cantidadLote, costo_lote: costoLote, fecha_lote: fechaVencimiento})
+                    .set('Accept', 'application/json')
+                    .set("Authorization", "Bearer " + token);
+                    console.log("respuesta historial: ", respuesta_guardar.body)
 
-                    let envio={tipo,valor}; 
-                    
-     
-                    await props.cambioDatos(envio); 
-                    setModalOpen(false);  
-        }                         
+                    if(respuesta_guardar.body.message =="OK")
+                    {
+                        swal({
+                            title:"Guardado",
+                            icon:"success",
+                            text:"El lote se ha guardado correctamente",
+                            button:"Aceptar"
+                        })
 
+                        setModalOpen(!modalOpen);
+                        props.cambioDatos();
+                    }
+                }
+                else{
+                    console.log(fechaVencimiento, " ", cantidadLote, " ", costoLote, " ", precioLote, " ", precioLoteUnidad)
+                    swal({
+                        title:"Errores detectados",
+                        icon:"error",
+                        text:"Existen errores detectados en los campos",
+                        button:"Aceptar"
+                    })
+                }
+    
+                   
+    }
 
 return(
     <Fragment> 
@@ -127,8 +145,8 @@ return(
                 </div> 
 
                 <AvForm 
-                            onValidSubmit={(e,v)=>{_registrarLote(v)}}
-                            model={defaultValues}
+                       
+                           
                             > 
                 <div className="modal-body"> 
                         <Container fluid={true}> 
@@ -143,14 +161,7 @@ return(
                                                     Insumo: 
                                                 </Label>
                                                 <Col sm={10}>
-                                                <Input
-                                                class="form-control"
-                                                id = "insumoLoteIpx"
-                                                type="text"
-                                                name="insumoLoteIpx"
-                                                value=""
-                                                readOnly
-                                            />
+                                               <b>{props.defaultValue.nombreInsumo}</b>
                                                 </Col>
                                             </FormGroup>        
                                         </FormGroup> 
@@ -166,11 +177,12 @@ return(
                                                 id = "fechaLoteIpx"
                                                 type="date"
                                                 name="fechaLoteIpx"
-                                                value=""
+                                                value={fechaVencimiento}
                                                 placeholder="date placeholder"
                                                 validate={{ 
                                                     required: { value: true, errorMessage: "Obligatorio."} 
                                                 }} 
+                                                onChange={e=>setFechaVencimiento(e.target.value)}
                                             />
                                             </Col>
                                         </FormGroup>  
@@ -190,11 +202,12 @@ return(
                                                 id = "costoLoteIpx"
                                                 type="number"
                                                 name="costoLoteIpx"
-                                                value=""
+                                                value={costoLote}
                                                 placeholder="00.00"                                               
                                                 validate={{ 
                                                     required: { value: true, errorMessage: "Obligatorio."} 
                                                 }} 
+                                                onChange={e=>setCostoLote(e.target.value)}
                                             />
                                             </Col>
                                         </FormGroup>  
@@ -209,11 +222,12 @@ return(
                                                 id = "cantidadLoteIpx"
                                                 type="number"
                                                 name="cantidadLoteIpx"
-                                                value=""
+                                                value={cantidadLote}
                                                 placeholder="00"                                               
                                                 validate={{ 
                                                     required: { value: true, errorMessage: "Obligatorio."} 
                                                 }} 
+                                                onChange={e=>setCantidadLote(e.target.value)}
                                             />
                                             </Col>
                                         </FormGroup>  
@@ -236,7 +250,7 @@ return(
                                                 id = "porcentajeLoteIpx"
                                                 type="text"
                                                 name="porcentajeLoteIpx"
-                                                value=""
+                                                value={porcentajeGanancia}
                                                 readOnly
                                             />
                                                 </Col>
@@ -254,11 +268,13 @@ return(
                                                 id = "precioLoteIpx"
                                                 type="number"
                                                 name="precioLoteIpx"
-                                                value=""
+                                                value={precioLote}
                                                 placeholder="00.00"
                                                 validate={{ 
                                                     required: { value: true, errorMessage: "Obligatorio."} 
-                                                }} 
+                                                }}
+                                                readOnly={!cambiarPrecio}
+                                                onChange={e=>{setPrecioLote(e.target.value)}}
                                             />
                                             </Col>
                                         </FormGroup>  
@@ -271,7 +287,7 @@ return(
                                     <Col md={6}> 
                                         <FormGroup row>
                                             <Label check sm={2} md={6} Style="text-align: center;">
-                                                <Input type="checkbox" /> Cambiar precio sugerido
+                                                <Input type="checkbox" onChange={()=>{setCambiarPrecio(!cambiarPrecio)}}/> Cambiar precio sugerido
                                             </Label>
                                         </FormGroup>  
                                     </Col>
@@ -285,8 +301,9 @@ return(
                                                 id = "precioUnidadLoteIpx"
                                                 type="number"
                                                 name="precioUnidadLoteIpx"
-                                                value=""
-                                                placeholder="00.00"                                               
+                                                value={precioLoteUnidad}
+                                                placeholder="00.00"    
+                                                onChange={e=>{setPrecioLoteUnidad(e.target.value)}}                                           
                                             />
                                             </Col>
                                         </FormGroup>  
@@ -303,7 +320,7 @@ return(
                                     <div className="mt-3">
                                     <Button
                                         className="btn btn-secondary btn-md w-md"
-                                        type="submit"
+                                        onClick={()=>_registrarLote()}
                                         color = "success"
                                     >
                                     Guardar

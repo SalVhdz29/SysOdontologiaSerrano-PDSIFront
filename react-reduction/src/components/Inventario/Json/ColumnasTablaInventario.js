@@ -1,7 +1,7 @@
 export const ColumnasTablaInventario =[
     {
       text: "No. Insumo",
-      dataField: "n_insumo",
+      dataField: "id_insumo",
     },
     {
       text: "Nombre",
