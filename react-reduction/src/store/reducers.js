@@ -1,10 +1,12 @@
 import { combineReducers } from "redux"
 import datosUsuarioReducer from './auth/reducer'
 import gestionUsuariosReducer from './GestionUsuarios/reducer'
+import gestionEstadosReducer from './GestionEstados/reducer'
+
 import gestionRolesReducer from './GestionRoles/reducer'
 import gestionRecursosReducer from './GestionRecursos/reducer'
 import inventarioReducer from './Inventario/reducer'
-
+import gestionDiagnosticosReducer from './GestionDiagnosticos/reducer'
 import gestionServiciosReducer from './GestionServicios/reducer'
 import TipoRecursoReducer from './TipoRecurso/reducer'
 import ExpedienteReducer from './Expediente/reducers'
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
     CitaModalReducer,
     inventarioReducer,
     gestionServiciosReducer,
+    gestionEstadosReducer,
+    gestionDiagnosticosReducer,
 });
 
 export default rootReducer

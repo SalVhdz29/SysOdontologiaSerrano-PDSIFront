@@ -586,9 +586,9 @@ const NuevoUsuario = props =>{
                                 {props.isReadOnly!=true?(
                                 <Row>
                                     <Col md={12}>
-                                        <Label>Empleado </Label>
+                                        <Label>Empleado: </Label>
                                                 <Select
-                                                    value={empleadoAsignado}
+                                                    value={empleadoAsignado} 
                                                     onChange={_cambioEmpleado}
                                                     options={optionsEmpleados}
                                                     isDisabled={props.isEditable?true:false}

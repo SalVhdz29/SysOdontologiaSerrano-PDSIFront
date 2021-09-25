@@ -24,13 +24,14 @@ import {
   FormGroup
 } from "reactstrap"
 
-import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaRegFolderOpen } from 'react-icons/fa';
 import {GrConfigure } from 'react-icons/gr';
 
 import Cookies from 'js-cookie';
 
 //Componentes
 import NuevoExpediente from './nuevoExpediente';
+import HistorialExpediente from './historialExpediente';
 import DataTable from '../DataTable/DataTable';
 
 //jsons de prueba
@@ -48,21 +49,27 @@ import {
 //columnas -tabla Expedientes
 import {columnasTabla} from './Json/columnasExpediente';
 
+
+
 const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
   const[filasListaExpediente, setFilasListaExpediente] =useState([]);
-
+  
 
     //Ciclo de vida
     useEffect(()=>{
       _obtenerServicios(listExpediente);
   },[])
 
-  useEffect(()=>{
+
+ 
+    useEffect(()=>{
     
-    setListaExpediente(props.state.listaExpediente);
-    let result =  _crearFilasListaExpediente();
-  },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
+      setListaExpediente(props.state.listaExpediente);
+      let result =  _crearFilasListaExpediente();
+    },[props.state.listaExpediente]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
+
+
 
   useEffect(()=>{
       
@@ -89,6 +96,7 @@ const Expediente = props =>{
   }
 
 
+
     //Función que llama a los usuarios en el servidor.
     const _obtenerExpediente = async() =>{
   
@@ -100,6 +108,7 @@ const Expediente = props =>{
 
       await props.setListaExpediente(respuesta_Expediente.body);
   }
+
 
 
 
@@ -119,17 +128,20 @@ const Expediente = props =>{
                   _obtenerExpediente(lista_actualizada);
               break;
 
+
+
           default:
               break;
       }
   }
 
 
+
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaExpediente=async()=>{
      
+        let filas=[];
 
-      let filas=[];
 
       props.state.listaExpediente.map(Expediente=>{
 
@@ -145,6 +157,7 @@ const Expediente = props =>{
               fecha_nacimiento,
               direccion
                } = Expediente;
+
 
           let fila ={};
           fila.id_expediente = id_expediente;
@@ -193,6 +206,18 @@ const Expediente = props =>{
                   mensajeBoton={<FaPencilAlt />}
                   isEditable={true}
                   cambioDatos={_cambiosEnExpediente}
+              />{' '}
+
+            <HistorialExpediente 
+                  defaultValue={defaultValues}
+                  classNames={"btn btn-info btn-sm "}
+                  mensajeBoton={<FaRegFolderOpen />}
+                  nombre={fila.nombre_paciente}
+                  apellido={fila.apellido_paciente}
+                  edad={fila.fecha_nacimiento}
+                  historial={true}
+                  isReadOnly={true}
+                  
               />
               </FormGroup>
           )
@@ -201,6 +226,8 @@ const Expediente = props =>{
       props.setFilasListaExpedienteActivos(filas);
 
   }
+
+
 
   //Función que simula el añadir el tipo expediente obtenido para anexarlo al JSON - temporal.
   const _agregarExpedienteALista = (nuevo_expediente)=>{
@@ -268,6 +295,9 @@ const Expediente = props =>{
     return n_lista;
   }
 
+
+
+  
     return(
         <React.Fragment>
         <div className="page-content">
@@ -277,7 +307,11 @@ const Expediente = props =>{
                   <h4><i className="fas fa-stethoscope"><i className="far fa-file-alt"></i></i> 
                   <b>Gestión de Expedientes </b></h4>
                     <br/>
-                    <Row>
+
+
+             
+
+                   <Row>
                     <Col md={4} xs={12}>
                     
                         <NuevoExpediente 
@@ -316,6 +350,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         setExpediente: (datos) =>dispatch(setListaExpediente(datos)),
         setListaExpediente: (datos) =>dispatch(setListaExpediente(datos)),
+
         setFilasListaExpedienteActivos: (datos) =>dispatch(setFilasListaExpedienteActivos(datos)),
         setFilasListaExpedienteInactivos: (datos) =>dispatch(setFilasListaExpedienteInactivos(datos))
     }

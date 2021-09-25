@@ -9,3 +9,4 @@ export * from './EstimarServicios/apiTypes';
 export * from './CitasPorAtender/apiTypes';
 export * from './Inventarios/apiTypes';
 export * from './GestionServicio/apiTypes';
+export * from './GestionDiagnosticos/apiTypes';

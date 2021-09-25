@@ -34,6 +34,7 @@ import Factura from '../components/Factura/Factura';
 import InventarioLote from '../components/Inventario/InventarioLote';
 import infoServicios from '../components/GestionServicios/infoServicios/infoServicios';
 
+import GestionDiagnosticos from '../components/GestionDiagnosticos/GestionDiagnosticos';
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
     
@@ -68,6 +69,7 @@ const userRoutes =[
     {path:"/Factura", component:Factura},
     {path:"/InventarioLote", component:InventarioLote},
     {path: "/infoServicios", component: infoServicios},
+    {path:"/GestionDiagnosticos", component:GestionDiagnosticos}
 ];
 
 const authRoutes=[
