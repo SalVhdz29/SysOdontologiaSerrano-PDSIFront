@@ -106,7 +106,7 @@ const DetalleDiente = props =>{
   const [ activo, setActivo ] = useState(false);
 
 
-    const [ estadoExpediente, setExpedienteActivo] = useState(false);
+    const [ estadoPieza, setEstadoPieza] = useState(1);
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
@@ -184,9 +184,10 @@ function SeleccionarEstados()
                 <center>
                 <AvRadio     
                                 label={estados[i].nombre_estado_pieza}                                                     
-                                key="1"  
+                                key={i}  
                                 id="1"
                                 className="checkbox_animated "
+                                onClick={()=>{setEstadoPieza(estados[i].id_estado_pieza)}}
                                 />   
                                 <img
                                 src={estado[i]}
@@ -211,16 +212,19 @@ function SeleccionarEstados2()
     const img = [];
 
 
-    for (var i = 6; i < 12 ; i++)
+    for (var i = 6; i <= 11 ; i++)
     {
+        console.log("estado: ", estados[i]);
         const imagen = (
             <td>
                 <center>
                 <AvRadio     
                                 label={estados[i].nombre_estado_pieza}                                                     
-                                key="1"  
+                                key={i}  
                                 id="1"
+                                valor={estados[i].id_estado_pieza}
                                 className="checkbox_animated "
+                                onClick={()=>{setEstadoPieza(i+1)}}
                                 />   
                                 <img
                                 src={estado[i]}
@@ -244,9 +248,9 @@ function SeleccionarEstados2()
 
 const _registrarDetalles=async(valor_inputs)=>{
        
-    console.log("INPUTS: ",valor_inputs);
+    console.log("INPUTS: ",estadoPieza, ", ", props.diente);
 
-
+    props.cambioPieza({id_pieza: props.diente, id_f_estado_pieza: estadoPieza})
             setModalOpen(false);
 
 

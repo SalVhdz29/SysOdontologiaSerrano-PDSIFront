@@ -35,12 +35,6 @@ import{
 // Redux
 import { connect } from "react-redux";
 
-//actions
-import {
-  setListaServicios,
-  setFilasListaServiciosActivos,
-  setFilasListaServiciosInactivos
-} from '../../../store/actions'
 
 //columnas -tabla Servicios
 import {columnasTablaServicio} from '../Json/columnasTablaServicios';
@@ -342,18 +336,4 @@ const GestionServicios = props =>{
   )
 }
 
-const mapStateToProps = reducers => {
-  return{
-    state: reducers.gestionServiciosReducer
-  }
-}
-
-
-const mapDispatchToProps = dispatch =>{
-  return{
-      setListaServicios: (datos) =>dispatch(setListaServicios(datos)),
-      setFilasListaServiciosActivos: (datos) =>dispatch(setFilasListaServiciosActivos(datos)),
-      setFilasListaServiciosInactivos: (datos) =>dispatch(setFilasListaServiciosInactivos(datos))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(GestionServicios);
+export default GestionServicios;

@@ -24,6 +24,7 @@ import{
     Row,
     Col
 } from 'reactstrap';
+import swal from 'sweetalert'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -111,6 +112,15 @@ const HistorialExpediente = props =>{
     const [ listaPiezas, setListaPiezas] = useState({});
     const [ listadoPiezas, crearPiezas] = useState({});
 
+    const [ dienteColor, setDienteColor ] = useState("");
+    const [ guia, setGuia ] = useState("");
+    const [ tipoPuente, setTipoPuente ]=useState(1);
+    const [ limpieza, setLimpieza ] = useState("");
+    const [ diente, setDiente ] = useState("");
+    const [ vitalidad, setVitalidad ] = useState("");
+    const [ medidaProvisional, setMedidaProvisional ] = useState("");
+    const [ notas, setNotas ]=useState("")
+
 
     
     
@@ -130,7 +140,7 @@ const HistorialExpediente = props =>{
             17 : 1, 18 : 1, 19 : 1, 20 : 1, 21 : 1, 22 : 1, 23 : 1, 24 : 1,
             25 : 1, 26 : 1, 27 : 1, 28 : 1, 29 : 1, 30 : 1, 31 : 1, 32 : 1*/
 
-    const [listaDientes, setEstadoDientes]=useState(
+    const [listaDientes, setListaDientes]=useState(
         [ 
             { 
                 "id_f_pieza":1,
@@ -142,7 +152,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":3,
-                "id_f_estado_pieza": 3            
+                "id_f_estado_pieza": 1            
             },
             { 
                 "id_f_pieza":4,
@@ -150,7 +160,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":5,
-                "id_f_estado_pieza": 2            
+                "id_f_estado_pieza": 1            
             },
             { 
                 "id_f_pieza":6,
@@ -182,7 +192,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":13,
-                "id_f_estado_pieza": 4            
+                "id_f_estado_pieza": 1           
             },
             { 
                 "id_f_pieza":14,
@@ -194,7 +204,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":16,
-                "id_f_estado_pieza": 10            
+                "id_f_estado_pieza": 1           
             },
             { 
                 "id_f_pieza":17,
@@ -206,7 +216,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":19,
-                "id_f_estado_pieza": 5            
+                "id_f_estado_pieza": 1            
             },
             { 
                 "id_f_pieza":20,
@@ -214,7 +224,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":21,
-                "id_f_estado_pieza": 7            
+                "id_f_estado_pieza": 1           
             },
             { 
                 "id_f_pieza":22,
@@ -246,7 +256,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":29,
-                "id_f_estado_pieza": 4            
+                "id_f_estado_pieza": 1           
             },
             { 
                 "id_f_pieza":30,
@@ -258,7 +268,7 @@ const HistorialExpediente = props =>{
             },
             { 
                 "id_f_pieza":32,
-                "id_f_estado_pieza": 10            
+                "id_f_estado_pieza": 1            
             }
         ]
         );
@@ -283,6 +293,11 @@ const HistorialExpediente = props =>{
             n_estados[parseInt(id_diente)-1]=valor_estado
             setEstadosPieza(n_estados)
             }
+
+        // useEffect(()=>{
+        //     Superior()
+        //     Inferior()
+        // },[listaDientes])
 
 
 
@@ -374,9 +389,10 @@ const HistorialExpediente = props =>{
 */
 
 
-function Superior()
+function Superior(props)
 {
-    const img = [];
+    
+    let img = [];
 
 
     for (var i = 7; i > -1 ; i--)
@@ -387,11 +403,14 @@ function Superior()
                 <DetalleDiente 
                             diente={i+11}
                             id_pieza={i+1}
+                          
                             pieza={pieza[i]}
-                            dentadura={listaDientes}
+                            dentadura={props.listado}
+                            cambioPieza={_obtenerEstadoPieza}
                         />      
                         <img
-                                src={estado[listaDientes[i].id_f_estado_pieza-1]}
+                          key={props.listado[i].id_f_estado_pieza-1}
+                                src={estado[props.listado[i].id_f_estado_pieza-1]}
                                 width="40"
                                 height="40"
                                 className="pr-2"
@@ -421,11 +440,14 @@ function Superior()
                 <DetalleDiente 
                             diente={i+21}
                             id_pieza={i+9}
+                         
                             pieza={pieza[i+8]}
-                            dentadura={listaDientes}
+                            dentadura={props.listado}
+                            cambioPieza={_obtenerEstadoPieza}
                         />         
                                 <img
-                                src={estado[listaDientes[i+8].id_f_estado_pieza-1]}
+                                 key={props.listado[i].id_f_estado_pieza-1}
+                                src={estado[props.listado[i+8].id_f_estado_pieza-1]}
                                 width="40"
                                 height="40"
                                 className="pr-2"
@@ -445,11 +467,11 @@ function Superior()
 
 
 
-function Inferior()
+function Inferior(props)
 {
     const img = [];
 
-
+    console.log("props: ", props)
     for (var i = 7; i > -1 ; i--)
     {
         const imagen = (
@@ -458,11 +480,14 @@ function Inferior()
                 <DetalleDiente 
                             diente={i+41}
                             id_pieza={i+25}
+         
                             pieza={pieza[i+24]}
-                            dentadura={listaDientes}
+                            dentadura={props.listado}
+                            cambioPieza={_obtenerEstadoPieza}
                         />      
                         <img
-                                src={estado[listaDientes[i+24].id_f_estado_pieza-1]}
+                    key={props.listado[i].id_f_estado_pieza-1}
+                                src={estado[props.listado[i+24].id_f_estado_pieza-1]}
                                 width="40"
                                 height="40"
                                 className="pr-2"
@@ -492,11 +517,14 @@ function Inferior()
                 <DetalleDiente 
                             diente={i+31}
                             id_pieza={i+17}
+                   
                             pieza={pieza[i+16]}
-                            dentadura={listaDientes}
+                            dentadura={props.listado}
+                            cambioPieza={_obtenerEstadoPieza}
                         />         
                                 <img
-                                src={estado[listaDientes[i+16].id_f_estado_pieza-1]}
+                                key={props.listado[i].id_f_estado_pieza-1}
+                                src={estado[props.listado[i+16].id_f_estado_pieza-1]}
                                 width="40"
                                 height="40"
                                 className="pr-2"
@@ -511,6 +539,59 @@ function Inferior()
     return (
         <tr>{img}</tr>
     );
+}
+
+const _obtenerEstadoPieza=({id_pieza, id_f_estado_pieza})=>{
+
+    let n_lista_dientes = [];
+    console.log("obtuve: ", id_pieza, "; ",id_f_estado_pieza)
+
+    for(let iterador of listaDientes)
+    {
+        let pivote = {...iterador};
+
+        if(iterador.id_f_pieza == id_pieza)
+        {
+            console.log("encontre")
+            pivote.id_f_estado_pieza = id_f_estado_pieza    
+        }
+        console.log("el diente: ", pivote)
+        n_lista_dientes.push(pivote);
+    }
+
+    setListaDientes(n_lista_dientes)
+}
+
+const _guardarEndodoncia=()=>{
+
+    let datos={
+        listaDientes,
+        dienteColor,
+        guia,
+        tipoPuente,
+        limpieza,
+        diente, vitalidad,
+        medidaProvisional,notas
+    }
+
+    swal({
+        title:"Guardar Odontograma",
+        text:"¿Desea guardar el odontograma actual?",
+        icon:"warning",
+        buttons:["Cancelar","Aceptar"]
+    }).then(async respuesta=>{
+        if(respuesta)
+        {
+            swal({
+                title:"Guardado",
+                icon:"success",
+                text:"Odontograma guardado correctamente",
+                button:"Aceptar"
+            })
+        }
+
+        setModalOpen(false)
+    })
 }
 
 
@@ -609,11 +690,11 @@ function Inferior()
                                 <td colspan="17"><center>Hemisferios Superiores</center></td>
                             </tr>
 
-                        <Superior/>
+                        <Superior listado={listaDientes}/>
                             <tr>
                                 <td colspan="17"> <center> Hemisferios Inferiores </center></td>
                             </tr>
-                        <Inferior/>
+                        <Inferior listado={listaDientes}/>
 
 </table>
 
@@ -655,6 +736,7 @@ function Inferior()
                                             className="form-control"
                                             placeholder="Escriba el Color del Diente"
                                             type="text"
+                                            onChange={(e)=>{setDienteColor(e.target.value)}}
                             key="5"
                                            
                                            
@@ -678,6 +760,7 @@ function Inferior()
                                             className="form-control"
                                             placeholder="Escriba la guía"
                                             type="text"
+                                            onChange={(e)=>{setGuia(e.target.value)}}
                              
                                         />
                             </FormGroup>
@@ -698,6 +781,8 @@ function Inferior()
                                 label="Acrílico"                                                        
                                 key="1"     
                                 value="Acrílico" 
+                                onClick={()=>{setTipoPuente(1)}}
+
                                 />
                 
                                 <AvRadio                                     
@@ -705,6 +790,7 @@ function Inferior()
                                 label="Porcelana"                                                        
                                 key="1"
                                 value="Porcelana" 
+                                onClick={()=>{setTipoPuente(2)}}
 
                                 />
                                   
@@ -729,6 +815,7 @@ function Inferior()
                                             className="form-control"
                                             placeholder="Escriba el tipo de limpieza requerido"
                                             type="text"
+                                            onChange={(e)=>{setLimpieza(e.target.value)}}
                              
                                         />
 
@@ -756,6 +843,7 @@ function Inferior()
                                             className="form-control"
                                             placeholder="Escriba el Diente"
                                             type="text"
+                                            onChange={(e)=>{setDiente(e.target.value)}}
                             key="5"
                                            
                                            
@@ -779,6 +867,7 @@ function Inferior()
                                             className="form-control"
                                             placeholder="Escriba el nivel de Vitaliad"
                                             type="text"
+                                            onChange={(e)=>{setVitalidad(e.target.value)}}
                              
                                         />
                             </FormGroup>
@@ -800,6 +889,7 @@ function Inferior()
                                          className="form-control"
                                          placeholder="Escriba el tipo de lima a Usar"
                                          type="text"
+                                         onChange={(e)=>{setMedidaProvisional(e.target.value)}}
                           
                                      />
                          </FormGroup>
@@ -828,7 +918,8 @@ function Inferior()
                                                 className="form-control"
                                                 placeholder="Notas Relevantes"
                                                 type="textarea"    
-                                                style={{ height: 120 }}                                                      
+                                                style={{ height: 120 }} 
+                                                onChange={(e)=>{setNotas(e.target.value)}}                                                     
 
                                             />
 
@@ -866,6 +957,7 @@ function Inferior()
                             <Button
                               className="btn btn-primary btn-md w-md"
                               type="submit"
+                              onClick={()=>{_guardarEndodoncia()}}
                             >
                              Guardar
                             </Button>

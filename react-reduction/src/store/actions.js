@@ -8,3 +8,6 @@ export * from './GestionRecursos/actions';
 export * from './Permisos/actions';
 export * from './GestionDiagnosticos/actions';
 export * from './GestionEstados/actions';
+export * from './CitasPorAtender/actions';
+export * from './CitasModal/actions';
+export * from './Inventario/actions';
