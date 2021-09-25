@@ -32,7 +32,7 @@ import CitasPorAtender from '../components/CitasPorAtender/CitasPorAtender';
 import Diagnostico from '../components/Diagnostico/Diagnostico';
 import Factura from '../components/Factura/Factura';
 import InventarioLote from '../components/Inventario/InventarioLote';
-
+import infoServicios from '../components/GestionServicios/infoServicios/infoServicios';
 
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
@@ -67,6 +67,7 @@ const userRoutes =[
     {path:"/Diagnostico", component:Diagnostico},
     {path:"/Factura", component:Factura},
     {path:"/InventarioLote", component:InventarioLote},
+    {path: "/infoServicios", component: infoServicios},
 ];
 
 const authRoutes=[

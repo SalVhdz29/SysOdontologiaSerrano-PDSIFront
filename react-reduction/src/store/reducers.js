@@ -5,6 +5,7 @@ import gestionRolesReducer from './GestionRoles/reducer'
 import gestionRecursosReducer from './GestionRecursos/reducer'
 import inventarioReducer from './Inventario/reducer'
 
+import gestionServiciosReducer from './GestionServicios/reducer'
 import TipoRecursoReducer from './TipoRecurso/reducer'
 import ExpedienteReducer from './Expediente/reducers'
 import InsumoReducer from './Insumo/reducers'
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     CitasPorAtenderReducer,
     CitaModalReducer,
     inventarioReducer
+    gestionServiciosReducer,
 });
 
 export default rootReducer

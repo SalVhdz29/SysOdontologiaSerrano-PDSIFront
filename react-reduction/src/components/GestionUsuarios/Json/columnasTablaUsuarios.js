@@ -26,5 +26,9 @@ export const columnasTablaUsuario =[
       {
         text: "Operaciones",
         dataField: "operaciones",
+      },
+      {
+        text: "Dui",
+        dataField: "Dui",
       }
 ]
