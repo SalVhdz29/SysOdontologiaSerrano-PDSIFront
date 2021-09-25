@@ -3,6 +3,7 @@ export * from './GestionUsuarios/actions';
 export * from './TipoRecurso/actions';
 export * from './GestionRoles/actions';
 export * from './Expediente/actions';
+export * from './Insumo/actions';
 export * from './GestionRecursos/actions';
 export * from './Permisos/actions';
 export * from './CitasPorAtender/actions';
