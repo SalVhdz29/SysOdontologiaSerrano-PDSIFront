@@ -31,6 +31,7 @@ import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes
 import CitasPorAtender from '../components/CitasPorAtender/CitasPorAtender';
 import Diagnostico from '../components/Diagnostico/Diagnostico';
 import Factura from '../components/Factura/Factura';
+import InventarioLote from '../components/Inventario/InventarioLote';
 
 
 const userRoutes =[
@@ -65,6 +66,7 @@ const userRoutes =[
     {path:"/", component: BusquedaPacientes},
     {path:"/Diagnostico", component:Diagnostico},
     {path:"/Factura", component:Factura},
+    {path:"/InventarioLote", component:InventarioLote},
 ];
 
 const authRoutes=[
