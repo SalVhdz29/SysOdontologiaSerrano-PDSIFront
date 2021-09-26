@@ -11,3 +11,4 @@ export * from './GestionEstados/actions';
 export * from './CitasPorAtender/actions';
 export * from './CitasModal/actions';
 export * from './Inventario/actions';
+export * from './GestionServicios/actions';

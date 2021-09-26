@@ -31,6 +31,12 @@ import{
     API_SERVICIOS_REGISTRADOS,
 }from '../../../api/apiTypes';
 
+//actions 
+import { 
+    setListaServicios, 
+  } from '../../../store/actions' 
+   
+
 
 // Redux
 import { connect } from "react-redux";
@@ -51,11 +57,11 @@ const GestionServicios = props =>{
       _obtenerServiciosV(listServicios);
   },[])
 
-  useEffect(()=>{
-          //console.log("////");
-       setListaServicios(props.state.listaServicios);
-    let result =  _crearFilasListaServicio();
-  },[props.state.listaServicios]) 
+//   useEffect(()=>{
+//           //console.log("////");
+//        setListaServicios(props.state.listaServicios);
+//     let result =  _crearFilasListaServicio();
+//   },[props.state.listaServicios]) 
 
   useEffect(()=>{
     //   console.log("valor de filas detectadas: ", props.state.filasListaServiciosActivos)
@@ -336,4 +342,17 @@ const GestionServicios = props =>{
   )
 }
 
-export default GestionServicios;
+const mapStateToProps = reducers => { 
+    return{ 
+      state: reducers.gestionServiciosReducer 
+    } 
+  } 
+   
+   
+  const mapDispatchToProps = dispatch =>{ 
+    return{ 
+        setListaServicios: (datos) =>dispatch(setListaServicios(datos)), 
+    } 
+  } 
+
+export default connect(mapStateToProps,mapDispatchToProps)(GestionServicios);
