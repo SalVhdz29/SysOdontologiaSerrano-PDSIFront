@@ -65,11 +65,8 @@ const GestionServicios = props =>{
 
   useEffect(()=>{
     //   console.log("valor de filas detectadas: ", props.state.filasListaServiciosActivos)
-      const _setearFilas =async()=>{
-          await setFilasListaServicio(props.state.filaslistaServiciosActivos);
-      }
-      _setearFilas();
-  },[props.state.filasListaServiciosActivos]) 
+    _crearFilasListaServicio()
+  },[props.state.listaServicios]) 
   //Fin ciclo de vida
 
 
@@ -217,7 +214,7 @@ const GestionServicios = props =>{
             filas.push(fila);
       })
         // console.log(filas);
-        props.setFilasListaServiciosActivos(filas);
+        setFilasListaServicio(filas);
     }
 
   }
@@ -329,7 +326,7 @@ const GestionServicios = props =>{
                 </Row>
                 <Row>
                     <Col md={12} xs={12}>
-                           <DataTable datosTabla={props.state.filasListaServiciosActivos} columnasTabla={columnasTablaServicio}
+                           <DataTable datosTabla={filasListaServicio} columnasTabla={columnasTablaServicio}
                               /> 
                     </Col>
                 </Row>
