@@ -367,26 +367,6 @@ const HistorialExpediente = props =>{
 
 
 
-//----------------------------------------------------------------------------
-/*
-
-
-    const _obtenerPiezas = async() =>{
-    
-        let token= Cookies.get('token');
-  
-        let respuesta_Piezas = await superagent.post(
-          process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
-        .set('Accept', 'application/json').set("Authorization", "Bearer " + token);       
-        
-        console.log("piezas: ", respuesta_Piezas.body)  
-  
-        await props.setListaPiezas(respuesta_Piezas.body);
-    }
-  
-
-
-*/
 
 
 function Superior(props)

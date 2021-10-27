@@ -274,7 +274,7 @@ const NuevoExpediente = props =>{
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label><b>Nombre</b></Label>
+                                            <Label><b>Nombre</b></Label> 
                                             <AvField
                                                 //id="nombreUsuarioIpx"
                                                 id="nombre_paciente_front"
@@ -318,7 +318,7 @@ const NuevoExpediente = props =>{
                                 <Col md={6}>
 
                               {/* fin switch */}
-                                <br /><br />
+                                <br />
                                 
                                 </Col>
                                 )}
@@ -350,6 +350,12 @@ const NuevoExpediente = props =>{
                                     <Col md={4}>
                                         <FormGroup>
                                             <Label><b>Sexo</b></Label>
+                                       
+                                            {(props.isReadOnly || props.isEditable)?(
+
+
+
+
                                             <AvField
                                                 //id="nombreUsuarioIpx"
                                                 id="sexo_front"
@@ -366,6 +372,28 @@ const NuevoExpediente = props =>{
                                                 }}
                                             >
                                                 </AvField>
+                
+                    ):(
+                        <select 
+                        id="sexo_front"
+                        name="sexo_front"                                                
+                        className="form-control"               
+                        disabled={props.isReadOnly?true:false}
+
+                     >
+<option value="M">Masculino</option>
+<option value="F">Femenino</option>
+</select>
+                        
+                        )
+                    }
+
+                                           
+                                                                                          
+
+                                            
+                                              
+
                                         </FormGroup>
                                     </Col>
                                    { props.isReadOnly?(
@@ -374,7 +402,7 @@ const NuevoExpediente = props =>{
                                 <Col md={6}>
 
                               {/* fin switch */}
-                                <br /><br />
+                                <br />
                                 
                                 </Col>
                                 )}
@@ -431,7 +459,7 @@ const NuevoExpediente = props =>{
                                 <Col md={6}>
 
                               {/* fin switch */}
-                                <br /><br />
+                                <br />
                                 
                                 </Col>
                                 )}
@@ -466,7 +494,7 @@ const NuevoExpediente = props =>{
                                 <Col md={6}>
 
                               {/* fin switch */}
-                                <br /><br />
+                                <br />
                                 
                                 </Col>
                                 )}
@@ -500,8 +528,10 @@ const NuevoExpediente = props =>{
                                 <Col md={6}>
 
                               {/* fin switch */}
-                                <br /><br />
-                                
+                                <br />
+                                <h6><b>(*) Todos los Campos son Requeridos.</b></h6>                               
+
+                              
                                 </Col>
                                 )}
                                     

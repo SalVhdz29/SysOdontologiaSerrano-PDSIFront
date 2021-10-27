@@ -16,6 +16,10 @@ export const columnasTabla = [
             dataField: "nombre_servicio",
         },
         {
+            text: "Precio",
+            dataField: "precio_servicio",
+        },
+        {
             text: "Operaciones",
             dataField: "operaciones",
         }

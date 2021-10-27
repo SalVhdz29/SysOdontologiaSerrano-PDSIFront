@@ -142,13 +142,7 @@ const  Sidebar =props => {
         <div className={bem.e('content')}>
           <Navbar>
             <SourceLink className="navbar-brand d-flex">
-              {/* <img
-                src={logoSerrano}
-                width="40"
-                height="30"
-                className="pr-2"
-                alt=""
-              /> */}
+
               <span className="text-white">
                 Odonto-Serrano <FaTooth />
               </span>

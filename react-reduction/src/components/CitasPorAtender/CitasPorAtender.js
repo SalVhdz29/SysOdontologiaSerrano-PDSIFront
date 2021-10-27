@@ -102,7 +102,9 @@ const CitasPorAtender = props =>{
                     hora_entrada,
                     nombre_persona,
                     nombre_servicio,
-                    id_expediente
+                    id_expediente,
+                    precio_servicio,
+                    precio_serviciox5
                 } = it;
                 
                 hora_entrada= DateTime.fromISO(hora_entrada);
@@ -169,8 +171,10 @@ const CitasPorAtender = props =>{
                     id_cita,
                     nombre_persona,
                     nombre_servicio,
+                    precio_servicio,
                     hora_entrada: hora_entrada_f,
                     operaciones
+                    
 
                 }
                 n_filas.push(n_fila)

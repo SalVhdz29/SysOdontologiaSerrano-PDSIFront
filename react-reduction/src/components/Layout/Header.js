@@ -49,8 +49,9 @@ const MdNotificationsActiveWithBadge = withBadge({
 })(MdNotificationsActive);
 
 const authUser = localStorage.getItem('authUser');
-// console.log("auth: ", authUser);
-// console.log("otro: ",authUser.usuario_nombreUsuario);
+//console.log("auth: ", authUser);
+var usuario = JSON.parse(authUser);
+//console.log("otro: ",usuario.usuario_nombreUsuario);
 
 class Header extends React.Component {
   state = {
@@ -85,7 +86,7 @@ class Header extends React.Component {
   };
   cerrarSesion=()=>{
           Cookies.remove("token");
-          localStorage.removeItem("authUser")
+      //    localStorage.removeItem("authUser")
           this.props.history.push("/login");
   }
 
@@ -156,7 +157,7 @@ class Header extends React.Component {
               <PopoverBody className="p-0 border-light">
                 <UserCard
                   title={"Bienvenido"}
-                  subtitle={"Bienvenido"} 
+                  subtitle={usuario.usuario_nombreUsuario} 
                   className="border-light"
                 >
                   <ListGroup flush>
