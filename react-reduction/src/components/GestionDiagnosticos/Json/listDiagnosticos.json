@@ -1,0 +1,54 @@
+[
+    {
+        "id_usuario":1,
+        "nombre_usuario":"usuario 1",
+        "id_f_empleado": 1,
+        "roles":[
+            {"id_usuario":1,
+            "nombre_usuario":"medico"},
+            {"id_usuario":2,
+            "nombre_usuario":"recepcionista"}
+        ],
+        "nombre_empleado": "empleado 1",
+        "correo_electronico": "empleado1@correo.com",
+        "fecha_creacion": "xx/xx/xxxx",
+        "usuario_activo":1
+
+    },
+    {
+        "id_usuario":2,
+        "nombre_usuario":"usuario 2",
+        "id_f_empleado": 2,
+        "roles":[
+            {"id_usuario":1,
+                "nombre_usuario":"medico"
+            },
+            {"id_usuario":3,
+                "nombre_usuario":"enfermeria"
+            }
+        ],
+        "nombre_empleado": "empleado 2",
+        "correo_electronico": "empleado2@correo.com",
+        "fecha_creacion": "xx/xx/xxxx",
+        "usuario_activo":0
+
+    },
+    {
+        "id_usuario":3,
+        "nombre_usuario":"usuario 3",
+        "id_f_empleado": 3,
+        "roles":[
+            {"id_usuario":3,
+                "nombre_usuario":"enfermeria"
+            },
+            {"id_usuario":2,
+                "nombre_usuario":"recepcionista"
+            }
+        ],
+        "nombre_empleado": "empleado 3",
+        "correo_electronico": "empleado3@correo.com",
+        "fecha_creacion": "xx/xx/xxxx",
+        "usuario_activo":1
+    }
+
+]

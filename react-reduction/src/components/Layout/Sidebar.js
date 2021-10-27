@@ -3,7 +3,7 @@ import logoSerrano from 'assets/img/logo/logoSerrano.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React,{useEffect, useState} from 'react';
-import { FaGithub, FaTooth, FaUserAlt, FaUsers,FaFileMedical } from 'react-icons/fa';
+import { FaGithub, FaTooth, FaUserAlt, FaUsers,FaFileMedical, FaProductHunt,FaBoxes,FaServicestack } from 'react-icons/fa';
 import {VscFileSubmodule} from 'react-icons/vsc';
 import {ImProfile} from 'react-icons/im';
 //import { IoFileTrayFullSharp } from 'react-icons/io';
@@ -29,6 +29,7 @@ import {
   MdViewList,
   MdWeb,
   MdWidgets,
+  MdDateRange
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -107,7 +108,12 @@ const contents=[
   //Modulo Pacientes
   {to:'/Expediente', name:'Expedientes', exact:false, Icon: FaFileMedical},
   {to:'/NuevoExpediente', name: 'Expediente', exact:false, Icon: ImProfile},
-  {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard }
+  {to:"/CitasPorAtender", name:"Citas de Hoy", exact:false, Icon: MdDateRange},
+  {to:"/Insumo", name:"Gestión de Insumos", exact:false, Icon: FaProductHunt},
+  {to:"/InventarioLote", name:"Gestion de Inventarios", exact:false,Icon:FaBoxes},
+  {to:"/infoServicios", name:"Gestion de Servicios", exact:false, Icon: FaServicestack},
+  {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard },
+
 ]
 
 const bem = bn.create('sidebar');

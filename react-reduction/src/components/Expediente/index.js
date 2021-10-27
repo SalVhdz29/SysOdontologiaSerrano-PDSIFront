@@ -6,7 +6,6 @@ import {
   API_NUEVO_EXPEDIENTE,
   API_UPDATE_EXPEDIENTE,
   API_OBTENER_EXPEDIENTE,
-  API_OBTENER_PIEZAS,
   API_OBTENER_UN_EXPEDIENTE
 } from  '../../api/apiTypes';
 
@@ -44,8 +43,6 @@ import { connect } from "react-redux";
 import {
   setListaExpediente,
   setFilasListaExpedienteActivos,
-  setListaPiezas,
-  setFilasListaPiezas,
   setFilasListaExpedienteInactivos
 } from '../../store/actions'
 
@@ -58,13 +55,6 @@ const Expediente = props =>{
   const[listaExpediente, setListaExpediente] = useState([]);
   const[filasListaExpediente, setFilasListaExpediente] =useState([]);
   
-  const[listaPiezas, setListaPiezas] = useState([]);
-  const [ filasListaPiezas, setFilasListaPiezas] = useState({});
-
-
-
-
-
 
     //Ciclo de vida
     useEffect(()=>{
@@ -72,18 +62,7 @@ const Expediente = props =>{
   },[])
 
 
-  useEffect(()=>{
-    
-    setListaPiezas(props.state.listaPiezas);
-    let result =  _crearFilasListaPiezas();
-  console.log("LISTAPIEZAS: ", result)
-  //setListaPiezas(result);
-
-
-  },[props.state.listaPiezas]) //detecta cambios en la lista de Expediente en el reducer y vuelve a formar las filas.
-
-
-    
+ 
     useEffect(()=>{
     
       setListaExpediente(props.state.listaExpediente);
@@ -114,10 +93,8 @@ const Expediente = props =>{
         process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_EXPEDIENTE)
         .set('Accept', 'application/json').set("Authorization", "Bearer " + token);
         await props.setListaExpediente(respuesta_Expediente.body);
-
-
-
   }
+
 
 
     //Función que llama a los usuarios en el servidor.
@@ -131,68 +108,6 @@ const Expediente = props =>{
 
       await props.setListaExpediente(respuesta_Expediente.body);
   }
-
-
-
-  const _obtenerPiezas = async() =>{
-    
-    let token= Cookies.get('token');
-
-    let respuesta_Piezas = await superagent.post(
-      process.env.REACT_APP_ENDPOINT_BASE_URL + API_OBTENER_PIEZAS)
-    .set('Accept', 'application/json').set("Authorization", "Bearer " + token);       
-    
-    console.log("piezas: ", respuesta_Piezas.body);  
-    
-
-
-
-    await props.setListaPiezas(respuesta_Piezas.body);
-    
-}
-
-
-const _crearFilasListaPiezas=async()=>{
-  //console.log("detecto el cambio");
-
-  let filas=[];
-
-
-
-  props.state.listaPiezas.map(Piezas=>{
-
-      let {
-        id_pieza,
-        id_f_cuadrante,
-        numero_pieza,
-        ninio_diente
-        } = Piezas;
-
-
-      let fila ={};
-      fila.id_pieza = id_pieza;
-      fila.id_f_cuadrante = id_f_cuadrante;
-      fila.numero_pieza = numero_pieza;
-      fila.ninio_diente = ninio_diente;
-
-
-    
-      filas.push(fila);
-  })
-
-
-  props.setFilasListaPiezas(filas);
-
-}
-
-
-
-
-
-
-
-
-
 
 
 
@@ -222,10 +137,6 @@ const _crearFilasListaPiezas=async()=>{
 
 
 
-
-
-  
-
     //Función que crea las filas a partir de la lista de usuarios optenida.
     const _crearFilasListaExpediente=async()=>{
      
@@ -244,8 +155,7 @@ const _crearFilasListaPiezas=async()=>{
               telefono,
               ultima_fecha,
               fecha_nacimiento,
-              direccion,
-              pieza
+              direccion
                } = Expediente;
 
 
@@ -260,7 +170,6 @@ const _crearFilasListaPiezas=async()=>{
           fila.ultima_fecha = ultima_fecha;
           fila.fecha_nacimiento = fecha_nacimiento;
           fila.direccion = direccion;
-        
           if(sexo){
             fila.sexo = "Masculino";
           }else{
@@ -317,6 +226,8 @@ const _crearFilasListaPiezas=async()=>{
       props.setFilasListaExpedienteActivos(filas);
 
   }
+
+
 
   //Función que simula el añadir el tipo expediente obtenido para anexarlo al JSON - temporal.
   const _agregarExpedienteALista = (nuevo_expediente)=>{
@@ -439,9 +350,6 @@ const mapDispatchToProps = dispatch =>{
     return{
         setExpediente: (datos) =>dispatch(setListaExpediente(datos)),
         setListaExpediente: (datos) =>dispatch(setListaExpediente(datos)),
-
-        setListaPiezas: (datos) =>dispatch(setListaPiezas(datos)),
-        setFilasListaPiezas: (datos) =>dispatch(setFilasListaPiezas(datos)),
 
         setFilasListaExpedienteActivos: (datos) =>dispatch(setFilasListaExpedienteActivos(datos)),
         setFilasListaExpedienteInactivos: (datos) =>dispatch(setFilasListaExpedienteInactivos(datos))

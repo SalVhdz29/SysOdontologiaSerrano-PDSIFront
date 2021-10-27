@@ -1,0 +1,15 @@
+[
+    
+    {
+        "n_insumo" : 1,
+        "nombre_insumo":"insumo 1",
+        "existencia_insumo": 50,
+        "operaciones_lote": "operaciones"       
+    },
+    {
+        "n_insumo" : 2,
+        "nombre_insumo":"insumo 2",
+        "existencia_insumo": 50,
+        "operaciones_lote": "operaciones"  
+    }
+]

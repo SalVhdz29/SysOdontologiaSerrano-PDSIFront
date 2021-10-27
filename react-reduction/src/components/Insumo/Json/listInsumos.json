@@ -1,0 +1,14 @@
+[
+	{
+		"id_insumo":1,
+		"nombre_insumo": "nombre1",
+		"existencia": 5,
+		"descripcion": "hahahahaha"
+	},
+	{
+		"id_insumo":2,
+		"nombre_insumo": "nombre2",	
+		"existencia": 55,
+		"descripcion": "hahahahaha"
+	}
+]

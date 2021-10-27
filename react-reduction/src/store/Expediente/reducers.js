@@ -1,3 +1,4 @@
+import { setListaPiezas } from './actions'
 import {
     SETLISTAExpediente,
     SETFILASLISTAExpedienteACTIVOS,
@@ -16,6 +17,7 @@ const ExpedienteReducer =(state = INIT_STATE, {type, payload})=>{
             return{
                 ...state,
                 listaExpediente: payload
+            
             }
         case SETFILASLISTAExpedienteACTIVOS:
             return{

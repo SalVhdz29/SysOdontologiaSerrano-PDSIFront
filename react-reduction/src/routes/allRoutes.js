@@ -24,12 +24,17 @@ import TipoRecurso from '../components/TipoRecurso/TipoRecurso';
 import NuevoTipoRecurso from '../components/TipoRecurso/NuevoTipoRecurso/NuevoTipoRecurso';
 import GestionRoles from '../components/GestionRoles/GestionRoles';
 import Expediente from '../components/Expediente/';
-// import nuevoExpediente from '../components/Expediente/nuevoExpediente';
+import Insumo from '../components/Insumo/Insumo';
 import infoRecursos from '../components/GestionRecursos/infoRecursos/infoRecursos'; 
 import NuevoRecurso from '../components/GestionRecursos/NuevoRecurso/NuevoRecurso';
 import BusquedaPacientes from '../components/BusquedaPacientes/BusquedaPacientes';
+import CitasPorAtender from '../components/CitasPorAtender/CitasPorAtender';
+import Diagnostico from '../components/Diagnostico/Diagnostico';
+import Factura from '../components/Factura/Factura';
+import InventarioLote from '../components/Inventario/InventarioLote';
+import infoServicios from '../components/GestionServicios/infoServicios/infoServicios';
 
-
+import GestionDiagnosticos from '../components/GestionDiagnosticos/GestionDiagnosticos';
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
     
@@ -55,12 +60,16 @@ const userRoutes =[
     {path:"/TipoRecurso", component: TipoRecurso},
     {path:"/GestionRoles", component:GestionRoles },
     {path:"/Expediente", component:Expediente },
-    // {path:"/NuevoExpediente", component:nuevoExpediente },
+     {path:"/Insumo", component:Insumo },
     {path:"/infoRecursos", component: infoRecursos},
     {path:"/NuevoRecurso", component: NuevoRecurso},
-    {path:"/", component: BusquedaPacientes}
-   // {path:"/", component: Expediente}
-
+    {path:"/CitasPorAtender", component:CitasPorAtender},
+    {path:"/", component: BusquedaPacientes},
+    {path:"/Diagnostico", component:Diagnostico},
+    {path:"/Factura", component:Factura},
+    {path:"/InventarioLote", component:InventarioLote},
+    {path: "/infoServicios", component: infoServicios},
+    {path:"/GestionDiagnosticos", component:GestionDiagnosticos}
 ];
 
 const authRoutes=[

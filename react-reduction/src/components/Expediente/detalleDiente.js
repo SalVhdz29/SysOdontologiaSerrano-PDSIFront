@@ -64,8 +64,7 @@ import e13 from 'assets/img/estados/13.jpg';
 //import e14 from 'assets/img/estados/14.jpg';
 
 
-
-
+ 
 
 import{
     FormGroup,
@@ -98,7 +97,7 @@ import Table from 'reactstrap/lib/Table';
 
 //Componente
 
-const NuevoExpediente = props =>{
+const DetalleDiente = props =>{
 
     const [modalOpen, setModalOpen ]= useState(false);
 
@@ -107,164 +106,172 @@ const NuevoExpediente = props =>{
   const [ activo, setActivo ] = useState(false);
 
 
-    const [ estadoExpediente, setExpedienteActivo] = useState(false);
+    const [ estadoPieza, setEstadoPieza] = useState(1);
 
     const [ defaultValues, setDefaultValues ]= useState({});
 
-
-
-    //CICLO DE VIDA
-    useEffect(()=>{
-
-        if(props.isReadOnly == true || props.isEditable == true)
-        {
-            //console.log("El default Value: ", props.defaultValue);
-            _setDefaultValue();
-        }
-
-    },[props.defaultValue])
-
-
-
-    //FIN CICLO DE VIDA
-
-
-
-    //Función que da valores por defecto a los campos en el formulario.
-    const _setDefaultValue=()=>{
-        let id_expediente = 0;
-        let nombre_paciente_front="";
-        let apellido_paciente_front="";
-        let dui_front = "";
-        let sexo_front = 0;
-        let correo_front = "";
-        let telefono_front = "";
-        let ultima_fecha_front = "";
-        let fecha_nacimiento_front="";
-        let direccion_front = "";
-
-        let {
-            nombre_paciente,
-            apellido_paciente,
-            dui,
-            sexo,
-            correo,
-            telefono,
-            ultima_fecha,
-            fecha_nacimiento,
-            direccion
-        } = props.defaultValue;
-
-        if(nombre_paciente){
-            nombre_paciente_front = nombre_paciente;
-        }
-        if(apellido_paciente){
-            apellido_paciente_front = apellido_paciente;
-        }
-        if(sexo){
-            sexo_front = "Masculino";
-        }else{
-            sexo_front = "Femenino";
-        }
-        if(dui){
-            dui_front = dui;
-        }
-        if(correo){
-            correo_front = correo;
-        }
-        if(telefono){
-            telefono_front = telefono;
-        }
-        if(ultima_fecha){
-            ultima_fecha_front = ultima_fecha;
-        }
-        if(fecha_nacimiento){
-            fecha_nacimiento_front = fecha_nacimiento;
-        }
-        if(direccion){
-            direccion_front = direccion;
-        }
-        //console.log("default Value", props.defaultValue)
-
-
-        setDefaultValues({nombre_paciente_front,apellido_paciente_front,dui_front, sexo_front,correo_front, telefono_front, ultima_fecha_front,fecha_nacimiento_front,direccion_front});
-    }
-
-    const _registrarExpediente=async(valor_inputs)=>{
-            //console.log("el valor obtenido", valor_inputs);
-            console.log("ENTRO AL METODO REGISTRAS");
-            let fecha_actual = new Date();            
-            let mes = fecha_actual.getMonth()+1;
-            let { 
-                    nombre_paciente_front,
-                    apellido_paciente_front,
-                    dui_front,
-                    sexo_front,
-                    correo_front,
-                    telefono_front,
-                    fecha_nacimiento_front,
-                    direccion_front
-                } = valor_inputs;
-
-            let valor = {};
-            valor.nombre_paciente = nombre_paciente_front;
-            valor.apellido_paciente = apellido_paciente_front;
-            valor.dui = dui_front;
-            
-            valor.correo = correo_front;
-            valor.telefono = telefono_front;
-            valor.ultima_fecha = fecha_actual.getDate()+"-"+mes+"-"+fecha_actual.getFullYear();
-            valor.fecha_nacimiento = fecha_nacimiento_front;
-            valor.direccion = direccion_front;
-            console.log("antes del sexo");
-           if(sexo_front == "M"){
-            valor.sexo = 1;
-           }else{
-            valor.sexo = 0;
-           }
-        //    console.log("despues del sexo del sexo");
-
-            let tipo="";
-            if(props.isEditable)
-                        {
-                            console.log("LO QUE ENVIA: ", valor);
-                            valor.id_expediente = props.defaultValue.id_expediente;
-                            tipo="editarExpedienteLista";
-                            let token= Cookies.get('token');
-                              let respuesta_Expediente = await superagent.post(
-                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_UPDATE_EXPEDIENTE)
-                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
-                                console.log("LA RESPUESTA: ", respuesta_Expediente)
-                        }
-                        else
-                        {
-                            console.log("entro al else: "+valor.sexo);
-                            tipo="agregarExpedienteLista";
-                            let token= Cookies.get('token');
-                              let respuesta_Expediente = await superagent.post(
-                                process.env.REACT_APP_ENDPOINT_BASE_URL + API_NUEVO_EXPEDIENTE)
-                                .set('Accept', 'application/json').set("Authorization", "Bearer " + token).send(valor)
-                        }
-
-            let envio={tipo,valor};
-            if(props.cambioDatos != undefined)
-            {
-                await props.cambioDatos(envio);
+    const estados=
+        [ 
+            { 
+                "id_estado_pieza":1,
+                "nombre_estado_pieza": "Bueno"            
+            },
+            { 
+                "id_estado_pieza":2,
+                "nombre_estado_pieza": "Ausente"             
+            },
+            { 
+                "id_estado_pieza":3,
+                "nombre_estado_pieza": "Extraer"             
+            },
+            { 
+                "id_estado_pieza":4,
+                "nombre_estado_pieza": "Endodoncia"             
+            },
+            { 
+                "id_estado_pieza":5,
+                "nombre_estado_pieza": "Caries 1"             
+            },
+            { 
+                "id_estado_pieza":6,
+                "nombre_estado_pieza": "Caries 2"             
+            },
+            { 
+                "id_estado_pieza":7,
+                "nombre_estado_pieza": "Caries 3"             
+            },
+            { 
+                "id_estado_pieza":8,
+                "nombre_estado_pieza": "Caries 4"             
+            },
+            { 
+                "id_estado_pieza":9,
+                "nombre_estado_pieza": "Caries 5"             
+            },
+            { 
+                "id_estado_pieza":10,
+                "nombre_estado_pieza": "Caries 6"             
+            },
+            { 
+                "id_estado_pieza":11,
+                "nombre_estado_pieza": "Caries 7"             
+            },
+            { 
+                "id_estado_pieza":12,
+                "nombre_estado_pieza": "Caries 8"             
             }
-            
+        ]
+    
+
+
+    const estado = [
+        e01, 	e02, 	e03, 	e04, 	e05, 	e06,
+        e07, 	e08, 	e09, 	e10, 	e11, 	e12, 
+
+    ]
+
+
+    
+function SeleccionarEstados()
+{
+    const img = [];
+
+
+    for (var i = 0; i < 6 ; i++)
+    {
+        const imagen = (
+            <td>
+                <center>
+                <AvRadio     
+                                label={estados[i].nombre_estado_pieza}                                                     
+                                key={i}  
+                                id="1"
+                                className="checkbox_animated "
+                                onClick={()=>{setEstadoPieza(estados[i].id_estado_pieza)}}
+                                />   
+                                <img
+                                src={estado[i]}
+                                value={estados[i].id_estado_pieza}
+                                width="60"
+                                height="50"
+                                className="pr-2"
+                                alt=""
+                                />    
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+
+    return (
+        <tr>{img}</tr>
+    );
+}
+function SeleccionarEstados2()
+{
+    const img = [];
+
+
+    for (var i = 6; i <= 11 ; i++)
+    {
+        console.log("estado: ", estados[i]);
+        const imagen = (
+            <td>
+                <center>
+                <AvRadio     
+                                label={estados[i].nombre_estado_pieza}                                                     
+                                key={i}  
+                                id="1"
+                                valor={estados[i].id_estado_pieza}
+                                className="checkbox_animated "
+                                onClick={()=>{setEstadoPieza(i+1)}}
+                                />   
+                                <img
+                                src={estado[i]}
+                                value={estados[i].id_estado_pieza}
+                                width="60"
+                                height="50"
+                                className="pr-2"
+                                alt=""
+                                />    
+                </center>
+            </td>
+        );
+        img.push(imagen);
+    }
+
+    return (
+        <tr>{img}</tr>
+    );
+}
+
+
+const _registrarDetalles=async(valor_inputs)=>{
+       
+    console.log("INPUTS: ",estadoPieza, ", ", props.diente);
+
+    props.cambioPieza({id_pieza: props.diente, id_f_estado_pieza: estadoPieza})
             setModalOpen(false);
-    }
 
-    const _validacionEjemplo=(value, ctx, input, cb) =>{
-        if("palabra" == value)
-        {
-            return true;
-        }
-        else{
-            return "no dice palabra";
-        }
-    }
 
+}
+
+  /*  const _detalleSubmit() =>{
+        // console.log(v);
+        let recurso_marcados=[]; 
+        recurso_marcados = recurso.filter((recurso)=> recurso.marcado == true );
+        props.submitRecurso(recurso_marcados)
+
+        datos={id_diente: props.diente, valor_estado: valorEstado };
+        props.guardarEstadoDiente(datos);
+        
+
+
+
+        
+        setModalRecursoOpen(false);
+    }
+*/
     return(
         <Fragment>
             {/* <FormGroup className="float-right"> */}
@@ -351,7 +358,7 @@ const NuevoExpediente = props =>{
 
 
                 <AvForm
-                    onValidSubmit={(e,v)=>{_registrarExpediente(v)}}
+                    onValidSubmit={(e,v)=>{ _registrarDetalles(v) }}//_registrarExpediente(v)
                     model={defaultValues}
                 >
                 <div className="modal-body">
@@ -368,6 +375,7 @@ const NuevoExpediente = props =>{
       <Tab disabled><b>Observaciones</b></Tab>
     </TabList>
 
+   
 
     <TabPanel>
 
@@ -375,6 +383,7 @@ const NuevoExpediente = props =>{
 <Col md={12}>
 
 <Label for="checkboxExample" >Diagnóstico del Estado Actual de la Pieza</Label>
+{props.id_pieza}
 </Col>
 </Row>
     <Row>
@@ -383,155 +392,22 @@ const NuevoExpediente = props =>{
     <AvRadioGroup  name="a" >
 
         <Row>        
+
         <Col>
-                    <Label>
-                        <center>
-                                <AvRadio     
-                                label="Bueno"                                                        
-                                key="1"  
-                                id="1"
-                                className="checkbox_animated "
-                                />   
-                                <img
-                                src={e01}
-                                width="60"
-                                height="50"
-                                className="pr-2"
-                                alt=""
-                                />                            
-                                </center>
-                    </Label>
-                    </Col>
-        <Col>
-                                
-                    <Label>
-                        <center>
-                                <AvRadio     
-                                label="Ausente"                                                        
-                                key="1"  
-                                id="1"
-                                className="checkbox_animated "
-                                />   
-                                <img
-                                src={e02}
-                                width="60"
-                                height="50"
-                                className="pr-2"
-                                alt=""
-                                />                            
-                                </center>
-                    </Label>      
-        </Col>
-        <Col>
-                                
-                                <Label>
-                                    <center>
-                                            <AvRadio     
-                                            label="Extraer"                                                        
-                                            key="1"  
-                                            id="1"
-                                            className="checkbox_animated "
-                                            />   
-                                            <img
-                                            src={e03}
-                                            width="60"
-                                            height="50"
-                                            className="pr-2"
-                                            alt=""
-                                            />                            
-                                    </center>
+        <table border='1' width="100%">
+                            <tr>
+                                <td colspan="17"><center>Estados Disponibles</center></td>
+                            </tr>
 
-                                </Label>      
-                    </Col>
-                    <Col>
-                                
-                                <Label>
-                                <center>
+                        <SeleccionarEstados/>
+                        <SeleccionarEstados2/>
 
-                                            <AvRadio     
-                                            label="Endodoncia"                                                        
-                                            key="1"  
-                                            id="1"
-                                            className="checkbox_animated "
-                                            />   
-                                            <img
-                                            src={e04}
-                                            width="60"
-                                            height="50"
-                                            className="pr-2"
-                                            alt=""
-                                            />    
-                                    </center>
 
-                                </Label>      
-                    </Col>
-                    <Col>
-                                
-                                <Label>
-                                <center>
+</table>
 
-                                            <AvRadio     
-                                            label="Caries 1"                                                        
-                                            key="1"  
-                                            id="1"
-                                            className="checkbox_animated "
-                                            />   
-                                            <img
-                                            src={e05}
-                                            width="60"
-                                            height="50"
-                                            className="pr-2"
-                                            alt=""
-                                            />    
-                                    </center>
+</Col>
+</Row>
 
-                                </Label>      
-                    </Col>
-                    <Col>
-                                
-                                <Label>
-                                <center>
-
-                                            <AvRadio     
-                                            label="Caries 2"                                                        
-                                            key="1"  
-                                            id="1"
-                                            className="checkbox_animated "
-                                            />   
-                                            <img
-                                            src={e06}
-                                            width="60"
-                                            height="50"
-                                            className="pr-2"
-                                            alt=""
-                                            />                            
-                                    </center>
-
-                                </Label>      
-                    </Col>
-                    <Col>
-                                
-                                <Label>
-                                <center>
-
-                                            <AvRadio     
-                                            label="Caries 3"                                                        
-                                            key="1"  
-                                            id="1"
-                                            className="checkbox_animated "
-                                            />   
-                                            <img
-                                            src={e07}
-                                            width="60"
-                                            height="50"
-                                            className="pr-2"
-                                            alt=""
-                                            />                            
-                                    </center>
-
-                                </Label>      
-                    </Col>
-                                </Row>
                                 </AvRadioGroup>
 
 </AvForm>
@@ -550,7 +426,7 @@ const NuevoExpediente = props =>{
 </p>
 
 </Col>
-</Row>
+</Row>/*
 <Row>
         <Col md={12}>
             <AvForm> 
@@ -577,7 +453,7 @@ const NuevoExpediente = props =>{
                                 </AvForm> 
                                 </Col>
 
-                                </Row>
+                                </Row>*/
 
 
 
@@ -607,7 +483,7 @@ const NuevoExpediente = props =>{
                 <div className="modal-footer">
                     <Row>
                         <Col >
-                        {props.isReadOnly?(undefined):(
+                       
                         <div className="mt-3">
                             <Button
                               className="btn btn-primary btn-md w-md"
@@ -616,7 +492,7 @@ const NuevoExpediente = props =>{
                              Guardar
                             </Button>
                           </div> 
-                               )} 
+                            
                         </Col>
                         <Col>
                             <div className="mt-3">
@@ -633,4 +509,4 @@ const NuevoExpediente = props =>{
         </Fragment>
     )
 }
-export default NuevoExpediente;
+export default DetalleDiente;
