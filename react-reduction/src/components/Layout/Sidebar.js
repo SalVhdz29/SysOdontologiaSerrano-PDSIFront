@@ -3,7 +3,7 @@ import logoSerrano from 'assets/img/logo/logoSerrano.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React,{useEffect, useState} from 'react';
-import { FaGithub, FaTooth, FaUserAlt, FaUsers,FaFileMedical, FaProductHunt,FaBoxes,FaServicestack } from 'react-icons/fa';
+import { FaGithub, FaTooth, FaUserAlt, FaUsers,FaFileMedical, FaProductHunt,FaBoxes,FaServicestack,FaMoneyBillAlt } from 'react-icons/fa';
 import {VscFileSubmodule} from 'react-icons/vsc';
 import {ImProfile} from 'react-icons/im';
 //import { IoFileTrayFullSharp } from 'react-icons/io';
@@ -113,6 +113,8 @@ const contents=[
   {to:"/InventarioLote", name:"Gestion de Inventarios", exact:false,Icon:FaBoxes},
   {to:"/infoServicios", name:"Gestion de Servicios", exact:false, Icon: FaServicestack},
   {to:"/GestionEmpleados",name:"Gestion de Empleados", exact:false, Icon: FaUsers},
+  {to:"/MonitoreoCuentas",name:" Monitoreo de Cuentas", exact: false, Icon: FaMoneyBillAlt },
+  {to:"/CitasAgendadas", name:"Citas Agendadas",exact:false, Icon:MdDateRange},
   {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard },
 
 ]

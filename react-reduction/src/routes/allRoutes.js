@@ -37,6 +37,7 @@ import infoServicios from '../components/GestionServicios/infoServicios/infoServ
 import GestionDiagnosticos from '../components/GestionDiagnosticos/GestionDiagnosticos';
 import GestionEmpleados from '../components/GestionEmpleados/GestionEmpleados';
 import MonitoreoCuentas from '../components/MonitoreoCuentas/MonitoreoCuentas';
+import CitasAgendadas from '../components/CitasAgendadas/CitasAgendadas';
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
     
@@ -74,6 +75,7 @@ const userRoutes =[
     {path:"/GestionDiagnosticos", component:GestionDiagnosticos},
     {path:"/GestionEmpleados", component:GestionEmpleados},
     {path:"/MonitoreoCuentas", component:MonitoreoCuentas},
+    {path:"/CitasAgendadas", component:CitasAgendadas},
 ];
 
 const authRoutes=[

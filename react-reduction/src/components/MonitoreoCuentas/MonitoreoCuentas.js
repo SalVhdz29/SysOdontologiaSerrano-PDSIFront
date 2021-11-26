@@ -100,7 +100,7 @@ const MonitoreoCuentas = props =>{
 
                 let saldo_jsx =(
                     <Fragment>
-                        <span style={{backgroundColor:color}}>{saldo}</span>
+                        <span style={{color:color}}><center>{saldo}</center></span>
                     </Fragment>
                 )
                 
