@@ -10,3 +10,5 @@ export * from './CitasPorAtender/apiTypes';
 export * from './Inventarios/apiTypes';
 export * from './GestionServicio/apiTypes';
 export * from './GestionDiagnosticos/apiTypes';
+export * from './GestionEmpleados/apiTypes';
+export * from './MonitoreoCuentas/apiTypes';

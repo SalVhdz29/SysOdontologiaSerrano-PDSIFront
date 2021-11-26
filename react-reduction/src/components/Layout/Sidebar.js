@@ -112,6 +112,7 @@ const contents=[
   {to:"/Insumo", name:"Gestión de Insumos", exact:false, Icon: FaProductHunt},
   {to:"/InventarioLote", name:"Gestion de Inventarios", exact:false,Icon:FaBoxes},
   {to:"/infoServicios", name:"Gestion de Servicios", exact:false, Icon: FaServicestack},
+  {to:"/GestionEmpleados",name:"Gestion de Empleados", exact:false, Icon: FaUsers},
   {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard },
 
 ]
