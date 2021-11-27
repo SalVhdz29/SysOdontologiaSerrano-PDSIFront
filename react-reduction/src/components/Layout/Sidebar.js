@@ -115,6 +115,7 @@ const contents=[
   {to:"/GestionEmpleados",name:"Gestion de Empleados", exact:false, Icon: FaUsers},
   {to:"/MonitoreoCuentas",name:" Monitoreo de Cuentas", exact: false, Icon: FaMoneyBillAlt },
   {to:"/CitasAgendadas", name:"Citas Agendadas",exact:false, Icon:MdDateRange},
+  {to:"/Reporteria", name:"Reporteria", exact:false, Icon:FaMoneyBillAlt},
   {to:'/', name:'BusquedaPacientes', exact:false, Icon:MdDashboard },
 
 ]
