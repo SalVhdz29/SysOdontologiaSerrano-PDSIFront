@@ -6,8 +6,14 @@ export const columnasTabla = [
     valign: 'middle'
   },
   {
-    text: "Paciente",
+    text: "Nombre",
     dataField: "nombre_paciente",
+    align: 'center',
+    valign: 'middle'
+  },
+  {
+    text: "Apellido",
+    dataField: "apellido_paciente",
     align: 'center',
     valign: 'middle'
   },

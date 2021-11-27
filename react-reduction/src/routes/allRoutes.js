@@ -35,6 +35,10 @@ import InventarioLote from '../components/Inventario/InventarioLote';
 import infoServicios from '../components/GestionServicios/infoServicios/infoServicios';
 
 import GestionDiagnosticos from '../components/GestionDiagnosticos/GestionDiagnosticos';
+import GestionEmpleados from '../components/GestionEmpleados/GestionEmpleados';
+import MonitoreoCuentas from '../components/MonitoreoCuentas/MonitoreoCuentas';
+import CitasAgendadas from '../components/CitasAgendadas/CitasAgendadas';
+import ReporteriaCitas from '../components/Reporteria/Citas/RepoteriaCitas';
 const userRoutes =[
     //{path:"/", component: TipoRecurso},
     
@@ -69,7 +73,11 @@ const userRoutes =[
     {path:"/Factura", component:Factura},
     {path:"/InventarioLote", component:InventarioLote},
     {path: "/infoServicios", component: infoServicios},
-    {path:"/GestionDiagnosticos", component:GestionDiagnosticos}
+    {path:"/GestionDiagnosticos", component:GestionDiagnosticos},
+    {path:"/GestionEmpleados", component:GestionEmpleados},
+    {path:"/MonitoreoCuentas", component:MonitoreoCuentas},
+    {path:"/CitasAgendadas", component:CitasAgendadas},
+    {path:"/Reporteria", component:ReporteriaCitas},
 ];
 
 const authRoutes=[

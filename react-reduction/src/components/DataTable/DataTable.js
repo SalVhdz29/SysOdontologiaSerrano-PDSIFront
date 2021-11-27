@@ -83,6 +83,7 @@ const DataTable = props => {
             <br />
             <BootstrapTable
               striped
+              noDataIndication="Sin Registros"
               pagination={paginationFactory({
                 withFirstAndLast: false,
               })}
