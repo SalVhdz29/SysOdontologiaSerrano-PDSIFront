@@ -13,6 +13,10 @@ import{
 import DataTable from '../../DataTable/DataTable'
 import PestaniasReporteria from './PestaniasReporteria';
 import { columnasTablaCitas, columnasTablaServicios,columnasTablaInventario } from './Json/columnasTabla';
+import ImprimirReporteCitas from '../ImprimirReportes/ReporteCitas/ImprimirReporteCitas';
+import ImprimirReporteServicios from '../ImprimirReportes/ReporteServicios/ImprimirReporteServicios';
+import ImprimirReporteInventarios from '../ImprimirReportes/ReporteInventario/ImprimirReporteInventario';
+
 import swal from 'sweetalert';
 import request from 'superagent'
 
@@ -34,6 +38,7 @@ const ReporteriaCitas = props =>{
     const[filaCita, setFilaCita] = useState([])
     const[filaServicio, setFilaServicio] = useState([])
     const[filaInventario, setFilaInventario] = useState([]);
+    const[datosCargados, setDatosCargados] = useState(false)
 
 
 
@@ -83,7 +88,7 @@ const ReporteriaCitas = props =>{
             setListaCitas(respuesta_reporte_citas.body.lista_citas_mes)
             setListaServicios(respuesta_reporte_servicios.body)
             setListaInventario(respuesta_reporte_inventarios.body)
-            
+            setDatosCargados(true)
 
         }catch(e)
         {
@@ -146,7 +151,15 @@ const ReporteriaCitas = props =>{
                     <PestaniasReporteria toggle={_togglePestania} pestaniaActiva={pestaniaActiva} />
                     <TabContent activeTab={pestaniaActiva}>
                         <TabPane tabId="1" className="p-3">
-                            <h5>Reporteria Citas</h5>
+                            <Row>
+                               <Col md={10}>
+                                    <h5>Reporteria Citas</h5>
+                               </Col>
+                               <Col md={2}>
+                               <ImprimirReporteCitas datos_cargados={datosCargados}/>
+                               </Col>
+                            </Row> 
+                            &nbsp;
                             {listaCitas != null?(
                                 <DataTable columnasTabla={columnasTablaCitas} datosTabla={filaCita}/>
                             ):(
@@ -154,7 +167,15 @@ const ReporteriaCitas = props =>{
                             )}
                         </TabPane>
                         <TabPane tabId="2" className="p-3">
-                            <h5>Reporteria Servicios</h5>
+                            <Row>
+                               <Col md={10}>
+                                    <h5>Reporteria Servicios</h5>
+                               </Col>
+                               <Col md={2}>
+                               <ImprimirReporteServicios datos_cargados={datosCargados}/>
+                               </Col>
+                            </Row> 
+                            &nbsp;
                             {listaServicios != null?(
                                 <DataTable columnasTabla={columnasTablaServicios} datosTabla={filaServicio}/>
                             ):(
@@ -163,7 +184,15 @@ const ReporteriaCitas = props =>{
                         </TabPane>
 
                         <TabPane tabId="3" className="p-3">
-                            <h5>Reporteria Inventarios</h5>
+                            <Row>
+                               <Col md={10}>
+                                    <h5>Reporteria Inventarios</h5>
+                               </Col>
+                               <Col md={2}>
+                               <ImprimirReporteInventarios datos_cargados={datosCargados}/>
+                               </Col>
+                            </Row>
+                            &nbsp;
                             {listaInventario != null?(
                                 <DataTable columnasTabla={columnasTablaInventario} datosTabla={filaInventario}/>
                             ):(

@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "https://reduction-admin.github.io/react-reduction",
   "dependencies": {
+    "@react-pdf/renderer": "^2.0.21",
     "availity-reactstrap-validation": "^2.7.1",
     "bootstrap": "^4.6.0",
     "chart.js": "2.7.2",
